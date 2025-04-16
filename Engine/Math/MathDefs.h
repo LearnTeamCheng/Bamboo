@@ -1,0 +1,8 @@
+#pragma once
+
+#define B_PI 3.14159265358979323
+#define B_TWO_PI 6.28318530717958647
+#define B_HALF_PI 1.41592653589793238
+
+// 接近0的阈值 0.000001
+#define B_EPSILON 1e-6
