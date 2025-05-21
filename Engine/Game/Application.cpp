@@ -2,7 +2,8 @@
 
 namespace Bamboo
 {
-    Application::Application()
+    Application::Application():
+        m_isRunning(true)
     {
     }
 
@@ -20,11 +21,11 @@ namespace Bamboo
 
     bool Application::IsRunning()
     {
-        return true;
+        return m_isRunning;
     }
 
     void Application::Stop(){
-        
+        m_isRunning = false;
     }
 
 }

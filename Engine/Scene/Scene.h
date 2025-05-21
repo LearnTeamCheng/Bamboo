@@ -12,8 +12,7 @@ namespace Bamboo
         Scene();
         ~Scene();
 
-    private:
-    
+        
     };
 }
 

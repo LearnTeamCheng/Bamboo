@@ -12,6 +12,7 @@ namespace Bamboo
         bool IsRunning();
 
     private:
+        bool m_isRunning;
         Game m_game;
     };
 }

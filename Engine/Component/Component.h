@@ -1,0 +1,5 @@
+namespace Bamboo {
+    class Component {
+
+    };
+};

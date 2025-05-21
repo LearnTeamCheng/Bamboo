@@ -5,6 +5,7 @@
 #pragma once
 
 #include "Math.h"
+#include <utility>
 namespace Bamboo
 {   
     class Vector2;
