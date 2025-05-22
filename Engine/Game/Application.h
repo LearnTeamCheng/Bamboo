@@ -1,5 +1,6 @@
 #pragma once
 #include "Game.h"
+#include <memory>
 namespace Bamboo
 {
     class Application
@@ -13,6 +14,8 @@ namespace Bamboo
 
     private:
         bool m_isRunning;
-        Game m_game;
+        std::unique_ptr<Game> m_game;
+        
+
     };
 }

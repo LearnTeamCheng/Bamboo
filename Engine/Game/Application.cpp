@@ -1,3 +1,6 @@
+
+#include "../Core/Time.h"
+
 #include "Application.h"
 
 namespace Bamboo
@@ -5,6 +8,7 @@ namespace Bamboo
     Application::Application():
         m_isRunning(true)
     {
+        m_game = std::make_unique<Game>();
     }
 
     Application::~Application()
@@ -13,9 +17,15 @@ namespace Bamboo
 
     void Application::Run()
     {
+        Time::Initialize();
+
         while (IsRunning())
         {
-            m_game.Update();
+            Time::Update();
+            float deltaTime = Time::GetDeltaTime();
+            
+            m_game.get()->Update();
+
         }
     }
 
