@@ -5,10 +5,11 @@
 
 namespace Bamboo
 {
-    Application::Application():
+    Application::Application() :
         m_isRunning(true)
     {
-        m_game = std::make_unique<Game>();
+        //m_window = CreateScope<Window>();
+        m_window = Window::Create();
     }
 
     Application::~Application()
@@ -24,7 +25,7 @@ namespace Bamboo
             Time::Update();
             float deltaTime = Time::GetDeltaTime();
             
-            m_game.get()->Update();
+            m_window.get()->Update();
 
         }
     }
@@ -36,6 +37,7 @@ namespace Bamboo
 
     void Application::Stop(){
         m_isRunning = false;
+
     }
 
 }

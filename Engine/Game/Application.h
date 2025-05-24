@@ -1,6 +1,7 @@
 #pragma once
-#include "Game.h"
-#include <memory>
+#include "../Core/Ref.h"
+#include "Window.h"
+
 namespace Bamboo
 {
     class Application
@@ -14,7 +15,8 @@ namespace Bamboo
 
     private:
         bool m_isRunning;
-        std::unique_ptr<Game> m_game;
+        //std::unique_ptr<Game> m_game;
+        Scope<Window> m_window;
         
 
     };
