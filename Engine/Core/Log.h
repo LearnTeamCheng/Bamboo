@@ -12,7 +12,7 @@
 
 namespace Bamboo
 {
-	// ÈÕÖ¾µÈ¼¶¶¨Òå
+	// æ—¥å¿—ç­‰çº§å®šä¹‰
 	enum class LogLevel
 	{
 		Info,
@@ -23,7 +23,7 @@ namespace Bamboo
 	class Log
 	{
 	public:
-		// Èı¸ö»ù´¡Èë¿Ú
+		// ä¸‰ä¸ªåŸºç¡€å…¥å£
 		template<typename... Args>
 		static void Info(Args&&... args)
 		{
@@ -42,14 +42,14 @@ namespace Bamboo
 			LogMessage(LogLevel::Error, std::forward<Args>(args)...);
 		}
 
-		// ÈÕÖ¾Êä³öÎÄ¼şÉèÖÃ
+		// æ—¥å¿—è¾“å‡ºæ–‡ä»¶è®¾ç½®
 		static void SetOutputFile(const std::string& filename)
 		{
 			std::lock_guard<std::mutex> lock(s_mutex);
 			s_logFile.open(filename, std::ios::out | std::ios::app);
 		}
 
-		// ÊÇ·ñ¿ªÆôĞ´ÈëÎÄ¼ş
+		// æ˜¯å¦å¼€å¯å†™å…¥æ–‡ä»¶
 		static void EnableFileOutput(bool enable)
 		{
 			s_outputToFile = enable;
@@ -95,7 +95,7 @@ namespace Bamboo
 			std::cout << message << std::endl;
 #endif
 
-			// ÎÄ¼şÊä³ö
+			// æ–‡ä»¶è¾“å‡º
 			if (s_outputToFile && s_logFile.is_open())
 			{
 				std::lock_guard<std::mutex> lock(s_mutex);
@@ -109,7 +109,7 @@ namespace Bamboo
 		static inline std::mutex s_mutex;
 	};
 
-	// ºê·â×°¼òĞ´
+	// å®å°è£…ç®€å†™
 #define B_LOGI(...) Bamboo::Log::Info(__VA_ARGS__)
 #define B_LOGW(...) Bamboo::Log::Warning(__VA_ARGS__)
 #define B_LOGE(...) Bamboo::Log::Error(__VA_ARGS__)

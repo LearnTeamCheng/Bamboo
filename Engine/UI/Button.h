@@ -13,5 +13,13 @@ public:
     Button(const std::string& text);
 	~Button();
 
+    void SetText(const std::string& text);
+    std::string GetText() const;
+
+    void AddClickListener();
+    void RemoveClickListener();
+private:
+    string m_text;
+    bool m_isClicked;
 };
 #endif // BUTTON_H

@@ -1,5 +1,6 @@
 #pragma once
 #include "../../Game/Window.h"
+#include <GLFW/glfw3.h>
 namespace Bamboo
 {
 
@@ -19,6 +20,9 @@ namespace Bamboo
         virtual void Shutdown();
 
     private:
+        GLFWwindow* m_Window;
+        Scope<GraphicsContext> m_Context;
+
         struct WindowData
         {
             std::string Title;
