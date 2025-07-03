@@ -1,5 +1,14 @@
 #pragma once
+
+#include <memory>
+#include <string>
+#include <functional>
+
+#include "../../Core/Log.h"
 #include "../../Game/Window.h"
+#include "../../Graphics/GraphicsContext.h"
+
+#define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
 namespace Bamboo
 {
@@ -16,7 +25,7 @@ namespace Bamboo
         unsigned int GetWidth() const override { return m_Data.Width; }
         unsigned int GetHeight() const override { return m_Data.Height; }
     private:
-        virtual void Initilize(const WindowProps& props);
+        virtual void Initialize(const WindowProps& props);
         virtual void Shutdown();
 
     private:
