@@ -110,8 +110,11 @@ namespace Bamboo
 	};
 
 	// 宏封装简写
-#define B_LOGI(...) Bamboo::Log::Info(__VA_ARGS__)
-#define B_LOGW(...) Bamboo::Log::Warning(__VA_ARGS__)
-#define B_LOGE(...) Bamboo::Log::Error(__VA_ARGS__)
+
 
 } // namespace Bamboo
+
+
+#define BAMBOO_LOGI(...) ::Bamboo::Log::Info(__VA_ARGS__)
+#define BAMBOO_LOGW(...) ::Bamboo::Log::Warning(__VA_ARGS__)
+#define BAMBOO_LOGE(...) ::Bamboo::Log::Error(__VA_ARGS__)
