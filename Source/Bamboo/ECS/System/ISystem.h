@@ -1,7 +1,9 @@
+#pragma once
+#include "entt.hpp"
 namespace Bamboo {
     class ISystem {
         public:
-            virtual void Update(float deltaTime) = 0;
-            ~ISystem() = default;
+            virtual void Update(entt::registry& registry, float deltaTime) = 0;
+            virtual~ISystem() = default;
     };
 }

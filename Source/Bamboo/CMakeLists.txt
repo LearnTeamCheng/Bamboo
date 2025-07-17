@@ -1,0 +1,65 @@
+project(Bamboo)
+ 
+add_library(Bamboo STATIC 
+    Core/Assert.h 
+    Core/Log.h 
+    Core/Node.cpp 
+    Core/Node.h 
+    Core/Ref.h 
+    Core/Time.cpp 
+    Core/Time.h 
+    Core/UUID.cpp 
+    Core/UUID.h 
+    ECS/Entity.cpp 
+    ECS/Entity.h 
+    ECS/Component/TransformComponent.h 
+    ECS/System/ISystem.h 
+    ECS/System/TransformSystem.cpp 
+    ECS/System/TransformSystem.h 
+    Game/Application.cpp 
+    Game/Application.h 
+    Game/Window.cpp 
+    Game/Window.h 
+    Graphics/GraphicsContext.cpp 
+    Graphics/GraphicsContext.h 
+    Graphics/Renderer.cpp 
+    Graphics/Renderer.h 
+    GraphicsAPI/OpenGL/OpenGLContext.cpp 
+    GraphicsAPI/OpenGL/OpenGLContext.h 
+    GraphicsAPI/OpenGL/OpenGLIndexBuffer.h 
+    GraphicsAPI/OpenGL/OpenGLLTexture2d.h 
+    GraphicsAPI/OpenGL/OpenGLVertextBuffer.h 
+    Input/Input.cpp 
+    Input/Input.h 
+    Math/Color.cpp 
+    Math/Color.h 
+    Math/IntVector2.cpp 
+    Math/IntVector2.h 
+    Math/Math.h 
+    Math/MathDefs.h 
+    Math/Matrix3.cpp 
+    Math/Matrix3.h 
+    Math/Matrix4.cpp 
+    Math/Matrix4.h 
+    Math/Quaternion.cpp 
+    Math/Quaternion.h 
+    Math/Rect.cpp 
+    Math/Rect.h 
+    Math/Vector2.cpp 
+    Math/Vector2.h 
+    Math/Vector3.cpp 
+    Math/Vector3.h 
+    Math/Vector4.cpp 
+    Math/Vector4.h 
+    Platform/Platform.h 
+    Platform/Windows/PlatformWindows.h 
+    Platform/Windows/WindowsWindow.cpp 
+    Platform/Windows/WindowsWindow.h 
+    Scene/Octree.h 
+    Scene/Scene.cpp 
+    Scene/Scene.h 
+    UI/Button.h 
+    UI/UIElement.h 
+) 
+target_include_directories(Bamboo PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}) 
+target_link_libraries(Bamboo PUBLIC spdlog glfw entt glm)
