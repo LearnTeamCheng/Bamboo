@@ -1,7 +1,7 @@
+#pragma once
 /// @file UUID.h
 
 
-#pragma once
 namespace Bamboo {
     class UUID {
         public:
