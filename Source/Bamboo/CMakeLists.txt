@@ -1,65 +1,24 @@
 project(Bamboo)
- 
-add_library(Bamboo STATIC 
-    Core/Assert.h 
-    Core/Log.h 
-    Core/Node.cpp 
-    Core/Node.h 
-    Core/Ref.h 
-    Core/Time.cpp 
-    Core/Time.h 
-    Core/UUID.cpp 
-    Core/UUID.h 
-    ECS/Entity.cpp 
-    ECS/Entity.h 
-    ECS/Component/TransformComponent.h 
-    ECS/System/ISystem.h 
-    ECS/System/TransformSystem.cpp 
-    ECS/System/TransformSystem.h 
-    Game/Application.cpp 
-    Game/Application.h 
-    Game/Window.cpp 
-    Game/Window.h 
-    Graphics/GraphicsContext.cpp 
-    Graphics/GraphicsContext.h 
-    Graphics/Renderer.cpp 
-    Graphics/Renderer.h 
-    GraphicsAPI/OpenGL/OpenGLContext.cpp 
-    GraphicsAPI/OpenGL/OpenGLContext.h 
-    GraphicsAPI/OpenGL/OpenGLIndexBuffer.h 
-    GraphicsAPI/OpenGL/OpenGLLTexture2d.h 
-    GraphicsAPI/OpenGL/OpenGLVertextBuffer.h 
-    Input/Input.cpp 
-    Input/Input.h 
-    Math/Color.cpp 
-    Math/Color.h 
-    Math/IntVector2.cpp 
-    Math/IntVector2.h 
-    Math/Math.h 
-    Math/MathDefs.h 
-    Math/Matrix3.cpp 
-    Math/Matrix3.h 
-    Math/Matrix4.cpp 
-    Math/Matrix4.h 
-    Math/Quaternion.cpp 
-    Math/Quaternion.h 
-    Math/Rect.cpp 
-    Math/Rect.h 
-    Math/Vector2.cpp 
-    Math/Vector2.h 
-    Math/Vector3.cpp 
-    Math/Vector3.h 
-    Math/Vector4.cpp 
-    Math/Vector4.h 
-    Platform/Platform.h 
-    Platform/Windows/PlatformWindows.h 
-    Platform/Windows/WindowsWindow.cpp 
-    Platform/Windows/WindowsWindow.h 
-    Scene/Octree.h 
-    Scene/Scene.cpp 
-    Scene/Scene.h 
-    UI/Button.h 
-    UI/UIElement.h 
-) 
-target_include_directories(Bamboo PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}) 
+
+# 自动收集所有 cpp 和 h 文件（递归遍历 Bamboo 文件夹）
+file(GLOB_RECURSE BAMBOO_SRC 
+    CONFIGURE_DEPENDS 
+    "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/*.h"
+)
+
+# 生成静态库
+add_library(Bamboo STATIC ${BAMBOO_SRC})
+
+# 公共头文件路径（允许外部项目 include <Bamboo/XXX.h>）
+target_include_directories(Bamboo PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+
+# 链接依赖库（注意：这些库应已在顶层用 add_subdirectory 或 find_package 添加）
 target_link_libraries(Bamboo PUBLIC spdlog glfw entt glm)
+
+# 设置 C++ 标准（保险起见再次设置）
+set_target_properties(Bamboo PROPERTIES 
+    CXX_STANDARD 17 
+    CXX_STANDARD_REQUIRED YES 
+    CXX_EXTENSIONS OFF
+)
