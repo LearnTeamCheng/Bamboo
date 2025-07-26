@@ -11,8 +11,7 @@ namespace Bamboo{
 
         TransformComponent() = default;
         TransformComponent(const TransformComponent& other) = default;
-        
-        bool 
+
     };
     
 }

@@ -14,7 +14,7 @@ namespace Bamboo {
 
    void OpenGLContext::Initiaize(){
 
-         glfwMakeContextCurrent(m_WindowHandle);
+        glfwMakeContextCurrent(m_WindowHandle);
     }
 
 

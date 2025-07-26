@@ -35,7 +35,8 @@ namespace Bamboo
     }
 
     void WindowsWindow::Update() {
-        
+        glfwPollEvents();
+        m_Context->SwapBuffers();
     }
 
     void WindowsWindow::Shutdown(){
