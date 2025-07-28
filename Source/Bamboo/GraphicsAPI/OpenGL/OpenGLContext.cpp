@@ -1,7 +1,8 @@
 #include "OpenGLContext.h"
 #include "Bamboo/Core/Log.h"
-#include<GLFW/glfw3.h>
+
 #include<glad/glad.h>
+#include<GLFW/glfw3.h>
 
 namespace Bamboo {
 
