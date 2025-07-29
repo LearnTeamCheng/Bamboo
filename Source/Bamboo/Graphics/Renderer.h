@@ -1,5 +1,11 @@
 #pragma once
-class Renderer
+namespace Bamboo
 {
-};
+    class Renderer
+    {
+    public:
+        static void Init();
+        static void Shutdown();
+    };
+}
 
