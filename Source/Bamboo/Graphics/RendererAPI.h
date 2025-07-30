@@ -1,5 +1,6 @@
 #pragma once
 #include <cstdint>
+#include "Bamboo/Core/Ref.h"
 #include "Bamboo/Math/Color.h"
 namespace Bamboo
 {
@@ -26,6 +27,7 @@ namespace Bamboo
 
 
         static API GetAPI() { return s_API; }
+        static Scope<RendererAPI> Create();
 
     private:
         static API s_API;
