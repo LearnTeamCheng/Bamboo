@@ -1,7 +1,7 @@
 #pragma once
 #include <cstdint>
-#include "Bamboo/Core/Ref.h"
-#include "Bamboo/Math/Color.h"
+#include "./Core/Ref.h"
+#include "./Math/Color.h"
 namespace Bamboo
 {
 

@@ -1,4 +1,4 @@
-#include "Bamboo/GraphicsAPI/OpenGL/OpenGLRendererAPI.h"
+#include "./GraphicsAPI/OpenGL/OpenGLRendererAPI.h"
 #include <GLFW/glfw3.h>
 #include <glad/glad.h>
 
@@ -12,11 +12,11 @@ namespace Bamboo
         glViewport(x, y, width, height);
     }
 
-    void OpenGLRendererAPI::SetClearColor(const Color& color){
+    void OpenGLRendererAPI::ClearColor(const Color& color){
         glClearColor(color.r, color.g, color.b, color.a);
     }
 
-    void OpenGLRendererAPI:Clear(){
+    void OpenGLRendererAPI::Clear(){
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     }
 }

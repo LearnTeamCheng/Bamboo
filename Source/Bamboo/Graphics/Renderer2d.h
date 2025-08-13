@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Bamboo/Math/Vector2.h";
-#include "Bamboo/Math/Vector3.h";
-#include :"Bamboo/Math/Color.h"
+#include "./Math/Vector2.h";
+#include "./Math/Vector3.h";
+#include "./Math/Color.h"
 
 namespace Bamboo
 {

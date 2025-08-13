@@ -1,0 +1,14 @@
+# 第三方库构建
+
+# GLFW
+add_subdirectory(GLFW)
+
+# Glad（假设你是自己写的 CMakeLists.txt）
+add_subdirectory(glad)
+
+# EnTT 是 header-only，不需要编译，只需要包含
+add_library(entt INTERFACE)
+target_include_directories(entt INTERFACE entt/single_include)
+
+# spdlog（未来添加）
+# add_subdirectory(spdlog)

@@ -1,12 +1,12 @@
-#include "Bamboo/Graphics/RendererAPI.h"
+#include "./Graphics/RendererAPI.h"
 
-#include "Bamboo/GraphicsAPI/OpenGL/OpenGLRendererAPI.h"
+#include "./GraphicsAPI/OpenGL/OpenGLRendererAPI.h"
 
 namespace Bamboo
 {
     RendererAPI::API RendererAPI::s_API = RendererAPI::API::OpenGL;
 
-    RendererAPI::Scope<RendererAPI>  RendererAPI::GetAPI(){
+    Scope<RendererAPI>  RendererAPI::Create(){
         switch (s_API)
         {
         case RendererAPI::API::None:
