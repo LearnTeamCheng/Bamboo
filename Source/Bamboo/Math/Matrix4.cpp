@@ -36,7 +36,7 @@ namespace Bamboo {
     Matrix4 Matrix4::operator/(float scalar) const {
         if(scalar == 0.0f){
             //TODO: throw exception
-            return;
+            return *this;
         }
 
         Matrix4 result;
@@ -46,7 +46,7 @@ namespace Bamboo {
         return result;
     }
 
-    Matrix4 Matrix4::transpose() const {
+    Matrix4 Matrix4::Transpose() const {
         Matrix4 result;
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
@@ -56,7 +56,7 @@ namespace Bamboo {
         return result;
     }
 
-    float Matrix4::determinant() const {
+    float Matrix4::Determinant() const {
         float det = 0.0f;
         for (int i = 0; i < 4; i++) {
             det += m_data[i * 4 + 0] * (m_data[1 + (i + 1) % 4] * m_data[5 + (i + 2) % 4] - m_data[2 + (i + 2) % 4] * m_data[4 + (i + 1) % 4]);
@@ -65,10 +65,10 @@ namespace Bamboo {
     }
 
     Matrix4 Matrix4::Inverse() const {
-        float det = determinant();
+        float det = Determinant();
         if (det == 0.0f) {
             //TODO: throw exception
-            return;
+            return *this;
         }
 
         Matrix4 result;

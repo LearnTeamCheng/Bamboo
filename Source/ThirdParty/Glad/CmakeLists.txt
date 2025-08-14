@@ -1,7 +1,19 @@
-cmake_minimum_required(VERSION 3.10)
+# add_library(glad STATIC ${CMAKE_CURRENT_SOURCE_DIR}/glad.c)
 
-add_library(glad STATIC glad.c)
+# target_include_directories(glad PUBLIC
+#     ${CMAKE_CURRENT_SOURCE_DIR}/include()   # 让 glad.c 能找到 glad/glad.h
+# )
+
+
+# add_library(glad STATIC  ${CMAKE_CURRENT_SOURCE_DIR}/glad.c)
+# target_include_directories(glad PUBLIC
+#     ${CMAKE_CURRENT_SOURCE_DIR}/glad/include
+# )
+
+add_library(glad STATIC
+    "${CMAKE_CURRENT_SOURCE_DIR}/glad.c"
+)
 
 target_include_directories(glad PUBLIC
-    ${CMAKE_CURRENT_SOURCE_DIR}
+    "${CMAKE_CURRENT_SOURCE_DIR}/include"
 )

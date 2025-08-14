@@ -4,7 +4,10 @@
  */
 
 #include <iostream>
+#include "../Bamboo/Platform/Windows/WindowsWindow.h";
 
 int main(int argc, char** argv) {
+
+    //Bamboo::WindowsWindow
     return 0;
 }

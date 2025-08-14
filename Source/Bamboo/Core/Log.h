@@ -1,6 +1,5 @@
 // Bamboo/Core/Log.h
-#pragma once
-
+ #pragma once
 #include <sstream>
 #include <iostream>
 #include <fstream>

@@ -6,6 +6,6 @@ namespace Bamboo
     class TransformSystem : public ISystem
     {
     public:
-        void Update(entity::registry &registry, float deltaTime);
+        void Update(entt::registry &registry, float deltaTime);
     };
 }

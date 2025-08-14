@@ -1,3 +1,7 @@
+#pragma once
+
+#include "../Bamboo/Math/Vector3.h"
+
 namespace Bamboo
 {
     class Quaternion
