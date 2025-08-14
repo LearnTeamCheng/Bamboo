@@ -32,6 +32,7 @@ namespace Bamboo
             return;
         }
         
+        m_Context = GraphicsContext::Create(m_Window);
     }
 
     void WindowsWindow::Update() {

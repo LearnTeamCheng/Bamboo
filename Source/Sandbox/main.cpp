@@ -4,10 +4,11 @@
  */
 
 #include <iostream>
-#include "../Bamboo/Platform/Windows/WindowsWindow.h";
+#include "../Bamboo/Game/Application.h";
+
 
 int main(int argc, char** argv) {
-
-    //Bamboo::WindowsWindow
+    Bamboo::Application app;
+    app.Run();
     return 0;
 }
