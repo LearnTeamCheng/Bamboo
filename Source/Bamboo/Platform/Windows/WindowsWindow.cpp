@@ -33,6 +33,12 @@ namespace Bamboo
         }
         
         m_Context = GraphicsContext::Create(m_Window);
+        m_Context->Initiaize();
+
+        //¹Ø±Õ»Øµ÷
+        glfwSetWindowCloseCallback(m_Window, [] (GLFWwindow * window) {
+        
+            });
     }
 
     void WindowsWindow::Update() {
