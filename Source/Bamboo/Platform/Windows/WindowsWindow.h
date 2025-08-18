@@ -21,6 +21,7 @@ namespace Bamboo
         virtual ~WindowsWindow();
 
         void Update() override;
+        virtual void SetEventCallback(const EventCallbackFn& callback) override;
 
         unsigned int GetWidth() const override { return m_Data.Width; }
         unsigned int GetHeight() const override { return m_Data.Height; }
@@ -35,9 +36,11 @@ namespace Bamboo
         struct WindowData
         {
             std::string Title;
-            unsigned int Width, Height;
+            unsigned int Width =0, Height = 0;
+            EventCallbackFn m_EventCallback;
         };
 
         WindowData m_Data;
+        
     };
 };

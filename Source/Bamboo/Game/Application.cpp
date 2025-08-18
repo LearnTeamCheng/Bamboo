@@ -1,15 +1,19 @@
 
 #include "../Core/Time.h"
 
+#include "../Bamboo/Graphics/Renderer.h"
 #include "Application.h"
 
 namespace Bamboo
 {
     Application::Application() :
-        m_isRunning(true)
+        m_Running(true), m_Minimize(false)
     {
         //m_window = CreateScope<Window>();
         m_window = Window::Create();
+
+        //m_window->SetEventCallback(std::bind(&Application::OnEvent,this,std::placeholders::_1));
+        m_window->SetEventCallback(BIND_CALLBACK_FN(Application::OnEvent));
     }
 
     Application::~Application()
@@ -30,14 +34,45 @@ namespace Bamboo
         }
     }
 
+    void Application::Stop() {
+        m_Running = false;
+
+    }
+
     bool Application::IsRunning()
     {
-        return m_isRunning;
+        return m_Running;
     }
 
-    void Application::Stop(){
-        m_isRunning = false;
 
+    void Application::OnEvent(Event& event)
+    {
+        EventDispatcher dispatcher(event);
+
+        dispatcher.Dispatch<ApplicationClosedEvent>(BIND_CALLBACK_FN(Application::OnWindowClose));
     }
+
+
+    bool Application::OnWindowClose(ApplicationClosedEvent& event) {
+        m_Running = false;
+        return true;
+    }
+
+
+    bool Application::OnWindowResize(ApplicationResizeEvent& event)
+    {
+        if (event.GetHeight() == 0 || event.GetWidth() == 0) {
+            //最小化了
+            m_Minimize = true;
+            return false;
+        }
+        m_Minimize = false;
+        Renderer::OnWindowResize(event.GetWidth(),event.GetHeight());
+
+        return false;
+    }
+
+
+
 
 }

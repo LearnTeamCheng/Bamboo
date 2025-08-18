@@ -1,6 +1,9 @@
 #pragma once
-#include "../Core/Ref.h"
 #include "Window.h"
+#include "../Bamboo/Core/Base.h"
+#include "../Bamboo/Event/Event.h"
+#include "../Bamboo/Event/ApplicationEvent.h";
+#include "../Core/Ref.h"
 
 namespace Bamboo
 {
@@ -8,16 +11,19 @@ namespace Bamboo
     {
     public:
         Application();
-        ~Application();
+        virtual ~Application();
         void Run();
         void Stop();
         bool IsRunning();
-
+    
     private:
-        bool m_isRunning;
-        //std::unique_ptr<Game> m_game;
+        void OnEvent(Event& event);
+        bool OnWindowClose(ApplicationClosedEvent& event);
+        bool OnWindowResize(ApplicationResizeEvent& event);
+    private:
+        bool m_Minimize;
+        bool m_Running;
         Scope<Window> m_window;
-        
 
     };
 }

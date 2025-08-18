@@ -1,4 +1,8 @@
+
+
+#include "../Bamboo/Event/ApplicationEvent.h"
 #include "WindowsWindow.h"
+
 namespace Bamboo
 {
 
@@ -35,15 +39,33 @@ namespace Bamboo
         m_Context = GraphicsContext::Create(m_Window);
         m_Context->Initiaize();
 
-        //¹Ø±Õ»Øµ÷
+        glfwSetWindowUserPointer(m_Window,&m_Data);
+
+        //
         glfwSetWindowCloseCallback(m_Window, [] (GLFWwindow * window) {
+            WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
+            ApplicationClosedEvent event;
+            data.m_EventCallback(event);
+               
+            });
+
         
+        glfwSetWindowSizeCallback(m_Window, [](GLFWwindow* window, int width, int height) {
+               WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
+               ApplicationResizeEvent event(width,height);
+               data.m_EventCallback(event);
+
             });
     }
 
     void WindowsWindow::Update() {
         glfwPollEvents();
         m_Context->SwapBuffers();
+    }
+
+    void WindowsWindow::SetEventCallback(const EventCallbackFn& callback) 
+    {
+        m_Data.m_EventCallback = callback;
     }
 
     void WindowsWindow::Shutdown(){

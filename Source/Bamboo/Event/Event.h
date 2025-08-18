@@ -3,6 +3,7 @@ namespace Bamboo
 {
     enum EventType {
         WindowClose,
+        WindowResize,
     };
 
 #define EVENT_CLASS_TYPE(type) EventType GetEventType() const override { return EventType::type; }\
