@@ -20,7 +20,9 @@ namespace Bamboo {
 
     OpenGLTexture::~OpenGLTexture()
     {
-        
-    }
 
+
+        
+
+        
 };
