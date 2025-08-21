@@ -17,8 +17,8 @@ namespace Bamboo
     struct TextureSettings
     {
         TextureFormat Format = TextureFormat::RGBA8;
-        u_int32_t Width = 0;
-        u_int32_t Height = 0;
+        uint32_t Width = 0;
+        uint32_t Height = 0;
         /// @brief 是否需要mipmap
         bool Mipmap = false;
     };
@@ -35,11 +35,11 @@ namespace Bamboo
         virtual uint32_t GetRendererID() const = 0;
 
         /// @brief 获取路径
-        virtual std::string &GetPath() = 0;
-        virtual void SetData(void* data, uint32_t size);
+        virtual const std::string &GetPath()const = 0;
+        virtual void SetData(void* data, uint32_t size) const = 0;
 
         /// @brief 绑定纹理到指定槽位
-        virtual void Bind(uint32_t slot = 0) = 0;
+        virtual void Bind(uint32_t slot = 0)const = 0;
 
         virtual bool IsLoaded() const = 0;
 
@@ -48,12 +48,12 @@ namespace Bamboo
 
 
     /// @brief 2D纹理
-    class Texture2D :public Texture 
+    class Texture2D :public Texture
     {
-        public:
-            static Ref<Texture2D> Create(const std::string& path);
-            static Ref<Texture2D> Create(const TextureSettings& settings);
-    }
+    public:
+        static Ref<Texture2D> Create(const std::string& path);
+        static Ref<Texture2D> Create(const TextureSettings& settings);
+    };
 
 }
 

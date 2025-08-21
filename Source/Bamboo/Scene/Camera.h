@@ -22,20 +22,27 @@ namespace Bamboo
         /// @param farClip 远裁剪面
         void SetOrthographic(float size, float nearClip, float farClip);
 
-
-        /// @brief 获取视图矩阵
-        Matrix4 GetViewMatrix() const;
         /// @brief 获取投影矩阵
-        Matrix4 GetProjectionMatrix() const;
+        Matrix4 GetProjectionMatrix() const {return m_ProjectionMatrix;}
+        /// @brief 窗口大小变
+        void SetViewportSize(uint32_t width, uint32_t height);
+    protected:
+        /// @brief 计算投影矩阵
+        void ReCalculateProjectionMatrix();
 
     private:
         bool m_Orthographic;
         Vector3 m_Position;
         Vector3 m_Rotation;
 
+        float m_AspectRatio = 1.0f;
+
         float m_OrthographicSize =10.0f;
-        float m_OrhtographicNear = -10f;
-        float m_OrhtographicFar = 10f;
+        float m_OrhtographicNear = -10.0f;
+        float m_OrhtographicFar = 10.0f;
+
+        Matrix4 m_ProjectionMatrix;
+        ProjectionType m_ProjectionType;
     };
 
 }

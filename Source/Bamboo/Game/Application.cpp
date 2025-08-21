@@ -1,4 +1,3 @@
-
 #include "../Core/Time.h"
 
 #include "../Bamboo/Graphics/Renderer.h"
@@ -9,11 +8,12 @@ namespace Bamboo
     Application::Application() :
         m_Running(true), m_Minimize(false)
     {
-        //m_window = CreateScope<Window>();
-        m_window = Window::Create();
+        //m_Window = CreateScope<Window>();
+        m_Window = Window::Create();
 
-        //m_window->SetEventCallback(std::bind(&Application::OnEvent,this,std::placeholders::_1));
-        m_window->SetEventCallback(BIND_CALLBACK_FN(Application::OnEvent));
+        //m_Window->SetEventCallback(std::bind(&Application::OnEvent,this,std::placeholders::_1));
+        m_Window->SetEventCallback(BIND_CALLBACK_FN(Application::OnEvent));
+        m_SceneManager = CreateScope<SceneManager>();
     }
 
     Application::~Application()
@@ -28,8 +28,10 @@ namespace Bamboo
         {
             Time::Update();
             float deltaTime = Time::GetDeltaTime();
+
+            m_SceneManager->GetActiveScene()->Update(deltaTime);
             
-            m_window.get()->Update();
+            m_Window.get()->Update();
 
         }
     }

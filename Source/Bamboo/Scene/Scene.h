@@ -6,7 +6,7 @@
 
 
 
-#include "../Bamboo/ECS/Entity.h"
+#include "../Bamboo/Core/UUID.h"
 #include "../Bamboo/ECS/System/ISystem.h"
 
 #include "entt.hpp"
@@ -14,6 +14,7 @@ namespace Bamboo
 {
     // 八叉树
     class Octree;
+    class Entity;
 
     class Scene
     {
@@ -31,10 +32,10 @@ namespace Bamboo
 
         void DestroyEntity(Entity entity);
 
+        entt::registry m_Registry;
 
     private:
-        entt::registry m_Registry;
         std::vector<std::unique_ptr<ISystem>> m_Systems;
-        std::unordered_map<UUID, Entity*> m_EntityMap;
+        std::unordered_map<UUID, Entity> m_EntityMap;
     };
 }

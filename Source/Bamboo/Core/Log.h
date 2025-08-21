@@ -8,7 +8,6 @@
 
 #include "../Platform/Platform.h"
 
-
 namespace Bamboo
 {
 	// 日志等级定义

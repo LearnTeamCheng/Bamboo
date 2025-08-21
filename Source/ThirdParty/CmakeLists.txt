@@ -11,5 +11,5 @@ target_include_directories(entt INTERFACE
 )
 
 # spdlog（未来添加）
-# add_subdirectory(spdlog)
+add_subdirectory(spdlog)
 

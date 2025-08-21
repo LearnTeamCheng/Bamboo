@@ -15,6 +15,7 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 # 引入 ThirdParty（指定生成路径）
 add_subdirectory(./ThirdParty ${CMAKE_BINARY_DIR}/ThirdParty_build)
 
+# add_subdirectory(ThirdParty)
 # 引擎核心
 add_subdirectory(Bamboo)
 

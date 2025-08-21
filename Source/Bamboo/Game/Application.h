@@ -1,9 +1,11 @@
 #pragma once
 #include "Window.h"
 #include "../Bamboo/Core/Base.h"
+#include "../Bamboo/Core/Ref.h"
 #include "../Bamboo/Event/Event.h"
 #include "../Bamboo/Event/ApplicationEvent.h";
-#include "../Core/Ref.h"
+
+#include "../Bamboo/Scene/SceneManager.h"
 
 namespace Bamboo
 {
@@ -23,7 +25,9 @@ namespace Bamboo
     private:
         bool m_Minimize;
         bool m_Running;
-        Scope<Window> m_window;
+        Scope<Window> m_Window;
+
+        Scope<SceneManager> m_SceneManager;
 
     };
 }

@@ -8,12 +8,13 @@ namespace Bamboo
     class SceneManager
     {
     public:
-        Ref<Scene> GetActiveScene() const { return m_currScene; }
-        void SetActiveScene(Ref<Scene> scene) { m_currScene = scene; }
+        SceneManager();
+        Ref<Scene> GetActiveScene() const { return m_ActiveScene; }
+        void SetActiveScene(Ref<Scene> scene) { m_ActiveScene = scene; }
 
         void LoadScene(const std::string& sceneName);
 
     private:
         Ref<Scene> m_ActiveScene;
-    }
+    };
 }

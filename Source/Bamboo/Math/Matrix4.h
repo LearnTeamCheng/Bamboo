@@ -37,10 +37,11 @@ namespace Bamboo
         static Matrix4 Translate(const Vector3 &translation);
         static Matrix4 Scale(const Vector3 &scale);
         static Matrix4 RotateX(float angle);
-        static Matrix4 RotateY(float angle);
+        static Matrix4 RotateY(float angle);  
         static Matrix4 RotateZ(float angle);
 
-
+        /// @brief 创建一个正交矩阵
+        static Matrix4 Orthographic(float left, float right, float bottom, float top, float zNear, float zFar);
 
     private:
         float m_data[16];

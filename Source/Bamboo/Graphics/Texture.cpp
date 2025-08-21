@@ -2,7 +2,7 @@
 #include "../Bamboo/Graphics/RendererAPI.h"
 namespace Bamboo
 {
-    Ref<Texture> Texture2D::Create(const std::string& path)
+    Ref<Texture2D> Texture2D::Create(const std::string& path)
     {
         switch (RendererAPI::GetAPI())
         {
@@ -18,7 +18,7 @@ namespace Bamboo
         }
     }
 
-    static Ref<Texture2D> Texture2D::Create(const TextureSettings& settings)
+     Ref<Texture2D> Texture2D::Create(const TextureSettings& settings)
     {
         switch (RendererAPI::GetAPI())
         {
