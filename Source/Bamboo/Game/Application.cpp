@@ -1,6 +1,7 @@
 #include "../Core/Time.h"
 
 #include "../Bamboo/Graphics/Renderer.h"
+#include "../Bamboo/Core/Log.h";
 #include "Application.h"
 
 namespace Bamboo
@@ -8,12 +9,16 @@ namespace Bamboo
     Application::Application() :
         m_Running(true), m_Minimize(false)
     {
+        //先在这里进行初始日志操作化操作
+        Log::Init();
         //m_Window = CreateScope<Window>();
         m_Window = Window::Create();
 
         //m_Window->SetEventCallback(std::bind(&Application::OnEvent,this,std::placeholders::_1));
         m_Window->SetEventCallback(BIND_CALLBACK_FN(Application::OnEvent));
         m_SceneManager = CreateScope<SceneManager>();
+
+       
     }
 
     Application::~Application()

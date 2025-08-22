@@ -1,6 +1,7 @@
 
 
 #include "../Bamboo/Event/ApplicationEvent.h"
+#include "../Bamboo/Core/Log.h"
 #include "WindowsWindow.h"
 
 namespace Bamboo
@@ -21,6 +22,8 @@ namespace Bamboo
         m_Data.Title = props.Title;
         m_Data.Width = props.Width;
         m_Data.Height = props.Height;
+
+        BAMBOO_CORE_INFO("Creating window {0} ({1}, {2})", m_Data.Title, m_Data.Width, m_Data.Height);
 
         if (!glfwInit())
         {

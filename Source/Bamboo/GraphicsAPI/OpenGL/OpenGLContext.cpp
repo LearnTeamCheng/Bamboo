@@ -1,6 +1,6 @@
 #include "OpenGLContext.h"
 #include "./Core/Log.h"
-
+#include "../Bamboo/Core/Assert.h";
 #include<glad/glad.h>
 #include<GLFW/glfw3.h>
 
@@ -17,10 +17,8 @@ namespace Bamboo {
 
         glfwMakeContextCurrent(m_WindowHandle);
         int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
-
-        if(!status) {
-            BAMBOO_LOGI("Failed to initialize GLAD");
-        }
+        BAMBOO_ASSESERT(status , "glad init failur");
+   
     }
 
 

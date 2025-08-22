@@ -9,7 +9,7 @@ namespace Bamboo
 
     Scene::Scene()
     {
-        BAMBOO_LOGI("≥°æ∞≥ı ºªØ");
+        BAMBOO_CORE_INFO("init scene");
     }
 
     void Scene::Update(float deltaTime) 

@@ -1,118 +1,28 @@
 // Bamboo/Core/Log.h
  #pragma once
-#include <sstream>
-#include <iostream>
-#include <fstream>
-#include <string>
-#include <mutex>
 
-#include "../Platform/Platform.h"
+#include "../Bamboo/Core/Ref.h"
+#include <spdlog/spdlog.h>
 
 namespace Bamboo
 {
-	// 日志等级定义
-	enum class LogLevel
-	{
-		Info,
-		Warning,
-		Error
-	};
 
-	class Log
-	{
+class Log {
 	public:
-		// 三个基础入口
-		template<typename... Args>
-		static void Info(Args&&... args)
-		{
-			LogMessage(LogLevel::Info, std::forward<Args>(args)...);
-		}
-
-		template<typename... Args>
-		static void Warning(Args&&... args)
-		{
-			LogMessage(LogLevel::Warning, std::forward<Args>(args)...);
-		}
-
-		template<typename... Args>
-		static void Error(Args&&... args)
-		{
-			LogMessage(LogLevel::Error, std::forward<Args>(args)...);
-		}
-
-		// 日志输出文件设置
-		static void SetOutputFile(const std::string& filename)
-		{
-			std::lock_guard<std::mutex> lock(s_mutex);
-			s_logFile.open(filename, std::ios::out | std::ios::app);
-		}
-
-		// 是否开启写入文件
-		static void EnableFileOutput(bool enable)
-		{
-			s_outputToFile = enable;
-		}
-
+		static void Init();
+		static Ref < spdlog::logger>& GetCoreLogger() { return s_CoreLogger; }
+		static Ref<spdlog::logger>& GetClientLogger() {return s_ClientLogger;}
+	
 	private:
-		template<typename... Args>
-		static void LogMessage(LogLevel level, Args&&... args)
-		{
-			std::ostringstream oss;
-			((oss << args << ','), ...);
-
-			std::string prefix;
-			WORD color = FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE;
-			switch (level)
-			{
-			case LogLevel::Info:
-				prefix = "[Info] ";
-				color = FOREGROUND_GREEN | FOREGROUND_INTENSITY;
-				break;
-			case LogLevel::Warning:
-				prefix = "[Warning] ";
-				color = FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_INTENSITY;
-				break;
-			case LogLevel::Error:
-				prefix = "[Error] ";
-				color = FOREGROUND_RED | FOREGROUND_INTENSITY;
-				break;
-			}
-
-			std::string message = prefix + oss.str();
-
-#ifdef _WIN32
-			HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-			CONSOLE_SCREEN_BUFFER_INFO consoleInfo;
-			WORD saved_attributes;
-			GetConsoleScreenBufferInfo(hConsole, &consoleInfo);
-			saved_attributes = consoleInfo.wAttributes;
-			SetConsoleTextAttribute(hConsole, color);
-			std::cout << message << std::endl;
-			SetConsoleTextAttribute(hConsole, saved_attributes);
-#else
-			std::cout << message << std::endl;
-#endif
-
-			// 文件输出
-			if (s_outputToFile && s_logFile.is_open())
-			{
-				std::lock_guard<std::mutex> lock(s_mutex);
-				s_logFile << message << std::endl;
-			}
-		}
-
-	private:
-		static inline std::ofstream s_logFile;
-		static inline bool s_outputToFile = false;
-		static inline std::mutex s_mutex;
+		static Ref<spdlog::logger> s_CoreLogger;
+		static Ref<spdlog::logger> s_ClientLogger;
 	};
-
-	// 宏封装简写
 
 
 } // namespace Bamboo
 
-
-#define BAMBOO_LOGI(...) ::Bamboo::Log::Info(__VA_ARGS__)
-#define BAMBOO_LOGW(...) ::Bamboo::Log::Warning(__VA_ARGS__)
-#define BAMBOO_LOGE(...) ::Bamboo::Log::Error(__VA_ARGS__)
+#define BAMBOO_CORE_TRACE(...)    ::Bamboo::Log::GetCoreLogger()->trace(__VA_ARGS__)
+#define BAMBOO_CORE_INFO(...)     ::Bamboo::Log::GetCoreLogger()->info(__VA_ARGS__)
+#define BAMBOO_CORE_WARN(...)     ::Bamboo::Log::GetCoreLogger()->warn(__VA_ARGS__)
+#define BAMBOO_CORE_ERROR(...)    ::Bamboo::Log::GetCoreLogger()->error(__VA_ARGS__)
+#define BAMBOO_CORE_CRITICAL(...) ::Bamboo::Log::GetCoreLogger()->critical(__VA_ARGS__)
