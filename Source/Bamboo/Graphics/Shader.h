@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include <unordered_map>
 
 #include "../Bamboo/Core/Ref.h"
 #include "../Bamboo/Math/Vector2.h"
@@ -9,6 +10,7 @@
 #include "../Bamboo/Math/Matrix4.h"
 namespace Bamboo
 {
+
     class Shader
     {
     public:
@@ -32,7 +34,20 @@ namespace Bamboo
         /// @param name 名称
         /// @param vertexSrc 顶点着色器源码
         /// @param fragmentSrc 片段着色器源码
-        static Ref<Shader> Create(const std::string &name, const std::string &vertexSrc, const std::string &fragmentSrc);
+        static Ref<Shader> Create(const std::string &name, const std::string &vertexPaht, const std::string &fragmentPaht);
+    };
 
+    class ShaderLibrary
+    {
+    public:
+        void Add(const std::string &name, const Ref<Shader> &shader);
+        void Add(const Ref<Shader> &shader);
+        Ref<Shader> Load(const std::string &filepath);
+        Ref<Shader> Load(const std::string &name, const std::string &vertexPath, const std::string &fragmentPath);
+        Ref<Shader> Get(const std::string &name);
+        bool Exists(const std::string &name) const;
+
+    private:
+        std::unordered_map<std::string, Ref<Shader>> m_Shaders ;
     };
 }

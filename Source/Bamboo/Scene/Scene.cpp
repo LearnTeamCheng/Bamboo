@@ -3,6 +3,7 @@
 
 #include "../Bamboo/ECS/Entity.h"
 #include "Scene.h"
+#include "../Bamboo/ECS/System/SpriteRendererSystem.h"
 
 namespace Bamboo
 {
@@ -10,6 +11,8 @@ namespace Bamboo
     Scene::Scene()
     {
         BAMBOO_CORE_INFO("init scene");
+
+        m_Systems.push_back(std::make_shared<SpriteRendererSystem>());
     }
 
     void Scene::Update(float deltaTime) 

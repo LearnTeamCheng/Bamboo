@@ -9,8 +9,10 @@ namespace Bamboo
     class Renderer2d
     {
     public:
-        static void DrawQuad();
-        static void DrawCircle(const Vector2& center, float radius, const Color& color);
+        static void DrawQuad(const Vector2 &position, const Vector2 &size, const Color &color);
+        static void DrawQuad(const Vector3 &position, const Vector2 &size, const Color &color);
+
+        static void DrawCircle(const Vector2 &center, float radius, const Color &color);
         static void DrawSprite();
     };
 };
