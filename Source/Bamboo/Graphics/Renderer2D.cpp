@@ -18,35 +18,50 @@ namespace Bamboo
         Ref<VertexArray> TriangleVertexArray;
         Ref<VertexBuffer> TriangleBuffer;
         Ref<Shader> TriangleShader;
+        TriangleVertex *TriangleVertices;
+        TriangleVertex *TriangleVerticesPtr;
+
 
         static const uint32_t MaxVertices = 2000;
     };
 
-
     static Renderer2DData s_Data;
 
-    void Renderer2d::Init()
+    void Renderer2D::Init()
     {
         s_Data.TriangleVertexArray = VertexArray::Create();
         s_Data.TriangleBuffer = VertexBuffer::Create(sizeof(TriangleVertex) * 3);
 
         float vertices[3][3] = {
-            { { -0.5f, -0.5f, 0.0f }, { 255, 0, 0, 255 } },
-            { {  0.5f, -0.5f, 0.0f }, { 0, 255, 0, 255 } },
-            { {  0.0f,  0.5f, 0.0f }, { 0, 0, 255, 255 } }
-        }
+            {{-0.5f, -0.5f, 0.0f}, {255, 0, 0, 255}},
+            {{0.5f, -0.5f, 0.0f}, {0, 255, 0, 255}},
+            {{0.0f, 0.5f, 0.0f}, {0, 0, 255, 255}}
+        };  
+
+        s_Data.TriangleVertices = new TriangleVertex[3];
 
         s_Data.TriangleVertexArray->AddVertexBuffer(s_Data.TriangleBuffer);
 
         s_Data.TriangleBuffer->SetData(vertices, sizeof(vertices));
-        
-        int trianglesIndices[3] = { 0, 1, 2 };
-        Ref<IndexBuffer> indexBuffer = IndexBuffer::Create(trianglesIndices,sizeof(trianglesIndices)/sizeof(trianglesIndices[0]));
+
+        int trianglesIndices[3] = {0, 1, 2};
+        Ref<IndexBuffer> indexBuffer = IndexBuffer::Create(trianglesIndices, sizeof(trianglesIndices) / sizeof(trianglesIndices[0]));
         s_Data.TriangleVertexArray->SetIndexBuffer(indexBuffer);
 
         // s_Data.TriangleShader = Shader::Create("assets/shaders/triangle.vert", "assets/shaders/triangle.frag");
-        
-        s_Data.TriangleVertexArray->AddBuffer(s_Data.TriangleBuffer, indexBuffer);
 
+        s_Data.TriangleVertexArray->AddBuffer(s_Data.TriangleBuffer, indexBuffer);
+    }
+
+    void Renderer2D::BeginScene()
+    {
+        s_Data.TriangleVerticesPtr = s_Data.TriangleVertices;
+    }
+
+    void Renderer2D::EndScene()
+    {
+        s_Data.TriangleVertexArray->Bind();
+        s_Data.TriangleShader->Bind();
+        s_Data.
     }
 }
