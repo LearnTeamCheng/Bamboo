@@ -5,7 +5,7 @@
 #include <unordered_map>
 
 
-
+#include "../Bamboo/Core/Ref.h"
 #include "../Bamboo/Core/UUID.h"
 #include "../Bamboo/ECS/System/ISystem.h"
 
@@ -28,6 +28,7 @@ namespace Bamboo
         Entity CreateEntity(const std::string& name = std::string());
 
         Entity CreateEntityWithUUID(UUID uuid, const std::string& name = std::string());
+
         
 
         void DestroyEntity(Entity entity);
@@ -35,7 +36,7 @@ namespace Bamboo
         entt::registry m_Registry;
 
     private:
-        std::vector<std::unique_ptr<ISystem>> m_Systems;
+        std::vector<Scope<ISystem>> m_Systems;
         std::unordered_map<UUID, Entity> m_EntityMap;
     };
 }

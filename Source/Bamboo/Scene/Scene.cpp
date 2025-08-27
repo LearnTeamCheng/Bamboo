@@ -1,9 +1,13 @@
 #pragma once
 #include"../Bamboo/Core/Log.h"
 
-#include "../Bamboo/ECS/Entity.h"
 #include "Scene.h"
+
+
+
+#include "../Bamboo/ECS/Entity.h"
 #include "../Bamboo/ECS/System/SpriteRendererSystem.h"
+#include"../Bamboo/ECS/System/RendererSystem.h"
 
 namespace Bamboo
 {
@@ -12,7 +16,13 @@ namespace Bamboo
     {
         BAMBOO_CORE_INFO("init scene");
 
-        m_Systems.push_back(std::make_shared<SpriteRendererSystem>());
+        //m_Systems.push_back(CreateScope<SpriteRendererSystem>());
+        m_Systems.push_back(CreateScope<RendererSystem>());
+
+
+        //auto entity = CreateEntity();
+        //entity.AddComponent<TriangleComponet>();
+ 
     }
 
     void Scene::Update(float deltaTime) 

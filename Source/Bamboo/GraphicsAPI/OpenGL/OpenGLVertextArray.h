@@ -2,11 +2,12 @@
 #include <iostream>
 #include "../Bamboo/Graphics/VertexArray.h"
 
-namespace bamboo
+namespace Bamboo
 {
 
     class OpenGLVertextArray : public VertexArray
     {
+    public:
         OpenGLVertextArray();
         virtual ~OpenGLVertextArray();
         virtual void Bind() const override;
@@ -20,7 +21,7 @@ namespace bamboo
 
     private:
         std::vector<Ref<VertexBuffer>> m_VertexBuffers;
-        u_int32_t m_RendererID;
+        uint32_t m_RendererID;
         Ref<IndexBuffer> m_IndexBuffer;
     };
 }

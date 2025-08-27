@@ -2,6 +2,8 @@
 #include "../Bamboo/Core/UUID.h"
 #include "../Bamboo/Scene/Scene.h"
 #include "../Bamboo/ECS/Component/Component.h";
+#include "../Bamboo/Core/Assert.h"
+
 
 #include "entt.hpp"
 namespace Bamboo
@@ -65,9 +67,8 @@ namespace Bamboo
 		template<typename T, typename... Args>
 		T& AddComponent(Args&&... args)
 		{
-			HZ_CORE_ASSERT(!HasComponent<T>(), "Entity already has component!");
+			BAMBOO_ASSESERT(!HasComponent<T>(), "Entity already has component!");
 			T& component = m_Scene->m_Registry.emplace<T>(m_EntityHandle, std::forward<Args>(args)...);
-			m_Scene->OnComponentAdded<T>(*this, component);
 			return component;
 		}
 
@@ -75,14 +76,14 @@ namespace Bamboo
 		T& AddOrReplaceComponent(Args&&... args)
 		{
 			T& component = m_Scene->m_Registry.emplace_or_replace<T>(m_EntityHandle, std::forward<Args>(args)...);
-			m_Scene->OnComponentAdded<T>(*this, component);
+			//m_Scene->OnComponentAdded<T>(*this, component);
 			return component;
 		}
 
 		template<typename T>
 		T& GetComponent()
 		{
-			HZ_CORE_ASSERT(HasComponent<T>(), "Entity does not have component!");
+			//HZ_CORE_ASSERT(HasComponent<T>(), "Entity does not have component!");
 			return m_Scene->m_Registry.get<T>(m_EntityHandle);
 		}
 
@@ -95,7 +96,7 @@ namespace Bamboo
 		template<typename T>
 		void RemoveComponent()
 		{
-			HZ_CORE_ASSERT(HasComponent<T>(), "Entity does not have component!");
+			//HZ_CORE_ASSERT(HasComponent<T>(), "Entity does not have component!");
 			m_Scene->m_Registry.remove<T>(m_EntityHandle);
 		}
 

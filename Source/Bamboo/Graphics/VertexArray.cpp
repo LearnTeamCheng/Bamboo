@@ -1,5 +1,7 @@
 #include "VertexArray.h"
-#include ""
+
+#include "../Bamboo/GraphicsAPI/OpenGL/OpenGLVertextArray.h"
+
 
 
 namespace Bamboo
@@ -7,5 +9,6 @@ namespace Bamboo
 
     Ref<VertexArray> VertexArray::Create()
     {
+        return CreateRef<OpenGLVertextArray>();
     }
 }

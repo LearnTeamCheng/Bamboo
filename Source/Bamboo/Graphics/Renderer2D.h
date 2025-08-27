@@ -21,5 +21,8 @@ namespace Bamboo
         static void DrawSprite();
 
         static void DrawTriangle();
+
+    private:
+        static void StartBatch();
     };
 };

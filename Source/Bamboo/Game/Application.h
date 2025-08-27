@@ -17,7 +17,9 @@ namespace Bamboo
         void Run();
         void Stop();
         bool IsRunning();
-    
+        
+        Scope<SceneManager>& GetSceneManager() { return  m_SceneManager; }
+
     private:
         void OnEvent(Event& event);
         bool OnWindowClose(ApplicationClosedEvent& event);

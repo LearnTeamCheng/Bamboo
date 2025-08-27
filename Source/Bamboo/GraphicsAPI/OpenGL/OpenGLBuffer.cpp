@@ -1,4 +1,5 @@
 #include "OpenGLBuffer.h"
+#include <glad/glad.h>
 #include <GLFW/glfw3.h>
 namespace Bamboo
 {
@@ -14,14 +15,14 @@ namespace Bamboo
         glBufferData(GL_ARRAY_BUFFER, size, nullptr, GL_STATIC_DRAW);
     }
 
-    OpenGLVertexBuffer::OpenGLVertexBuffer(float *vertices, uint32_t size)
+    OpenGLVertexBuffer::OpenGLVertexBuffer(const void *vertices, uint32_t size)
     {
         glGenBuffers(1, &m_RendererID);
         glBindBuffer(GL_ARRAY_BUFFER, m_RendererID);
-        glBufferData(GL_ARRAY_BUFFER, size, data, GL_STATIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, size, vertices, GL_STATIC_DRAW);
     }
 
-    OepnGLVertexBuffer::~OpenGLVertexBuffer()
+    OpenGLVertexBuffer::~OpenGLVertexBuffer()
     {
         glDeleteBuffers(1, &m_RendererID);
     }
@@ -46,7 +47,7 @@ namespace Bamboo
     ////索引缓冲对象/////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////
 
-    OpenGLIndexBuffer::OpenGLIndexBuffer(uint32_t *indices, uint32_t count):m_Count(count)
+    OpenGLIndexBuffer::OpenGLIndexBuffer(uint32_t*indices, uint32_t count):m_Count(count)
     {
         glGenBuffers(1, &m_RendererID);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_RendererID);

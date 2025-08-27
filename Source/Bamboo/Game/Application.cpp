@@ -37,7 +37,6 @@ namespace Bamboo
             m_SceneManager->GetActiveScene()->Update(deltaTime);
             
             m_Window.get()->Update();
-
         }
     }
 
