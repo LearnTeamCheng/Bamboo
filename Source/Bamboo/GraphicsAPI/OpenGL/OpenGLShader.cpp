@@ -104,6 +104,7 @@ namespace Bamboo
         std::ifstream in(filepath, std::ios::in | std::ios::binary);
         if (in)
         {
+            in.seekg(0, std::ios::end);
             std::streamsize size = in.tellg();
             if (size != -1)
             {

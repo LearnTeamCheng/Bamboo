@@ -20,7 +20,7 @@ namespace Bamboo
         static void DrawCircle(const Vector2 &center, float radius, const Color &color);
         static void DrawSprite();
 
-        static void DrawTriangle();
+        static void DrawTriangle(const Vector3& position, const Color& color);
 
     private:
         static void StartBatch();

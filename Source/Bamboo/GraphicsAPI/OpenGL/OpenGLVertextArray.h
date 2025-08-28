@@ -20,8 +20,8 @@ namespace Bamboo
         const Ref<IndexBuffer>& GetIndexBuffer() const override {return m_IndexBuffer;}
 
     private:
-        std::vector<Ref<VertexBuffer>> m_VertexBuffers;
         uint32_t m_RendererID;
+        std::vector<Ref<VertexBuffer>> m_VertexBuffers;
         Ref<IndexBuffer> m_IndexBuffer;
     };
 }

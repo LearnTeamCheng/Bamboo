@@ -8,7 +8,8 @@ namespace Bamboo
 
     OpenGLVertextArray::OpenGLVertextArray()
     {
-        glGenVertexArrays(1, &m_RendererID);
+         glGenVertexArrays(1, &m_RendererID);
+        //glCreateVertexArrays(1, &m_RendererID);
     }
 
     OpenGLVertextArray::~OpenGLVertextArray()
@@ -28,8 +29,12 @@ namespace Bamboo
 
     void OpenGLVertextArray::AddVertexBuffer(const Ref<VertexBuffer>& vertexBuffer)
     {
-        Bind();
+        glBindVertexArray(m_RendererID);
         vertexBuffer->Bind();
+
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+        glEnableVertexAttribArray(0);
+
         m_VertexBuffers.push_back(vertexBuffer);
     }
 

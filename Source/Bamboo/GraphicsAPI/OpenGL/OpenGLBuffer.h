@@ -20,7 +20,12 @@ namespace Bamboo
 
         virtual void SetData(const void *vertices, uint32_t size) override;
 
+
+        virtual void SetLayout(const BufferLayout& layout) override { m_Layout = layout; }
+        virtual const BufferLayout& GetLayout() const override { return m_Layout; }
+
     private:
+        BufferLayout m_Layout;
         uint32_t m_RendererID;
     };
 
