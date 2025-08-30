@@ -42,7 +42,8 @@ namespace Bamboo
         s_Data.TriangleBuffer = VertexBuffer::Create(sizeof(TriangleVertex));
 
         s_Data.TriangleBuffer->SetLayout({
-            { ShaderDatatType::Float3,"a_WorldPosition"}
+            {ShaderDatatType::Float3,"a_WorldPosition"},
+            {ShaderDatatType::Float4,"a_Color"}
         });
 
         //s_Data.TriangleVertices = new TriangleVertex[3];
@@ -102,6 +103,6 @@ namespace Bamboo
     {
         // s_Data.TriangleVerticesPtr->position = position;
         // s_Data.TriangleVerticesPtr->color = color;
-        s_Data.TriangleBuffer->SetData( s_Data.testVerices,sizeof(s_Data.testVerices));
+        // s_Data.TriangleBuffer->SetData( s_Data.testVerices,sizeof(s_Data.testVerices));
     }
 }
