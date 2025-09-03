@@ -18,7 +18,7 @@ int main(int argc, char** argv) {
     Bamboo::Application app;
     
     auto entity = app.GetSceneManager()->GetActiveScene()->CreateEntity();
-    auto component = entity.AddComponent<Bamboo::TriangleComponent>();
+    auto& component = entity.AddComponent<Bamboo::TriangleComponent>();
     component.TriangleColor = Bamboo::Color::Blue;
     
     app.Run();

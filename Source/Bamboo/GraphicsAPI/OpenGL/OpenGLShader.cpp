@@ -3,6 +3,7 @@
 #include <iostream>
 #include "../Bamboo/Core/Log.h"
 #include "OpenGLShader.h"
+#include "Config.h"
 
 namespace Bamboo
 {
@@ -99,9 +100,10 @@ namespace Bamboo
         //获取到文件名
         std::string filename = filepath.substr(filepath.find_last_of("/\\") + 1);
         m_Name = filename.substr(0, filename.find_last_of("."));
-
+        std::string fullPath = std::string(BAMBOO_ASSET_ROOT)+"/"+"Shaders/"  + filename;
+      
         std::string result;
-        std::ifstream in(filepath, std::ios::in | std::ios::binary);
+        std::ifstream in(fullPath, std::ios::in | std::ios::binary);
         if (in)
         {
             in.seekg(0, std::ios::end);
@@ -114,12 +116,12 @@ namespace Bamboo
             }
             else
             {
-                BAMBOO_CORE_ERROR("Could not read file: {0}", filepath);
+                BAMBOO_CORE_ERROR("Could not read file: {0}", fullPath);
             }
         }
         else
         {
-            BAMBOO_CORE_ERROR("Could not open file: {0}", filepath);
+            BAMBOO_CORE_ERROR("Could not open file: {0}", fullPath);
         }
 
         return result;

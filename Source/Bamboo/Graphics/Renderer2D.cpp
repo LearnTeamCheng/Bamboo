@@ -110,6 +110,7 @@ namespace Bamboo
         // s_Data.TriangleVerticesPtr->color = color;
         // s_Data.TriangleBuffer->SetData( s_Data.testVerices,sizeof(s_Data.testVerices));
 
+
         for(int i = 0;i<3;i++){
             s_Data.TriangleVerticesPtr->position = s_Data.TriangleVertexPositions[i];
             s_Data.TriangleVerticesPtr->color = color;

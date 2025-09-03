@@ -19,7 +19,7 @@ namespace Bamboo
     class Scene
     {
     public:
-        Scene();
+        Scene();    
         // 添加实体
         ~Scene();
 

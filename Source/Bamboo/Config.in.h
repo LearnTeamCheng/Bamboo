@@ -1,0 +1,2 @@
+#pragma once
+#define BAMBOO_ASSET_ROOT "@BAMBOO_ASSET_ROOT_ABS@"
