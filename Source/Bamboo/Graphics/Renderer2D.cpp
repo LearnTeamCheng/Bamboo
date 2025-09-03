@@ -46,11 +46,11 @@ namespace Bamboo
             {ShaderDatatType::Float4,"a_Color"}
         });
 
-        //s_Data.TriangleVertices = new TriangleVertex[3];
+        s_Data.TriangleVertices = new TriangleVertex[3];
         
+        //s_Data.TriangleVertexArray->AddVertexBuffer(s_Data.TriangleBuffer);
 
-
-        s_Data.TriangleVertexArray->AddVertexBuffer(s_Data.TriangleBuffer);
+        
 
         uint32_t trianglesIndices[3] = {0, 1, 2};
         Ref<IndexBuffer> indexBuffer = IndexBuffer::Create(trianglesIndices, sizeof(trianglesIndices) / sizeof(trianglesIndices[0]));
@@ -75,6 +75,8 @@ namespace Bamboo
         for (int i = 0; i < 9; i++) {
             s_Data.testVerices[i] = testVerices[i];
         }
+
+        //s_Data.TriangleVertices.position
       
     }
 
@@ -86,7 +88,10 @@ namespace Bamboo
     void Renderer2D::EndScene()
     {
 
-        s_Data.TriangleBuffer->SetData( s_Data.testVerices,sizeof(s_Data.testVerices));
+        // s_Data.TriangleBuffer->SetData( s_Data.testVerices,sizeof(s_Data.testVerices));
+        uint32_t dataSize = ((uint8_t *)s_Data.TriangleVerticesPtr - (uint8_t*)s_Data.TriangleVertices);
+        s_Data.TriangleBuffer->SetData(s_Data.TriangleVertices, dataSize);
+
         s_Data.TriangleVertexArray->Bind();
         s_Data.TriangleShader->Bind();
 
@@ -104,5 +109,13 @@ namespace Bamboo
         // s_Data.TriangleVerticesPtr->position = position;
         // s_Data.TriangleVerticesPtr->color = color;
         // s_Data.TriangleBuffer->SetData( s_Data.testVerices,sizeof(s_Data.testVerices));
+
+        for(int i = 0;i<3;i++){
+            s_Data.TriangleVerticesPtr->position = s_Data.TriangleVertexPositions[i];
+            s_Data.TriangleVerticesPtr->color = color;
+            s_Data.TriangleVerticesPtr++;
+        }
+        s_Data.TriangleIndexCount += 3;
+
     }
 }

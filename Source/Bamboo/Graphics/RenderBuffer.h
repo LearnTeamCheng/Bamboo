@@ -68,7 +68,7 @@ namespace Bamboo
             BufferLayout() = default;
             BufferLayout(const std::initializer_list<BufferElement>& elements):m_Elements(elements)
             {
-            
+                CalculateOffsetsAndStride();
             }
 
             uint32_t GetStride() const {return m_Stride;}

@@ -21,18 +21,21 @@ add_subdirectory(Bamboo)
 # Sandbox
 add_subdirectory(Sandbox)
 
-# ----------- 资源拷贝 -----------
-add_custom_target(copy_engine_assets ALL
-    COMMAND ${CMAKE_COMMAND} -E copy_directory
-    ${CMAKE_SOURCE_DIR}/BambooAssets
-    ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/$<CONFIG>/BambooAssets
-)
 
-add_custom_target(copy_sandbox_assets ALL
-    COMMAND ${CMAKE_COMMAND} -E copy_directory
-    ${CMAKE_SOURCE_DIR}/Sandbox/Assets
-    ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/$<CONFIG>/SandboxAssets
-)
+add_definitions(-DPROJECT_SOURCE_DIR="${CMAKE_SOURCE_DIR}")
+
+# # ----------- 资源拷贝 -----------
+# add_custom_target(copy_engine_assets ALL
+#     COMMAND ${CMAKE_COMMAND} -E copy_directory
+#     ${CMAKE_SOURCE_DIR}/BambooAssets
+#     ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/$<CONFIG>/BambooAssets
+# )
+
+# add_custom_target(copy_sandbox_assets ALL
+#     COMMAND ${CMAKE_COMMAND} -E copy_directory
+#     ${CMAKE_SOURCE_DIR}/Sandbox/Assets
+#     ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/$<CONFIG>/SandboxAssets
+# )
 
 # 设置 Sandbox 的运行目录 (VS / CLion 有效)
 set_target_properties(Sandbox PROPERTIES
