@@ -4,6 +4,7 @@
 #include "../Bamboo/Graphics/Shader.h"
 #include "../Bamboo/Graphics/VertexArray.h"
 #include "../Bamboo/Graphics/RendererCommand.h"
+#incldue "../Bamboo/Math/Matrix4.h"
 
 namespace Bamboo
 {
@@ -43,7 +44,7 @@ namespace Bamboo
 
         s_Data.TriangleBuffer->SetLayout({
             {ShaderDatatType::Float3,"a_WorldPosition"},
-            {ShaderDatatType::Float4,"a_Color"}
+            {ShaderDatatType::Float4,"a_Color"},
         });
 
         s_Data.TriangleVertices = new TriangleVertex[3];
@@ -88,8 +89,7 @@ namespace Bamboo
     void Renderer2D::EndScene()
     {
 
-        // s_Data.TriangleBuffer->SetData( s_Data.testVerices,sizeof(s_Data.testVerices));
-        uint32_t dataSize = ((uint8_t *)s_Data.TriangleVerticesPtr - (uint8_t*)s_Data.TriangleVertices);
+        uint32_t dataSize = std::distance(s_Data.TriangleVertices, s_Data.TriangleVerticesPtr)*sizeof(*s_Data.TriangleVertices);
         s_Data.TriangleBuffer->SetData(s_Data.TriangleVertices, dataSize);
 
         s_Data.TriangleVertexArray->Bind();
@@ -109,10 +109,14 @@ namespace Bamboo
         // s_Data.TriangleVerticesPtr->position = position;
         // s_Data.TriangleVerticesPtr->color = color;
         // s_Data.TriangleBuffer->SetData( s_Data.testVerices,sizeof(s_Data.testVerices));
+        
 
+        Vector3 inPos = Vector3(position.x/1280,position.y/720,0);
+
+        // Matrix4 m4 = Matrix4::CreateTranslation(inPos);
 
         for(int i = 0;i<3;i++){
-            s_Data.TriangleVerticesPtr->position = s_Data.TriangleVertexPositions[i];
+            s_Data.TriangleVerticesPtr->position = s_Data.TriangleVertexPositions[i] ;
             s_Data.TriangleVerticesPtr->color = color;
             s_Data.TriangleVerticesPtr++;
         }

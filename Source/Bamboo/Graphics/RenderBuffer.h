@@ -58,7 +58,10 @@ namespace Bamboo
                case ShaderDatatType::Mat3:     return 3;
                case ShaderDatatType::Mat4:     return 4;
                case ShaderDatatType::Bool:     return 1;
+               default:
+                   return 0;
            }
+
         }
     };
 

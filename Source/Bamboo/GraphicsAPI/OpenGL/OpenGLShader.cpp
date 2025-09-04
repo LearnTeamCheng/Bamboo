@@ -2,8 +2,8 @@
 #include <fstream>
 #include <iostream>
 #include "../Bamboo/Core/Log.h"
-#include "OpenGLShader.h"
 #include "Config.h"
+#include "OpenGLShader.h"
 
 namespace Bamboo
 {
@@ -95,12 +95,12 @@ namespace Bamboo
         }
     }
     
-    std::string OpenGLShader::ReadFile(const std::string &filepath)
+    std::string OpenGLShader::ReadFile(const std::string &filePath)
     {
         //获取到文件名
-        std::string filename = filepath.substr(filepath.find_last_of("/\\") + 1);
-        m_Name = filename.substr(0, filename.find_last_of("."));
-        std::string fullPath = std::string(BAMBOO_ASSET_ROOT)+"/"+"Shaders/"  + filename;
+        std::string fileName = filePath.substr(filePath.find_last_of("/\\") + 1);
+        m_Name = fileName.substr(0, fileName.find_last_of("."));
+        std::string fullPath = std::string(BAMBOO_ASSET_ROOT)+"/"+"Shaders/"  + fileName;
       
         std::string result;
         std::ifstream in(fullPath, std::ios::in | std::ios::binary);

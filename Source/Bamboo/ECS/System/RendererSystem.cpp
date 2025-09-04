@@ -1,7 +1,10 @@
 #include "RendererSystem.h"
-#include "../Bamboo/ECS/Component/TriangleComponent.h"
+
+#include "../Bamboo/ECS/Component/Component.h"
 #include "../Bamboo/Graphics/Renderer2D.h"
 #include "../Bamboo/Graphics/RendererCommand.h"
+
+#include "../Bamboo/ECS/Entity.h"
 
 
 
@@ -18,11 +21,15 @@ namespace Bamboo
 
         Renderer2D::BeginScene();
    
-        auto view = registry.view< TriangleComponent>();
+        auto view = registry.view< TriangleComponent,TransformComponent>();
         for (auto entity : view)
         {
-            auto triangle = view.get(entity);
-            Renderer2D::DrawTriangle(Vector3::One, triangle.TriangleColor);
+
+            
+            auto& [triangle,transform] = view.get< TriangleComponent, TransformComponent>(entity);
+            
+           
+            Renderer2D::DrawTriangle(transform.Position, triangle.TriangleColor);
 
             //BAMBOO_CORE_INFO("TriangleComponent ");
         }

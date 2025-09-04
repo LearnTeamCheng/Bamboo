@@ -149,9 +149,9 @@ namespace Bamboo
     Matrix3 Matrix3::Translate(float x, float y, float z)
     {
         Matrix3 result;
-        result.m_data[0][3] = x;
-        result.m_data[1][3] = y;
-        result.m_data[2][3] = z;
+        result.m_data[0][2] = x;
+        result.m_data[1][2] = y;
+        result.m_data[2][2] = z;
         return result;
     }
 
