@@ -17,6 +17,9 @@ namespace Bamboo
         const float &operator()(int row, int col) const { return m_data[row * 4 + col]; }
         ///运算符重载
         Matrix4 operator*(const Matrix4 &other) const;
+
+        Vector3 operator*(const Vector3 &other) const;  
+
         Matrix4 operator+(const Matrix4 &other) const;
         Matrix4 operator-(const Matrix4 &other) const;
         Matrix4 operator/(float scalar) const;
@@ -34,6 +37,7 @@ namespace Bamboo
         float Determinant() const;
         
         static Matrix4 Identity();
+        /// @brief 创建一个平移矩阵
         static Matrix4 Translate(const Vector3 &translation);
         static Matrix4 Scale(const Vector3 &scale);
         static Matrix4 RotateX(float angle);

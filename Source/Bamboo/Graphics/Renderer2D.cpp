@@ -4,7 +4,7 @@
 #include "../Bamboo/Graphics/Shader.h"
 #include "../Bamboo/Graphics/VertexArray.h"
 #include "../Bamboo/Graphics/RendererCommand.h"
-#incldue "../Bamboo/Math/Matrix4.h"
+#include "../Bamboo/Math/Matrix4.h"
 
 namespace Bamboo
 {
