@@ -4,7 +4,7 @@
 #pragma once
 
 #include "Math.h"
-
+class Vector3;
 namespace Bamboo
 {
 
@@ -27,6 +27,7 @@ namespace Bamboo
         }
 
         Vector2() noexcept : x(0.0f), y(0.0f) {}
+        Vector2(const Vector3 &v);
 
         Vector2(const Vector2 &other) noexcept = default;
 

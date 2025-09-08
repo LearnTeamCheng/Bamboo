@@ -113,10 +113,10 @@ namespace Bamboo
 
         Vector3 inPos = Vector3(position.x/1280,position.y/720,0);
 
-        // Matrix4 m4 = Matrix4::CreateTranslation(inPos);
+         Matrix4 m4 = Matrix4::Translate(inPos);
 
         for(int i = 0;i<3;i++){
-            s_Data.TriangleVerticesPtr->position = s_Data.TriangleVertexPositions[i] ;
+            s_Data.TriangleVerticesPtr->position = m4 *s_Data.TriangleVertexPositions[i] ;
             s_Data.TriangleVerticesPtr->color = color;
             s_Data.TriangleVerticesPtr++;
         }

@@ -20,6 +20,12 @@ namespace Bamboo
         return result;
     }
     
+    /**创建一个平移的矩阵
+     *  [1,0,0,x]
+     *  [0,1,0,y]
+     *  [0,0,1,z]
+     *  [0,0,0,1]
+     */
     Vector3 Matrix4::operator*(const Vector3 &other) const{
         Vector3 result;
         
@@ -130,9 +136,9 @@ namespace Bamboo
     Matrix4  Matrix4::Translate(const Vector3 &translation)
     {
         Matrix4 result;
-        result[3] = translation.x;
-        result[9] = translation.y;
-        result[15] = translation.z;
+        result.m_data[3] = translation.x;
+        result.m_data[7] = translation.y;
+        result.m_data[11] = translation.z;
         return result;
     }
 }
