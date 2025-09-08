@@ -4,6 +4,7 @@
 #include "../Bamboo/Graphics/Shader.h"
 #include "../Bamboo/Graphics/VertexArray.h"
 #include "../Bamboo/Graphics/RendererCommand.h"
+#include "../Bamboo/Math/Matrix3.h"
 #include "../Bamboo/Math/Matrix4.h"
 
 namespace Bamboo
@@ -113,10 +114,12 @@ namespace Bamboo
 
         Vector3 inPos = Vector3(position.x/1280,position.y/720,0);
 
-         Matrix4 m4 = Matrix4::Translate(inPos);
+         //Matrix4 m4 = Matrix4::Translate(inPos);
+        float scale = 0.5f;
+        Matrix3 m3 = Matrix3::Scale(scale, scale, scale);
 
         for(int i = 0;i<3;i++){
-            s_Data.TriangleVerticesPtr->position = m4 *s_Data.TriangleVertexPositions[i] ;
+            s_Data.TriangleVerticesPtr->position = m3* s_Data.TriangleVertexPositions[i] ;
             s_Data.TriangleVerticesPtr->color = color;
             s_Data.TriangleVerticesPtr++;
         }

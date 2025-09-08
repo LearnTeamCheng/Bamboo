@@ -7,7 +7,6 @@ namespace Bamboo
         
         Color TriangleColor = Color::White;
         Vector2 Size;
-        float Scale = 1.0f;
 
         TriangleComponent() = default;
         TriangleComponent(const TriangleComponent& other) = default;

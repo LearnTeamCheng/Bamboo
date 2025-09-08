@@ -13,7 +13,7 @@ namespace Bamboo
             /* code */
             for (size_t j = 0; j < 3; j++)
             {
-                result.m_data[i][j] = m_data[i][0] * other.m_data[0][j] + m_data[i][1] * other.m_data[1][j] + m_data[i][2] * other.m_data[2][j];
+                result.m_data[i * 3 + j] = m_data[i * 3 + 0] * other.m_data[0 +j] + m_data[i * 3 + 1] * other.m_data[3+j] + m_data[i * 3 + 2] * other.m_data[6+j];
             }
         }
         return result;
@@ -22,9 +22,10 @@ namespace Bamboo
     Vector3 Matrix3::operator*(const Vector3 &other) const
     {
         Vector3 result;
-        result.x = m_data[0][0] * other.x + m_data[0][1] * other.y + m_data[0][2] * other.z;
-        result.y = m_data[1][0] * other.x + m_data[1][1] * other.y + m_data[1][2] * other.z;
-        result.z = m_data[2][0] * other.x + m_data[2][1] * other.y + m_data[2][2] * other.z;
+
+        result.x = m_data[0] * other.x + m_data[3] * other.y + m_data[6] * other.z;
+        result.y = m_data[1] * other.x + m_data[4] * other.y + m_data[7] * other.z;
+        result.z = m_data[2] * other.x + m_data[5] * other.y + m_data[8] * other.z;
         return result;
     }
 
@@ -35,7 +36,7 @@ namespace Bamboo
         {
             for (int j = 0; j < 3; j++)
             {
-                result.m_data[i][j] = m_data[i][j] + other.m_data[i][j];
+                result.m_data[i*3+j] = m_data[i*3+j] + other.m_data[i*3+j];
             }
         }
         return result;
@@ -48,7 +49,7 @@ namespace Bamboo
         {
             for (int j = 0; j < 3; j++)
             {
-                result.m_data[i][j] = m_data[i][j] - other.m_data[i][j];
+                result.m_data[i*3+j] = m_data[i*3+j] - other.m_data[i*3+j];
             }
         }
         return result;
@@ -60,7 +61,7 @@ namespace Bamboo
         {
             for (int j = 0; j < 3; j++)
             {
-                if (m_data[i][j] != other.m_data[i][j])
+                if (m_data[i*3+j] != other.m_data[i*3+j])
                 {
                     return false;
                 }
@@ -83,7 +84,7 @@ namespace Bamboo
         {
             for (int j = 0; j < 3; j++)
             {
-                result.m_data[i][j] = m_data[j][i];
+                result.m_data[i*3+j] = m_data[j*3+i];
             }
         }
         return result;
@@ -96,13 +97,18 @@ namespace Bamboo
         return result;
     }
 
+    /**
+     * [1,0,0]
+     * [0,1,0]
+     * [0,0,1]
+     */
     // 缩放矩阵
     Matrix3 Matrix3::Scale(float x, float y, float z)
     {
         Matrix3 result;
-        result.m_data[0][0] = x;
-        result.m_data[1][1] = y;
-        result.m_data[2][2] = z;
+        result.m_data[0] = x;
+        result.m_data[4] = y;
+        result.m_data[8] = z;
         return result;
     }
 
@@ -112,10 +118,14 @@ namespace Bamboo
         Matrix3 result;
         float cos = cosf(angle);
         float sin = sinf(angle);
-        result.m_data[1][1] = cos;
-        result.m_data[1][2] = -sin;
-        result.m_data[2][1] = sin;
-        result.m_data[2][2] = cos;
+        // result.m_data[1][1] = cos;
+        // result.m_data[1][2] = -sin;
+        // result.m_data[2][1] = sin;
+        // result.m_data[2][2] = cos;
+        result.m_data[4] = cos;
+        result.m_data[8] = -sin;
+        result.m_data[7] = sin;
+        result.m_data[8] = cos;
         return result;
     }
 
@@ -125,10 +135,15 @@ namespace Bamboo
         Matrix3 result;
         float cos = cosf(angle);
         float sin = sinf(angle);
-        result.m_data[0][0] = cos;
-        result.m_data[0][2] = sin;
-        result.m_data[2][0] = -sin;
-        result.m_data[2][2] = cos;
+        // result.m_data[0][0] = cos;
+        // result.m_data[0][2] = sin;
+        // result.m_data[2][0] = -sin;
+        // result.m_data[2][2] = cos;
+
+        result.m_data[0] = cos;
+        result.m_data[6] = sin;
+        result.m_data[2] = -sin;
+        result.m_data[8] = cos;
         return result;
     }
 
@@ -138,10 +153,15 @@ namespace Bamboo
         Matrix3 result;
         float cos = cosf(angle);
         float sin = sinf(angle);
-        result.m_data[0][0] = cos;
-        result.m_data[0][1] = -sin;
-        result.m_data[1][0] = sin;
-        result.m_data[1][1] = cos;
+        // result.m_data[0][0] = cos;
+        // result.m_data[0][1] = -sin;
+        // result.m_data[1][0] = sin;
+        // result.m_data[1][1] = cos;
+
+        result.m_data[0] = cos;
+        result.m_data[3] = -sin;
+        result.m_data[1] = sin;
+        result.m_data[4] = cos;
         return result;
     }
 
@@ -149,9 +169,14 @@ namespace Bamboo
     Matrix3 Matrix3::Translate(float x, float y, float z)
     {
         Matrix3 result;
-        result.m_data[0][2] = x;
-        result.m_data[1][2] = y;
-        result.m_data[2][2] = z;
+        // result.m_data[0][2] = x;
+        // result.m_data[1][2] = y;
+        // result.m_data[2][2] = z;
+
+        result.m_data[2] = x;
+        result.m_data[5] = y;
+        result.m_data[8] = z;
+
         return result;
     }
 

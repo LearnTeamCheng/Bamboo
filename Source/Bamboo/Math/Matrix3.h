@@ -13,11 +13,11 @@ namespace Bamboo
     class Matrix3
     {
     public:
-        Matrix3() : m_data{{1.0f, 0.0f, 0.0f}, {0.0f, 1.0f, 0.0f}, {0.0f, 0.0f, 1.0f}} {}
-        Matrix3(float a, float b, float c, float d, float e, float f, float g, float h, float i) : m_data{{a, b, c}, {d, e, f}, {g, h, i}} {}
+        Matrix3() : m_data{1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f} {}
+        Matrix3(float a, float b, float c, float d, float e, float f, float g, float h, float i) : m_data{a, b, c, d, e, f, g, h, i} {}
 
-        float& operator()(int row, int col) { return m_data[row][col]; }
-        const float& operator()(int row, int col) const { return m_data[row][col]; }
+        float& operator()(int row, int col) { return m_data[row + col * 3]; }
+        const float& operator()(int row, int col) const { return m_data[row + col * 3]; }
 
         Matrix3 operator*(const Matrix3& other) const;
         Matrix3 operator+(const Matrix3& other) const;
@@ -36,8 +36,8 @@ namespace Bamboo
         bool operator==(const Matrix3& other) const;
         bool operator!=(const Matrix3& other) const;
 
-        float* Data() { return &m_data[0][0]; }
-        const float* Data() const { return &m_data[0][0]; }
+        float* Data() { return &m_data[0]; }
+        const float* Data() const { return &m_data[0]; }
 
   
 
@@ -55,6 +55,6 @@ namespace Bamboo
 
  
     private:
-        float m_data[3][3];
+        float m_data[9];
     };
 }

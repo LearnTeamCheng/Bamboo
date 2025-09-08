@@ -29,10 +29,10 @@ namespace Bamboo
     Vector3 Matrix4::operator*(const Vector3 &other) const{
         Vector3 result;
         
-        result.x = m_data[0] * other.x + m_data[4] * other.y + m_data[8] * other.z + m_data[12];
-        result.y = m_data[1] * other.x + m_data[5] * other.y + m_data[9] * other.z + m_data[13];
-        result.z = m_data[2] * other.x + m_data[6] * other.y + m_data[10] * other.z + m_data[14];
-
+        result.x = m_data[0] * other.x + m_data[1] * other.y + m_data[2] * other.z + m_data[3];
+        result.y = m_data[4] * other.x + m_data[5] * other.y + m_data[6] * other.z + m_data[7];
+        result.z = m_data[8] * other.x + m_data[9] * other.y + m_data[10] * other.z + m_data[11];
+        
         return result;
     }
 
@@ -120,11 +120,7 @@ namespace Bamboo
      Matrix4 Matrix4::Orthographic(float left, float right, float bottom, float top, float zNear, float zFar)
     {
         Matrix4 result;
-        
-
         return result;
-
-
     }
 
     /**创建一个平移的矩阵
