@@ -9,9 +9,15 @@
 
 namespace Bamboo
 {
-
+    /**三角形顶点 */
     struct TriangleVertex
     {
+        Vector3 position;
+        Color color;
+    };
+
+    /**矩形顶点 */
+    struct QuadVertex {
         Vector3 position;
         Color color;
     };
@@ -20,9 +26,9 @@ namespace Bamboo
     {
         ///最大三角形数量
         static const uint32_t MaxTriangles = 1;
-        ///最大顶点树
+        ///最大顶点数量
         static const uint32_t MaxVertices = MaxTriangles *3;
-
+        ///最大索引数量
         static const uint32_t MaxIndices = MaxVertices * 3;
 
         Ref<VertexArray> TriangleVertexArray;
@@ -33,13 +39,20 @@ namespace Bamboo
         TriangleVertex *TriangleVerticesPtr = nullptr;
         uint32_t TriangleIndexCount = 0;
 
-        float testVerices[9] = {};
+
+        Ref<VertexArray> QuadVertexArray;
+        Ref<VertexBuffer> QuadBuffer;
+        Ref<Shader> QuadShader;
+
+        Vector4 QuadVertexPosition[4];
+
     };
 
     static Renderer2DData s_Data;
 
     void Renderer2D::Init()
     {
+        //Triangle 
         s_Data.TriangleVertexArray = VertexArray::Create();
         s_Data.TriangleBuffer = VertexBuffer::Create(sizeof(TriangleVertex));
 
@@ -50,10 +63,6 @@ namespace Bamboo
 
         s_Data.TriangleVertices = new TriangleVertex[3];
         
-        //s_Data.TriangleVertexArray->AddVertexBuffer(s_Data.TriangleBuffer);
-
-        
-
         uint32_t trianglesIndices[3] = {0, 1, 2};
         Ref<IndexBuffer> indexBuffer = IndexBuffer::Create(trianglesIndices, sizeof(trianglesIndices) / sizeof(trianglesIndices[0]));
         s_Data.TriangleVertexArray->SetIndexBuffer(indexBuffer);
@@ -67,19 +76,26 @@ namespace Bamboo
         s_Data.TriangleVertexPositions[1] = {0.5, -0.5, 0.0};
         s_Data.TriangleVertexPositions[2] = {0.0, 0.5, 0.0};
 
-        float testVerices[] = {
 
-        -0.5f, -0.5f, 0.0f, // left  
-         0.5f, -0.5f, 0.0f, // right 
-         0.0f,  0.5f, 0.0f  // top  
-        };
+        //Quad
+        s_Data.QuadVertexArray = VertexArray::Create();
+        s_Data.QuadBuffer = VertexBuffer::Create(sizeof(QuadVertex));
+        s_Data.QuadBuffer->SetLayout({
+            {ShaderDatatType::Float3,"a_WorldPosition"},
+            {ShaderDatatType::Float4,"a_Color"}
+            });
 
-        for (int i = 0; i < 9; i++) {
-            s_Data.testVerices[i] = testVerices[i];
-        }
+        s_Data.QuadVertexPosition[0] = { -0.5f,-0.5f,0.0f,1.0f };
+        s_Data.QuadVertexPosition[1] = { 0.5f,-0.5f,0.0f,1.0f };
+        s_Data.QuadVertexPosition[2] = { 0.5f,0.5f,0.0f,1.0f };
+        s_Data.QuadVertexPosition[3] = { -0.5f,0.5f,0.0f,1.0f };
+        //顶点数据，围成一个矩形
+        uint32_t quadIndices[] = { 0,1,2,2,3,0 };
+        Ref<IndexBuffer> quadIndexBuffer = IndexBuffer::Create(quadIndices, sizeof(quadIndices) / sizeof(quadIndices[0]));
+        s_Data.QuadVertexArray->SetIndexBuffer(quadIndexBuffer);
 
-        //s_Data.TriangleVertices.position
-      
+        s_Data.QuadVertexArray->AddVertexBuffer(s_Data.QuadBuffer);
+
     }
 
     void Renderer2D::BeginScene()
@@ -90,13 +106,16 @@ namespace Bamboo
     void Renderer2D::EndScene()
     {
 
-        uint32_t dataSize = std::distance(s_Data.TriangleVertices, s_Data.TriangleVerticesPtr)*sizeof(*s_Data.TriangleVertices);
-        s_Data.TriangleBuffer->SetData(s_Data.TriangleVertices, dataSize);
+        if(s_Data.TriangleIndexCount >0) {
+            uint32_t dataSize = std::distance(s_Data.TriangleVertices, s_Data.TriangleVerticesPtr)*sizeof(*s_Data.TriangleVertices);
 
-        s_Data.TriangleVertexArray->Bind();
-        s_Data.TriangleShader->Bind();
-
-        RendererCommand::DrawIndexed(s_Data.TriangleVertexArray, s_Data.TriangleIndexCount);
+            s_Data.TriangleBuffer->SetData(s_Data.TriangleVertices, dataSize);
+            
+            s_Data.TriangleVertexArray->Bind();
+            s_Data.TriangleShader->Bind();
+            
+            RendererCommand::DrawIndexed(s_Data.TriangleVertexArray, s_Data.TriangleIndexCount);
+        }
     }
 
     void Renderer2D::StartBatch()
@@ -107,10 +126,6 @@ namespace Bamboo
 
     void Renderer2D::DrawTriangle(const Vector3 &position, const Color &color)
     {
-        // s_Data.TriangleVerticesPtr->position = position;
-        // s_Data.TriangleVerticesPtr->color = color;
-        // s_Data.TriangleBuffer->SetData( s_Data.testVerices,sizeof(s_Data.testVerices));
-        
 
         Vector3 inPos = Vector3(position.x/1280,position.y/720,0);
 

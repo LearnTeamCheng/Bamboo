@@ -6,14 +6,14 @@
 #include<filesystem>
 
 
-#include "../Bamboo/Game/Application.h";
-#include "../Bamboo/Scene/Scene.h";
+#include "../Bamboo/Game/Application.h"
+#include "../Bamboo/Scene/Scene.h"
 #include "../Bamboo/Scene/SceneManager.h"
 
-#include "../Bamboo/ECS/Entity.h";
+#include "../Bamboo/ECS/Entity.h"
 #include "../Bamboo/ECS/Component/Component.h"
 
-#include "../Bamboo/Math/Color.h";
+#include "../Bamboo/Math/Color.h"
 
 
 

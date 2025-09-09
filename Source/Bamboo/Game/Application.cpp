@@ -2,7 +2,7 @@
 
 #include "../Bamboo/Graphics/Renderer.h"
 #include "../Bamboo/Graphics/Renderer2D.h"
-#include "../Bamboo/Core/Log.h";
+#include "../Bamboo/Core/Log.h"
 #include "Application.h"
 
 namespace Bamboo

@@ -113,6 +113,11 @@ namespace Bamboo
     }
 
     // X轴旋转矩阵
+    /**
+     * [1,0,0]
+     * [0,cosθ,-sinθ,]
+     * [0,sinθ,cosθ]
+     */
     Matrix3 Matrix3::RotateX(float angle)
     {
         Matrix3 result;
@@ -123,13 +128,19 @@ namespace Bamboo
         // result.m_data[2][1] = sin;
         // result.m_data[2][2] = cos;
         result.m_data[4] = cos;
-        result.m_data[8] = -sin;
+        result.m_data[5] = -sin;
         result.m_data[7] = sin;
         result.m_data[8] = cos;
         return result;
     }
 
     // Y轴旋转矩阵
+    /**
+     * [cosθ，0,sinθ,]
+     * [0,1,0]
+     * [-sinθ,0,cosθ,]
+     * 
+     */
     Matrix3 Matrix3::RotateY(float angle)
     {
         Matrix3 result;
@@ -141,8 +152,8 @@ namespace Bamboo
         // result.m_data[2][2] = cos;
 
         result.m_data[0] = cos;
-        result.m_data[6] = sin;
         result.m_data[2] = -sin;
+        result.m_data[6] = sin;
         result.m_data[8] = cos;
         return result;
     }

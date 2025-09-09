@@ -15,6 +15,7 @@ target_link_libraries(Bamboo
         glad
         entt
         spdlog::spdlog_header_only   
+        stb
 )
 
 # 让 VS 按磁盘目录显示文件夹结构

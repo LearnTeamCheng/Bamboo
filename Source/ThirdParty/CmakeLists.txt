@@ -10,6 +10,13 @@ target_include_directories(entt INTERFACE
     ${CMAKE_CURRENT_SOURCE_DIR}/entt/include()
 )
 
-# spdlog（未来添加）
+# spdlog
 add_subdirectory(spdlog)
+
+
+# stb (header-only)
+add_library(stb INTERFACE)
+target_include_directories(stb INTERFACE
+    ${CMAKE_CURRENT_SOURCE_DIR}/stb
+)
 

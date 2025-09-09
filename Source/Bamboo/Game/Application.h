@@ -3,7 +3,7 @@
 #include "../Bamboo/Core/Base.h"
 #include "../Bamboo/Core/Ref.h"
 #include "../Bamboo/Event/Event.h"
-#include "../Bamboo/Event/ApplicationEvent.h";
+#include "../Bamboo/Event/ApplicationEvent.h"
 
 #include "../Bamboo/Scene/SceneManager.h"
 

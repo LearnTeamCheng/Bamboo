@@ -22,20 +22,7 @@ add_subdirectory(Bamboo)
 add_subdirectory(Sandbox)
 
 
-# add_definitions(-DPROJECT_SOURCE_DIR="${CMAKE_SOURCE_DIR}")
 
-# # ----------- 资源拷贝 -----------
-# add_custom_target(copy_engine_assets ALL
-#     COMMAND ${CMAKE_COMMAND} -E copy_directory
-#     ${CMAKE_SOURCE_DIR}/BambooAssets
-#     ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/$<CONFIG>/BambooAssets
-# )
-
-# add_custom_target(copy_sandbox_assets ALL
-#     COMMAND ${CMAKE_COMMAND} -E copy_directory
-#     ${CMAKE_SOURCE_DIR}/Sandbox/Assets
-#     ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/$<CONFIG>/SandboxAssets
-# )
 # 规范化路径
 file(TO_CMAKE_PATH "${CMAKE_SOURCE_DIR}/BambooAssets" BAMBOO_ASSET_ROOT_ABS)
 # 生成头文件

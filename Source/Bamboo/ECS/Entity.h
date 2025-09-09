@@ -1,7 +1,7 @@
 #pragma once
 #include "../Bamboo/Core/UUID.h"
 #include "../Bamboo/Scene/Scene.h"
-#include "../Bamboo/ECS/Component/Component.h";
+#include "../Bamboo/ECS/Component/Component.h"
 #include "../Bamboo/Core/Assert.h"
 
 
