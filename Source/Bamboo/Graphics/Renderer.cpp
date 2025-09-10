@@ -1,4 +1,5 @@
 #include "../Bamboo/Graphics/RendererAPI.h"
+#include "../Bamboo/Graphics/RendererCommand.h"
 #include "Renderer.h"
 
 
@@ -7,6 +8,7 @@ namespace Bamboo
 
     void Renderer::Init()
     {
+        RendererCommand::Init();
     }
 
     void Renderer::Shutdown()

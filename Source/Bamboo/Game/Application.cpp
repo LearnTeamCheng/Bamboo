@@ -19,6 +19,7 @@ namespace Bamboo
         m_SceneManager = CreateScope<SceneManager>();
 
         Renderer2D::Init();
+        Renderer::Init();
         
     }
 

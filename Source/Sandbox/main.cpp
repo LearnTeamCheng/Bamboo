@@ -22,9 +22,15 @@ int main(int argc, char** argv) {
     Bamboo::Application app;
     
     auto entity = app.GetSceneManager()->GetActiveScene()->CreateEntity();
-    auto& component = entity.AddComponent<Bamboo::TriangleComponent>();
-    component.TriangleColor = Bamboo::Color::Blue;
-    
+    //auto& component = entity.AddComponent<Bamboo::TriangleComponent>();
+    //component.TriangleColor = Bamboo::Color::Blue;
+    //
+
+
+    auto& quadComponent = entity.AddComponent<Bamboo::QuadComponent>();
+    quadComponent.Color = Bamboo::Color::Blue;
+
+
     auto & transform = entity.AddComponent<Bamboo::TransformComponent>();
     transform.Position = Vector3(100, 100, 0);
     
