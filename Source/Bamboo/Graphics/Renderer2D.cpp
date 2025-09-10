@@ -43,9 +43,12 @@ namespace Bamboo
         Ref<VertexArray> QuadVertexArray;
         Ref<VertexBuffer> QuadBuffer;
         Ref<Shader> QuadShader;
-
         Vector4 QuadVertexPosition[4];
+        QuadVertex *QuadVertices = nullptr;
+        QuadVertex *QuadVerticesPtr = nullptr;
 
+
+        uint32_t QuadIndexCount = 0;
     };
 
     static Renderer2DData s_Data;
@@ -85,6 +88,7 @@ namespace Bamboo
             {ShaderDatatType::Float4,"a_Color"}
             });
 
+        s_Data.QuadVertices = new QuadVertex[4];
         s_Data.QuadVertexPosition[0] = { -0.5f,-0.5f,0.0f,1.0f };
         s_Data.QuadVertexPosition[1] = { 0.5f,-0.5f,0.0f,1.0f };
         s_Data.QuadVertexPosition[2] = { 0.5f,0.5f,0.0f,1.0f };
@@ -93,7 +97,7 @@ namespace Bamboo
         uint32_t quadIndices[] = { 0,1,2,2,3,0 };
         Ref<IndexBuffer> quadIndexBuffer = IndexBuffer::Create(quadIndices, sizeof(quadIndices) / sizeof(quadIndices[0]));
         s_Data.QuadVertexArray->SetIndexBuffer(quadIndexBuffer);
-
+        s_Data.QuadShader = Shader::Create("Quad", "BambooAssets/Shaders/triangle.vert", "BambooAssets/Shaders/triangle.frag");
         s_Data.QuadVertexArray->AddVertexBuffer(s_Data.QuadBuffer);
 
     }
@@ -116,12 +120,25 @@ namespace Bamboo
             
             RendererCommand::DrawIndexed(s_Data.TriangleVertexArray, s_Data.TriangleIndexCount);
         }
+
+        if (s_Data.QuadIndexCount > 0) {
+            uint32_t dataSize = std::distance(s_Data.QuadVertices, s_Data.QuadVerticesPtr) * sizeof(*s_Data.QuadVertices);
+            s_Data.QuadBuffer->SetData(s_Data.QuadVertices,dataSize);
+
+            s_Data.QuadVertexArray->Bind();
+            s_Data.QuadShader->Bind();
+
+            RendererCommand::DrawIndexed(s_Data.QuadVertexArray, s_Data.QuadIndexCount);
+        }
     }
 
     void Renderer2D::StartBatch()
     {
         s_Data.TriangleIndexCount = 0;
         s_Data.TriangleVerticesPtr = s_Data.TriangleVertices;
+
+        s_Data.QuadIndexCount = 0;
+        s_Data.QuadVerticesPtr = s_Data.QuadVertices;
     }
 
     void Renderer2D::DrawTriangle(const Vector3 &position, const Color &color)
@@ -140,5 +157,27 @@ namespace Bamboo
         }
         s_Data.TriangleIndexCount += 3;
 
+    }
+
+    void Renderer2D::DrawQuad(const Vector2 &position, const Vector2 &size, const Color &color) 
+    {
+        for(int i = 0;i<4;i++)
+        {
+            s_Data.QuadVerticesPtr->position = s_Data.QuadVertexPosition[i];
+            s_Data.QuadVerticesPtr->color = color;
+            s_Data.QuadVerticesPtr++;
+        }
+        s_Data.QuadIndexCount += 6;
+    }
+
+    void Renderer2D::DrawQuad(const Vector3 &position, const Vector2 &size, const Color &color)
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            s_Data.QuadVerticesPtr->position = s_Data.QuadVertexPosition[i];
+            s_Data.QuadVerticesPtr->color = color;
+            s_Data.QuadVerticesPtr++;
+        }
+        s_Data.QuadIndexCount += 6;
     }
 }

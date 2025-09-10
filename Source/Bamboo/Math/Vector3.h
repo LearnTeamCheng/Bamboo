@@ -1,12 +1,13 @@
 #pragma once
 #include "Math.h"
 
-class Vector2;
-class Vector4;
 
 
 namespace Bamboo
 {
+    class Vector2;
+    class Vector4;
+
     class Vector3
     {
     public:
@@ -22,9 +23,10 @@ namespace Bamboo
         Vector3() : x(0.0f), y(0.0f), z(0.0f) {}
         Vector3(float x, float y, float z) : x(x), y(y), z(z) {}
         Vector3(const Vector3 &other) = default;
-        //Vector3(const Vector4 &other);
+        Vector3(const Vector4 &other);
         
-        Vector3 &operator=(const Vector3 &other) = default;
+        Vector3 &operator=(const Vector3 &other)=default;
+        Vector3& operator=(const Vector4& other);
 
 
 

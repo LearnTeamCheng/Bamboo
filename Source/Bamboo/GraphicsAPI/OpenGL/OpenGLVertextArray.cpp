@@ -33,7 +33,7 @@ namespace Bamboo
         glBindVertexArray(m_RendererID);
         vertexBuffer->Bind();
 
-        auto layout = vertexBuffer->GetLayout();
+        auto& layout = vertexBuffer->GetLayout();
 
      
 

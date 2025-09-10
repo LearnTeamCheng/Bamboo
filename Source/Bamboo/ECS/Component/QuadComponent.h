@@ -8,7 +8,7 @@ namespace Bamboo {
 
     struct QuadComponent
     {
-        Vector3 Color;
+        Color Color;
         Vector2 Size;
         QuadComponent() =default;
         QuadComponent(const QuadComponent&) = default;

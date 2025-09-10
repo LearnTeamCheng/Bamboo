@@ -7,4 +7,5 @@
 #include "TransformComponent.h"
 #include "SpriteRendererComponent.h"
 #include "TriangleComponent.h"
+#include "QuadComponent.h"
 
