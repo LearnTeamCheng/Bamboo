@@ -17,7 +17,7 @@ namespace Bamboo {
         stbi_uc* data = nullptr;
 
     
-        std::string fullPath = std::string(BAMBOO_ASSET_ROOT) +"/"+path;
+        std::string fullPath = std::string(BAMBOO_ASSET_ROOT) +"/Texture2d/"+path;
         data = stbi_load(fullPath.c_str(), &width, &height, &channels, 0);
 
         if(data)

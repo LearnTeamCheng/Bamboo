@@ -47,6 +47,17 @@ namespace Bamboo
             }
         }
 
+
+        //sprite 
+        {
+            auto view = registry.view< SpriteRendererComponent, TransformComponent>();
+            for (auto entity : view)
+            {
+                auto& [sprite, transform] = view.get<SpriteRendererComponent, TransformComponent>(entity);
+
+                Renderer2D::DrawSprite(transform.Position, Vector2(100, 100), sprite.SpriteColor,sprite.SpriteTexture);
+            }
+        }
         Renderer2D::EndScene();
     }
 }

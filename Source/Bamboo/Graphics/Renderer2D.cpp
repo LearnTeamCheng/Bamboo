@@ -189,6 +189,9 @@ namespace Bamboo
 
         s_Data.QuadIndexCount = 0;
         s_Data.QuadVerticesPtr = s_Data.QuadVertices;
+
+        s_Data.SpriteIndexCount = 0;
+        s_Data.SpriteVerticesPtr = s_Data.SpriteVertices;
     }
 
     void Renderer2D::DrawTriangle(const Vector3 &position, const Color &color)
