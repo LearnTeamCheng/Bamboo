@@ -14,6 +14,7 @@
 #include "../Bamboo/ECS/Component/Component.h"
 
 #include "../Bamboo/Math/Color.h"
+#include "../Bamboo/Graphics/Texture.h"
 
 
 
@@ -27,8 +28,11 @@ int main(int argc, char** argv) {
     //
 
 
-    auto& quadComponent = entity.AddComponent<Bamboo::QuadComponent>();
-    quadComponent.Color = Bamboo::Color::Blue;
+    // auto& quadComponent = entity.AddComponent<Bamboo::QuadComponent>();
+    // quadComponent.Color = Bamboo::Color::Blue;
+
+    auto & spriteComponent = entity.AddComponent<Bamboo::SpriteRendererComponent>();
+    spriteComponent.SpriteTexture = Bamboo::Texture2D::Create("container.jpg");
 
 
     auto & transform = entity.AddComponent<Bamboo::TransformComponent>();

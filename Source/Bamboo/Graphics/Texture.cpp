@@ -1,5 +1,6 @@
 #include "Texture.h"
 #include "../Bamboo/Graphics/RendererAPI.h"
+#include "../Bamboo/GraphicsAPI/OpenGL/OpenGLTexture.h"
 namespace Bamboo
 {
     Ref<Texture2D> Texture2D::Create(const std::string& path)
@@ -9,7 +10,7 @@ namespace Bamboo
             case RendererAPI::API::OpenGL:
             {
                 // TODO: create OpenGL texture
-                return nullptr;
+                return  CreateRef<OpenGLTexture2D>(path);
             }
             default:
             {
@@ -25,7 +26,7 @@ namespace Bamboo
             case RendererAPI::API::OpenGL:
             {
                 // TODO: create OpenGL texture
-                return nullptr;
+                return CreateRef<OpenGLTexture2D>(settings);
             }
             default:
             {

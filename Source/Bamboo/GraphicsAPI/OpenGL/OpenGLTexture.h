@@ -1,5 +1,6 @@
 #pragma once
 #include "../Bamboo/Graphics/Texture.h"
+
 namespace Bamboo
 {
 
@@ -15,13 +16,19 @@ namespace Bamboo
         virtual uint32_t GetRendererID() const override {return m_RendererID;};
 
         virtual const std::string &GetPath() const override {return m_Path;};
+
         virtual void Bind(uint32_t slot = 0) const override;
-        virtual bool IsLoaded() { return m_IsLoaded; }
+        virtual bool IsLoaded()const override { return m_IsLoaded; }
         virtual bool operator==(const Texture &other) const override
         {
             return m_RendererID == other.GetRendererID();
         }
 
+
+        virtual void SetData(void* data, uint32_t size) const override 
+        {
+        
+        }
     private:
         TextureSettings m_Settings;
         bool m_IsLoaded = false;

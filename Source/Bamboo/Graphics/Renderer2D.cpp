@@ -22,6 +22,14 @@ namespace Bamboo
         Color color;
     };
 
+    /**精灵顶点数据结构 */
+    struct SpriteVertex{
+        Vector3 Position;
+        Color Color;
+        //纹理坐标
+        Vector2 TexCoord;
+    };
+
     struct Renderer2DData
     {
         ///最大三角形数量
@@ -49,6 +57,17 @@ namespace Bamboo
 
 
         uint32_t QuadIndexCount = 0;
+
+
+        //Sprite
+        Ref<VertexArray> SpriteVertexArray;
+        Ref<VertexBuffer> SpriteBuffer;
+        Ref<Shader> SpriteShader;
+        Vector3 SpriteVertexPositions[4];
+        SpriteVertex *SpriteVertices = nullptr;
+        SpriteVertex *SpriteVerticesPtr = nullptr;
+        uint32_t SpriteIndexCount = 0;
+
     };
 
     static Renderer2DData s_Data;
@@ -100,6 +119,29 @@ namespace Bamboo
         s_Data.QuadShader = Shader::Create("Quad", "BambooAssets/Shaders/triangle.vert", "BambooAssets/Shaders/triangle.frag");
         s_Data.QuadVertexArray->AddVertexBuffer(s_Data.QuadBuffer);
 
+
+        //Sprite
+        s_Data.SpriteVertexArray = VertexArray::Create();
+        s_Data.SpriteBuffer = VertexBuffer::Create(sizeof(SpriteVertex));
+        s_Data.SpriteBuffer->SetLayout({
+            {ShaderDatatType::Float3,"a_Position"},
+            {ShaderDatatType::Float4,"a_Color"},
+            {ShaderDatatType::Float2,"a_TexCoord"}
+        });
+
+        s_Data.SpriteVertices = new SpriteVertex[4];
+        s_Data.SpriteVertexPositions[0] = { -0.5f, -0.5f, 0.0f };
+        s_Data.SpriteVertexPositions[1] = { 0.5f, -0.5f, 0.0f };
+        s_Data.SpriteVertexPositions[2] = { 0.5f, 0.5f, 0.0f };
+        s_Data.SpriteVertexPositions[3] = { -0.5f, 0.5f, 0.0f };
+        
+        //顶点数据，围成一个矩形
+        uint32_t spriteIndices[] = { 0,1,2,2,3,0 };
+        Ref<IndexBuffer> spriteIndexBuffer = IndexBuffer::Create(spriteIndices, sizeof(spriteIndices) / sizeof(spriteIndices[0]));
+        s_Data.SpriteVertexArray->SetIndexBuffer(spriteIndexBuffer);
+        s_Data.SpriteShader = Shader::Create("Sprite", "BambooAssets/Shaders/sprite.vert", "BambooAssets/Shaders/sprite.frag");
+        s_Data.SpriteVertexArray->AddVertexBuffer(s_Data.SpriteBuffer);
+
     }
 
     void Renderer2D::BeginScene()
@@ -129,6 +171,14 @@ namespace Bamboo
             s_Data.QuadShader->Bind();
 
             RendererCommand::DrawIndexed(s_Data.QuadVertexArray, s_Data.QuadIndexCount);
+        }
+
+        if(s_Data.SpriteIndexCount > 0){
+            uint32_t dataSize = std::distance(s_Data.SpriteVertices, s_Data.SpriteVerticesPtr) * sizeof(*s_Data.SpriteVertices);
+            s_Data.SpriteBuffer->SetData(s_Data.SpriteVertices, dataSize);
+            s_Data.SpriteVertexArray->Bind();
+            s_Data.SpriteShader->Bind();
+            RendererCommand::DrawIndexed(s_Data.SpriteVertexArray, s_Data.SpriteIndexCount);
         }
     }
 
@@ -179,5 +229,26 @@ namespace Bamboo
             s_Data.QuadVerticesPtr++;
         }
         s_Data.QuadIndexCount += 6;
+    }
+
+    void Renderer2D::DrawSprite(const Vector3 & position, const Vector2 & size, const Color & color, Ref<Texture2D>& texture)
+    {   
+        // 纹理坐标
+        Vector2 TexCoord[] = {
+            {0.0f, 0.0f}, // 左下
+            {1.0f, 0.0f}, // 右下
+            {1.0f, 1.0f}, // 右上
+            {0.0f, 1.0f} // 左上
+        };
+
+        for(int i = 0;i<4;i++)
+        {
+            s_Data.SpriteVerticesPtr->Position = s_Data.SpriteVertexPositions[i];
+            s_Data.SpriteVerticesPtr->Color = color;
+            s_Data.SpriteVerticesPtr->TexCoord = TexCoord[i];
+            s_Data.SpriteVerticesPtr++;
+        }
+        texture->Bind();
+        s_Data.SpriteIndexCount += 6;
     }
 }

@@ -27,7 +27,7 @@ namespace Bamboo
     class Texture
     {
     public:
-        Texture();
+   
         virtual ~Texture();
 
         virtual uint32_t GetWidth() const = 0;

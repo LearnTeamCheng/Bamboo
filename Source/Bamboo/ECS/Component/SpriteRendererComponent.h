@@ -7,7 +7,7 @@ namespace Bamboo
     struct SpriteRendererComponent
     {
         Color SpriteColor = Color::White;
-        Ref<Texture>  SpriteTexture; 
+        Ref<Texture2D>  SpriteTexture; 
         
         SpriteRendererComponent()=default;
         SpriteRendererComponent(const SpriteRendererComponent&)=default;
