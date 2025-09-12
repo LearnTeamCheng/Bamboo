@@ -19,20 +19,21 @@ namespace Bamboo
         }
         return result;
     }
-    
+
     /**创建一个平移的矩阵
      *  [1,0,0,x]
      *  [0,1,0,y]
      *  [0,0,1,z]
      *  [0,0,0,1]
      */
-    Vector3 Matrix4::operator*(const Vector3 &other) const{
+    Vector3 Matrix4::operator*(const Vector3 &other) const
+    {
         Vector3 result;
-        
+
         result.x = m_data[0] * other.x + m_data[1] * other.y + m_data[2] * other.z + m_data[3];
         result.y = m_data[4] * other.x + m_data[5] * other.y + m_data[6] * other.z + m_data[7];
         result.z = m_data[8] * other.x + m_data[9] * other.y + m_data[10] * other.z + m_data[11];
-        
+
         return result;
     }
 
@@ -117,9 +118,22 @@ namespace Bamboo
         return result;
     }
 
-     Matrix4 Matrix4::Orthographic(float left, float right, float bottom, float top, float zNear, float zFar)
+    /*{
+    2.0/(right - left),0,0,    -(right + left) / (right - left)
+    0,2.0/(top - bottom),0,  -(top + bottom) / (top - bottom)
+    0,0,-2.0/(zFar - zNear),-(zFar + zNear) / (zFar - zNear)
+    0,0,0,1
+    }**/
+    Matrix4 Matrix4::Orthographic(float left, float right, float bottom, float top, float zNear, float zFar)
     {
         Matrix4 result;
+        result.m_data[0] = 2.0f / (right - left);
+        result.m_data[5] = 2.0f / (top - bottom);
+        result.m_data[10] = -2.0f / (zFar - zNear);
+        result.m_data[3] = -(right + left) / (right - left);
+        result.m_data[7] = -(top + bottom) / (top - bottom);
+        result.m_data[11] = -(zFar + zNear) / (zFar - zNear);
+        result.m_data[15] = 1.0f;
         return result;
     }
 
@@ -129,7 +143,7 @@ namespace Bamboo
      *  [0,0,1,z]
      *  [0,0,0,1]
      */
-    Matrix4  Matrix4::Translate(const Vector3 &translation)
+    Matrix4 Matrix4::Translate(const Vector3 &translation)
     {
         Matrix4 result;
         result.m_data[3] = translation.x;

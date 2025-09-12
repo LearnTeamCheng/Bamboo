@@ -24,6 +24,17 @@ namespace Bamboo
 
         /// @brief 获取投影矩阵
         Matrix4 GetProjectionMatrix() const {return m_ProjectionMatrix;}
+        /// @brief 获取视图矩阵
+        Matirx4 GetViewMatrix() const;
+        /// @brief 获取视图投影矩阵
+        Matrix4 GetViewProjectionMatrix() const;
+
+        void SetPosition(const Vector3& position) {m_Position = position;}
+        const Vector3& GetPosition() const {return m_Position;}
+
+        void SetRotation(const Vector3& rotation) {m_Rotation = rotation;}
+        const Vector3& GetRotation() const {return m_Rotation;}
+
         /// @brief 窗口大小变
         void SetViewportSize(uint32_t width, uint32_t height);
     protected:
