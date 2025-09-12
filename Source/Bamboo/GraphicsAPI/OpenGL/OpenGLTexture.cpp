@@ -45,12 +45,12 @@ namespace Bamboo {
 
 
             //设置纹理过滤方式
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+            glTextureParameteri(m_RendererID, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+            glTextureParameteri(m_RendererID, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
             //设置纹理环绕方式
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+            glTextureParameteri(m_RendererID, GL_TEXTURE_WRAP_S, GL_REPEAT);
+            glTextureParameteri(m_RendererID, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
             //更新纹理数据
             glTextureSubImage2D(m_RendererID, 0, 0, 0, m_Width, m_Height, dataFormat, GL_UNSIGNED_BYTE, data);
@@ -65,7 +65,19 @@ namespace Bamboo {
     OpenGLTexture2D::OpenGLTexture2D(const TextureSettings& settings):m_Settings(settings)
     ,m_Width(settings.Height),m_Height(settings.Width)
     {
-   
+
+        //生成纹理并绑定
+        //glCreateTextures(GL_TEXTURE_2D, 1, &m_RendererID);
+        ////设置纹理数据
+        //glTextureStorage2D(m_RendererID, 1, internalFormat, m_Width, m_Height);
+
+        ////设置纹理过滤方式
+        //glTextureParameteri(m_RendererID, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        //glTextureParameteri(m_RendererID, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+        ////设置纹理环绕方式
+        //glTextureParameteri(m_RendererID, GL_TEXTURE_WRAP_S, GL_REPEAT);
+        //glTextureParameteri(m_RendererID, GL_TEXTURE_WRAP_T, GL_REPEAT);
     }
 
 
