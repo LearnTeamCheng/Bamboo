@@ -7,6 +7,8 @@
 #include "../Bamboo/Math/Matrix3.h"
 #include "../Bamboo/Math/Matrix4.h"
 
+#include "../Bamboo/Graphics/Camera.h"
+
 namespace Bamboo
 {
     /**三角形顶点 */
@@ -149,6 +151,10 @@ namespace Bamboo
         StartBatch();
     }
 
+    void Renderer2D::BeginScene(const Camera& camera) 
+    {
+    }
+
     void Renderer2D::EndScene()
     {
 
@@ -251,7 +257,7 @@ namespace Bamboo
             s_Data.SpriteVerticesPtr->TexCoord = TexCoord[i];
             s_Data.SpriteVerticesPtr++;
         }
-        texture->Bind();
+         texture->Bind();
         s_Data.SpriteIndexCount += 6;
     }
 }

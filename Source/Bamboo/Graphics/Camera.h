@@ -14,8 +14,8 @@ namespace Bamboo
         };
 
     public:
-        Camera();
-        ~Camera();
+        Camera() =default;
+        ~Camera() = default;
         /// @brief 设置 正交投影
         /// @param size 大小
         /// @param nearClip  近裁剪面
@@ -25,7 +25,7 @@ namespace Bamboo
         /// @brief 获取投影矩阵
         Matrix4 GetProjectionMatrix() const {return m_ProjectionMatrix;}
         /// @brief 获取视图矩阵
-        Matirx4 GetViewMatrix() const;
+        //Matrix4 GetViewMatrix() const;
         /// @brief 获取视图投影矩阵
         Matrix4 GetViewProjectionMatrix() const;
 

@@ -8,4 +8,5 @@
 #include "SpriteRendererComponent.h"
 #include "TriangleComponent.h"
 #include "QuadComponent.h"
+#include "CameraComponent.h"
 

@@ -21,9 +21,7 @@ namespace Bamboo
         ReCalculateProjectionMatrix();
     }
 
-    Matrix4 Camera::GetViewMatrix() const
-    {
-    }
+
 
     void Camera::ReCalculateProjectionMatrix()
     {
