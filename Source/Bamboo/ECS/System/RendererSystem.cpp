@@ -6,6 +6,8 @@
 
 #include "../Bamboo/ECS/Entity.h"
 
+#include "../Bamboo/Graphics/Camera.h"
+
 
 
 #include "../Bamboo/Core/Log.h"
@@ -18,6 +20,15 @@ namespace Bamboo
 
         RendererCommand::SetClearColor({ 0.2f, 0.3f, 0.3f, 1.0f});
         RendererCommand::Clear();
+
+
+        // Camera & mainCamera = registry.get<Camera>(registry.view<CameraComponent>();
+        // if(mainCamera ) 
+        // {
+        //     Renderer2D::BeginScene(mainCamera);
+        // }
+
+
 
         Renderer2D::BeginScene();
         {
