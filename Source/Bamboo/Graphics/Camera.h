@@ -23,7 +23,7 @@ namespace Bamboo
         void SetOrthographic(float size, float nearClip, float farClip);
 
         /// @brief 获取投影矩阵
-        Matrix4 GetProjectionMatrix() const {return m_ProjectionMatrix;}
+        Matrix4 GetProjection() const {return m_ProjectionMatrix;}
         /// @brief 获取视图矩阵
         //Matrix4 GetViewMatrix() const;
         /// @brief 获取视图投影矩阵

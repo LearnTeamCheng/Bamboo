@@ -1,4 +1,5 @@
 
+
 #include "Renderer2D.h"
 
 #include "../Bamboo/Graphics/Shader.h"
@@ -8,6 +9,9 @@
 #include "../Bamboo/Math/Matrix4.h"
 
 #include "../Bamboo/Graphics/Camera.h"
+#include "../Bamboo/Graphics/UniformBuffer.h"
+
+#include <array>
 
 namespace Bamboo
 {
@@ -40,6 +44,8 @@ namespace Bamboo
         static const uint32_t MaxVertices = MaxTriangles *3;
         ///最大索引数量
         static const uint32_t MaxIndices = MaxVertices * 3;
+        ///最大纹理槽数量
+        static const uint32_t MaxTextureSlots = 32;
 
         Ref<VertexArray> TriangleVertexArray;
         Ref<VertexBuffer> TriangleBuffer;
@@ -70,6 +76,15 @@ namespace Bamboo
         SpriteVertex *SpriteVerticesPtr = nullptr;
         uint32_t SpriteIndexCount = 0;
 
+        std::array<Ref<Texture2D>, MaxTextureSlots> TextureSlots;
+
+
+        struct CameraData {
+            Matrix4 ViewProjectionMatrix;
+        };
+
+        Ref<UniformBuffer> CameraUniformBuffer;
+    
     };
 
     static Renderer2DData s_Data;
@@ -144,6 +159,8 @@ namespace Bamboo
         s_Data.SpriteShader = Shader::Create("Sprite", "BambooAssets/Shaders/sprite.vert", "BambooAssets/Shaders/sprite.frag");
         s_Data.SpriteVertexArray->AddVertexBuffer(s_Data.SpriteBuffer);
 
+        s_Data.CameraUniformBuffer = UniformBuffer::Create(sizeof(Renderer2DData::CameraData),0);
+
     }
 
     void Renderer2D::BeginScene()
@@ -153,6 +170,8 @@ namespace Bamboo
 
     void Renderer2D::BeginScene(const Camera& camera) 
     {
+        Matrix4 viewProjection = camera.GetProjection();
+        s_Data.CameraUniformBuffer->SetData(&viewProjection, sizeof(Renderer2DData::CameraData));
     }
 
     void Renderer2D::EndScene()
@@ -182,6 +201,11 @@ namespace Bamboo
         if(s_Data.SpriteIndexCount > 0){
             uint32_t dataSize = std::distance(s_Data.SpriteVertices, s_Data.SpriteVerticesPtr) * sizeof(*s_Data.SpriteVertices);
             s_Data.SpriteBuffer->SetData(s_Data.SpriteVertices, dataSize);
+            //绑定纹理
+            for(int i = 0;i<1;i++){
+                s_Data.TextureSlots[i]->Bind(i);
+            }
+
             s_Data.SpriteVertexArray->Bind();
             s_Data.SpriteShader->Bind();
             RendererCommand::DrawIndexed(s_Data.SpriteVertexArray, s_Data.SpriteIndexCount);
@@ -257,7 +281,8 @@ namespace Bamboo
             s_Data.SpriteVerticesPtr->TexCoord = TexCoord[i];
             s_Data.SpriteVerticesPtr++;
         }
-         texture->Bind();
+
+        s_Data.TextureSlots[0] = texture;
         s_Data.SpriteIndexCount += 6;
     }
 }
