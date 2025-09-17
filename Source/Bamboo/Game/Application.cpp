@@ -7,8 +7,11 @@
 
 namespace Bamboo
 {
+    Application* Application::s_Instance = nullptr;
+
     Application::Application() : m_Running(true), m_Minimize(false)
     {
+        s_Instance = this;
         // 先在这里进行初始日志操作化操作
         Log::Init();
         
@@ -17,6 +20,7 @@ namespace Bamboo
 
         m_Window->SetEventCallback(BIND_CALLBACK_FN(Application::OnEvent));
         m_SceneManager = CreateScope<SceneManager>();
+        m_AssetManager = CreateScope<AssetManager>();
 
         Renderer2D::Init();
         Renderer::Init();

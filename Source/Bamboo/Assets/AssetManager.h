@@ -11,13 +11,22 @@ namespace Bamboo
     {
 
     public:
-        AssetManager(/* args */);
+        AssetManager();
         ~AssetManager();
 
         template<typename T>
-        
         Ref<T> Load(const std::string& path) {
-           return m_AssetFactory.Create<T>(path);
+            auto it = m_Assets.find(path);
+            if (it != m_Assets.end()) {
+                return std::dynamic_pointer_cast<T>(it->second);
+            }
+
+            auto asset = std::dynamic_pointer_cast<T>(
+                m_AssetFactory.Create(T::StaticType(),path)
+            );
+
+            m_Assets[path] = asset;
+            return asset;
         }
 
 

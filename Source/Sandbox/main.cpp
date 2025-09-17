@@ -18,6 +18,8 @@
 
 #include "../Bamboo/Graphics/Camera.h"
 
+#include "../Bamboo/Assets/ImageAsset.h"
+
 
 int main(int argc, char** argv) {
     using Bamboo::Vector3;
@@ -33,7 +35,9 @@ int main(int argc, char** argv) {
     // quadComponent.Color = Bamboo::Color::Blue;
 
     auto & spriteComponent = entity.AddComponent<Bamboo::SpriteRendererComponent>();
-    spriteComponent.SpriteTexture = Bamboo::Texture2D::Create("container.jpg");
+    //spriteComponent.SpriteTexture = Bamboo::Texture2D::Create("container.jpg");
+    auto imageAsset = app.GetAssetManager()->Load<Bamboo::ImageAsset>("container.jpg");
+    spriteComponent.SpriteTexture = Bamboo::Texture2D::Create(imageAsset);
 
 
     auto & transform = entity.AddComponent<Bamboo::TransformComponent>();
@@ -43,7 +47,7 @@ int main(int argc, char** argv) {
     auto& cameraComponent = entity.AddComponent<Bamboo::CameraComponent>();
     cameraComponent.CurrentCamera = Bamboo::Camera();
     cameraComponent.CurrentCamera.SetOrthographic(100, 0.1f, 1000.0f);
-    cameraComponent.CurrentCamera.SetViewportSize(Vector2(1280,720));
+    //cameraComponent.CurrentCamera.SetViewportSize(Vector2(1280,720));
     
     app.Run();
 

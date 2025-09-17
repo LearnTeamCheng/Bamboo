@@ -1,4 +1,5 @@
 #pragma once
+#include "../Bamboo/Assets/ImageAsset.h"
 #include "../Bamboo/Graphics/Texture.h"
 
 namespace Bamboo
@@ -7,8 +8,9 @@ namespace Bamboo
     class OpenGLTexture2D : public Texture2D
     {
     public:
+        OpenGLTexture2D(const Ref<ImageAsset> imageAsset);
         OpenGLTexture2D(const std::string &path);
-        OpenGLTexture2D(const TextureSettings &settings);
+        OpenGLTexture2D(const TextureSpecification & textureSpecification);
         virtual ~OpenGLTexture2D();
 
         virtual uint32_t GetWidth() const override {return m_Width;};
@@ -30,10 +32,11 @@ namespace Bamboo
         
         }
     private:
-        TextureSettings m_Settings;
+        TextureSpecification m_TextureSpecification;
         bool m_IsLoaded = false;
         std::string m_Path;
         uint32_t m_RendererID;
         uint32_t m_Width, m_Height;
+        int m_Channels;
     };
 }

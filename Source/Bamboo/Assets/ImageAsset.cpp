@@ -4,13 +4,14 @@
 #include "../Bamboo/Core/Log.h"
 namespace Bamboo
 {
-    ImageAsset::ImageAsset()
+    ImageAsset::ImageAsset():m_Width(0),m_Height(0),m_Channels(0)
     {
         stbi_set_flip_vertically_on_load(1);
     }
 
     void ImageAsset::LoadFromFile(const std::string& path)
     {
+        
         std::string fullPath = std::string(BAMBOO_ASSET_ROOT) + "/Texture2d/" + path;
         int width, height, channels;
         unsigned char *data = stbi_load(fullPath.c_str(), &width, &height, &channels, 0);
@@ -35,8 +36,13 @@ namespace Bamboo
     void ImageAsset::Unload()
     {
         m_Data.clear();
+        m_Data.shrink_to_fit();
         m_Channels = 0;
         m_Height = 0;
         m_Width = 0;
+    }
+
+    ImageAsset::~ImageAsset() {
+        Unload();
     }
 }

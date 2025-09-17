@@ -4,6 +4,14 @@
 
 namespace Bamboo
 {
+    enum class AssetType
+    {
+        Image,
+        Font,
+        Audio,
+        Model,
+        Shader,
+    };
 
     class Asset
     {
@@ -14,6 +22,8 @@ namespace Bamboo
 
         const std::string &GetPath() const { return m_Path; }
         bool IsLoaded() const { return m_IsLoaded; }
+
+         virtual AssetType GetType() = 0;
 
     protected:
         std::string m_Path;

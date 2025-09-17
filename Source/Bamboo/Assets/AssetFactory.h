@@ -1,30 +1,24 @@
 #pragma once
+#include<functional>
 #include <string>
-#include "../Bamboo/core/Ref.h"
 
+#include "../Bamboo/core/Ref.h"
 #include "../Bamboo/Assets/ImageAsset.h"
 
-namespace Bamboo {
+namespace Bamboo
+{
+
+
     class AssetFactory
     {
-
     public:
+        AssetFactory();
 
-   
-        template<typename T>
-        Ref<T> Create(const std::string& path) {
-            nullptr;
-        }
+        Ref<Asset> Create(AssetType type, const std::string& path);
+
+    private:
+        using AssetCreator = std::function<Ref<Asset>(const std::string &)>;
+        std::unordered_map<AssetType, AssetCreator> m_FactoryMap;
     };
 
-
-
-    template<>
-    Ref<ImageAsset> AssetFactory::Create<ImageAsset>(const std::string& path) {
-        auto image =  CreateRef<ImageAsset>();
-        image->LoadFromFile(path);
-
-        return image;
-    }
-    
 }

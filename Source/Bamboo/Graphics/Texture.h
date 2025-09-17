@@ -2,6 +2,8 @@
 #include "../Bamboo/Core/Ref.h"
 #include <cstdint> 
 #include <string>
+
+#include "../Bamboo/Assets/ImageAsset.h"
 namespace Bamboo
 {
 
@@ -14,7 +16,7 @@ namespace Bamboo
     };
 
     /// @brief 纹理设置
-    struct TextureSettings
+    struct TextureSpecification
     {
         TextureFormat Format = TextureFormat::RGBA8;
         uint32_t Width = 0;
@@ -52,7 +54,8 @@ namespace Bamboo
     {
     public:
         static Ref<Texture2D> Create(const std::string& path);
-        static Ref<Texture2D> Create(const TextureSettings& settings);
+        static Ref<Texture2D> Create(const TextureSpecification& textureSpecification);
+        static Ref<Texture2D> Create(const Ref<ImageAsset>& imageAsset);
     };
 
 }
