@@ -1,7 +1,8 @@
-#include "ImageAsset.h"
 #include <stb_image.h>
-#include "Config.h"
+
 #include "../Bamboo/Core/Log.h"
+#include "ImageAsset.h"
+#include "Config.h"
 namespace Bamboo
 {
     ImageAsset::ImageAsset():m_Width(0),m_Height(0),m_Channels(0)

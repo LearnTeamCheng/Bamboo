@@ -35,14 +35,8 @@ namespace Bamboo
             auto view = registry.view< TriangleComponent, TransformComponent>();
             for (auto entity : view)
             {
-
-
                 auto& [triangle, transform] = view.get< TriangleComponent, TransformComponent>(entity);
-
-
                 Renderer2D::DrawTriangle(transform.Position, triangle.TriangleColor);
-
-                //BAMBOO_CORE_INFO("TriangleComponent ");
             }
 
         }
