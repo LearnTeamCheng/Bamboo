@@ -21,16 +21,24 @@ namespace Bamboo
         RendererCommand::SetClearColor({ 0.2f, 0.3f, 0.3f, 1.0f});
         RendererCommand::Clear();
 
+        Camera* mainCamera = nullptr;
+        {
+            
+            auto view = registry.view< CameraComponent, TransformComponent>();
+            for (auto entity : view)
+            {
+                auto& [camera, transform] = view.get<CameraComponent, TransformComponent>(entity);
+               mainCamera = &camera;
+            }
+        }
 
-        // Camera & mainCamera = registry.get<Camera>(registry.view<CameraComponent>();
-        // if(mainCamera ) 
-        // {
-        //     Renderer2D::BeginScene(mainCamera);
-        // }
+        if(mainCamera){
+            Renderer2D::BeginScene(*mainCamera);
+        }else {
+            Renderer2D::BeginScene();
+        }
 
-
-
-        Renderer2D::BeginScene();
+        // triangel
         {
             auto view = registry.view< TriangleComponent, TransformComponent>();
             for (auto entity : view)
@@ -38,7 +46,6 @@ namespace Bamboo
                 auto& [triangle, transform] = view.get< TriangleComponent, TransformComponent>(entity);
                 Renderer2D::DrawTriangle(transform.Position, triangle.TriangleColor);
             }
-
         }
 
         //quad
