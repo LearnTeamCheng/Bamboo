@@ -172,6 +172,7 @@ namespace Bamboo
     {
         Matrix4 viewProjection = camera.GetProjection();
         s_Data.CameraUniformBuffer->SetData(&viewProjection, sizeof(Renderer2DData::CameraData));
+        StartBatch();
     }
 
     void Renderer2D::EndScene()
@@ -274,9 +275,19 @@ namespace Bamboo
             {0.0f, 1.0f} // 左上
         };
 
+        /*Matrix3 tempScale;*/
+        
+        Matrix4 translation = Matrix4::Translate(position);
+        Matrix4 scale = Matrix4::Scale(Vector3(size.x,size.y,1.0f));
+        
+        auto model = translation * scale;
+
         for(int i = 0;i<4;i++)
         {
-            s_Data.SpriteVerticesPtr->Position = s_Data.SpriteVertexPositions[i];
+            //s_Data.SpriteVerticesPtr->Position = s_Data.SpriteVertexPositions[i];
+            Vector3 localPos = model * s_Data.SpriteVertexPositions[i];
+            s_Data.SpriteVerticesPtr->Position = localPos;
+
             s_Data.SpriteVerticesPtr->Color = color;
             s_Data.SpriteVerticesPtr->TexCoord = TexCoord[i];
             s_Data.SpriteVerticesPtr++;

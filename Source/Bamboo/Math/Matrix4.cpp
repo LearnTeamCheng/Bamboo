@@ -151,4 +151,20 @@ namespace Bamboo
         result.m_data[11] = translation.z;
         return result;
     }
+    /**
+    {
+        x,0,0,0,
+        0,y,0,0,
+        0,0,z,0,
+        0,0,0,1
+    }
+    **/
+     Matrix4 Matrix4::Scale(const Vector3& scale) 
+     {
+         Matrix4 result;
+         result.m_data[0] = scale.x;
+         result.m_data[5] = scale.x;
+         result.m_data[10] = scale.x;
+         return result;
+     }
 }

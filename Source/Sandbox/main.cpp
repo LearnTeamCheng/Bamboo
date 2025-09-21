@@ -38,6 +38,7 @@ int main(int argc, char** argv) {
     //spriteComponent.SpriteTexture = Bamboo::Texture2D::Create("container.jpg");
     auto imageAsset = app.GetAssetManager()->Load<Bamboo::ImageAsset>("container.jpg");
     spriteComponent.SpriteTexture = Bamboo::Texture2D::Create(imageAsset);
+    spriteComponent.Size = Bamboo::Vector2(imageAsset->GetWidth(), imageAsset->GetHeight());
 
 
     auto & transform = entity.AddComponent<Bamboo::TransformComponent>();

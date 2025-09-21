@@ -1,5 +1,6 @@
 #pragma once
 #include "../Bamboo/Math/Color.h"
+#include "../Bamboo/Math/Vector2.h"
 #include "../Bamboo/Graphics/Texture.h"
 namespace Bamboo
 {
@@ -8,6 +9,7 @@ namespace Bamboo
     {
         Color SpriteColor = Color::White;
         Ref<Texture2D>  SpriteTexture; 
+        Vector2 Size;
         
         SpriteRendererComponent()=default;
         SpriteRendererComponent(const SpriteRendererComponent&)=default;

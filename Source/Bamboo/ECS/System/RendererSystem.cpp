@@ -28,7 +28,7 @@ namespace Bamboo
             for (auto entity : view)
             {
                 auto& [camera, transform] = view.get<CameraComponent, TransformComponent>(entity);
-               mainCamera = &camera;
+               mainCamera = &camera.CurrentCamera;
             }
         }
 
@@ -67,7 +67,7 @@ namespace Bamboo
             {
                 auto& [sprite, transform] = view.get<SpriteRendererComponent, TransformComponent>(entity);
 
-                Renderer2D::DrawSprite(transform.Position, Vector2(100, 100), sprite.SpriteColor,sprite.SpriteTexture);
+                Renderer2D::DrawSprite(transform.Position, sprite.Size, sprite.SpriteColor,sprite.SpriteTexture);
             }
         }
         Renderer2D::EndScene();
