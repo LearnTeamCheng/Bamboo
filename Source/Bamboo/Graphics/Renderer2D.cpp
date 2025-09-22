@@ -284,9 +284,9 @@ namespace Bamboo
 
         for(int i = 0;i<4;i++)
         {
-            //s_Data.SpriteVerticesPtr->Position = s_Data.SpriteVertexPositions[i];
-            Vector3 localPos = model * s_Data.SpriteVertexPositions[i];
-            s_Data.SpriteVerticesPtr->Position = localPos;
+            s_Data.SpriteVerticesPtr->Position = s_Data.SpriteVertexPositions[i];
+            //Vector3 localPos = model * s_Data.SpriteVertexPositions[i];
+            //s_Data.SpriteVerticesPtr->Position = localPos;
 
             s_Data.SpriteVerticesPtr->Color = color;
             s_Data.SpriteVerticesPtr->TexCoord = TexCoord[i];

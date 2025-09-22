@@ -11,7 +11,11 @@ namespace Bamboo
     class Matrix4
     {
     public:
-        Matrix4() : m_data{1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f} {}
+        Matrix4() : m_data{
+            1.0f, 0.0f, 0.0f, 0.0f,
+            0.0f, 1.0f, 0.0f, 0.0f, 
+            0.0f, 0.0f, 1.0f, 0.0f, 
+            0.0f, 0.0f, 0.0f, 1.0f} {}
 
         float &operator()(int row, int col) { return m_data[row * 4 + col]; }
         const float &operator()(int row, int col) const { return m_data[row * 4 + col]; }

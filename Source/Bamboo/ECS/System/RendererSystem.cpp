@@ -54,7 +54,7 @@ namespace Bamboo
             for (auto entity : view) 
             {
                 auto& [quad, transform] = view.get<QuadComponent, TransformComponent>(entity);
-
+                
                 Renderer2D::DrawQuad(transform.Position,Vector2(100,100),quad.Color);
             }
         }

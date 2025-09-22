@@ -134,6 +134,14 @@ namespace Bamboo
         result.m_data[7] = -(top + bottom) / (top - bottom);
         result.m_data[11] = -(zFar + zNear) / (zFar - zNear);
         result.m_data[15] = 1.0f;
+
+        //result.m_data[0] = 2.0f / (right - left);
+        //result.m_data[5] = 2.0f / (top - bottom);
+        //result.m_data[10] = -2.0f / (zFar - zNear);
+        //result.m_data[12] = -(right + left) / (right - left);
+        //result.m_data[13] = -(top + bottom) / (top - bottom);
+        //result.m_data[14] = -(zFar + zNear) / (zFar - zNear);
+        //result.m_data[15] = 1.0f;
         return result;
     }
 

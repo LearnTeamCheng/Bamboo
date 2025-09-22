@@ -47,7 +47,7 @@ int main(int argc, char** argv) {
     //增加摄像机组件
     auto& cameraComponent = entity.AddComponent<Bamboo::CameraComponent>();
     cameraComponent.CurrentCamera = Bamboo::Camera();
-    cameraComponent.CurrentCamera.SetOrthographic(10, 0.1f, 1000.0f);
+    cameraComponent.CurrentCamera.SetOrthographic(10, 1, 100.0f);
     cameraComponent.CurrentCamera.SetViewportSize(1280,720);
     
     app.Run();
