@@ -9,6 +9,10 @@ namespace Bamboo{
         Vector3 Rotation = {0.0f,0.0f,0.0f};
         Vector3 Scale = {1.0f,1.0f,1.0f};
 
+        bool Dirty = true;
+        Matrix4 LocalToWorldMatrix;
+        Matrix4 WorldToLocalMatrix;
+        
         TransformComponent() = default;
         TransformComponent(const TransformComponent& other) = default;
 

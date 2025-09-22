@@ -48,6 +48,8 @@ namespace Bamboo
         static Matrix4 RotateY(float angle);  
         static Matrix4 RotateZ(float angle);
 
+        static Matrix4 Rotate(const Vector3& rotation);
+
         /// @brief 创建一个正交矩阵
         static Matrix4 Orthographic(float left, float right, float bottom, float top, float zNear, float zFar);
 
