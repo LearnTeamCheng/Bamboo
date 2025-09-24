@@ -1,3 +1,5 @@
+#include<vector>
+
 #include "RendererSystem.h"
 
 #include "../Bamboo/ECS/Component/Component.h"
@@ -64,11 +66,18 @@ namespace Bamboo
         {
             auto view = registry.view< SpriteRendererComponent, TransformComponent>();
             size_t size =  view.size();
+            std::vector<std::tuple<int, SpriteRendererComponent*>> sprites;
             for (auto entity : view)
             {
                 auto& [sprite, transform] = view.get<SpriteRendererComponent, TransformComponent>(entity);
                 Renderer2D::DrawSprite(transform.LocalToWorldMatrix, sprite.SpriteColor, sprite.SpriteTexture);
+
+                sprites.emplace_back(sprite.ZOrder,&sprite);
             }
+
+            std::sort(sprites.begin(), sprites.end(), [](const auto&a,const auto &b) {
+                return std::get<0>(a) < std::get<0>(b);
+                });
         }
         Renderer2D::EndScene();
     }
