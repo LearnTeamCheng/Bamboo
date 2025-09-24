@@ -10,6 +10,11 @@ namespace Bamboo
     {   
         //线框模式
         //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+        //深度测试
+        glEnable(GL_DEPTH_TEST);
+        //混合
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     }
 
     void OpenGLRendererAPI::SetViewport(uint32_t x, uint32_t y, uint32_t width, uint32_t height){

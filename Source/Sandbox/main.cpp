@@ -25,7 +25,7 @@ int main(int argc, char** argv) {
     using Bamboo::Vector3;
     Bamboo::Application app;
     
-    auto entity = app.GetSceneManager()->GetActiveScene()->CreateEntity();
+   
     //auto& component = entity.AddComponent<Bamboo::TriangleComponent>();
     //component.TriangleColor = Bamboo::Color::Blue;
     //
@@ -34,21 +34,34 @@ int main(int argc, char** argv) {
     // auto& quadComponent = entity.AddComponent<Bamboo::QuadComponent>();
     // quadComponent.Color = Bamboo::Color::Blue;
 
-    auto & spriteComponent = entity.AddComponent<Bamboo::SpriteRendererComponent>();
-    //spriteComponent.SpriteTexture = Bamboo::Texture2D::Create("container.jpg");
-    auto imageAsset = app.GetAssetManager()->Load<Bamboo::ImageAsset>("container.jpg");
-    spriteComponent.SpriteTexture = Bamboo::Texture2D::Create(imageAsset);
-    spriteComponent.Size = Bamboo::Vector2(imageAsset->GetWidth(), imageAsset->GetHeight());
+    std::string textList[] = {"container.jpg","awesomeface.png"};
+    Bamboo::Vector3 vectorList[] = {Bamboo::Vector3(1280 / 2, 720 / 2, 0),Bamboo::Vector3(300,300,0)};
+
+    for(int i = 0;i<2;i++){
+
+        auto entity = app.GetSceneManager()->GetActiveScene()->CreateEntity();
+        auto & spriteComponent = entity.AddComponent<Bamboo::SpriteRendererComponent>();
+        // auto imageAsset = app.GetAssetManager()->Load<Bamboo::ImageAsset>("container.jpg");
+        auto imageAsset = app.GetAssetManager()->Load<Bamboo::ImageAsset>(textList[i]);
+        spriteComponent.SpriteTexture = Bamboo::Texture2D::Create(imageAsset);
+        spriteComponent.Size = Bamboo::Vector2(imageAsset->GetWidth(), imageAsset->GetHeight());   
+        
+        auto & transform = entity.AddComponent<Bamboo::TransformComponent>();
+        // transform.Position = Vector3(1280/2, 720/2, 0);
+        transform.Position = vectorList[i];
+    }
 
 
-    auto & transform = entity.AddComponent<Bamboo::TransformComponent>();
-    transform.Position = Vector3(100, 100, 0);
+    auto cameraentity = app.GetSceneManager()->GetActiveScene()->CreateEntity();
 
     //增加摄像机组件
-    auto& cameraComponent = entity.AddComponent<Bamboo::CameraComponent>();
+    auto& cameraComponent = cameraentity.AddComponent<Bamboo::CameraComponent>();
     cameraComponent.CurrentCamera = Bamboo::Camera();
     cameraComponent.CurrentCamera.SetOrthographic(10, 1, 100.0f);
     cameraComponent.CurrentCamera.SetViewportSize(1280,720);
+
+    auto& cameraTransform =  cameraentity.AddComponent<Bamboo::TransformComponent>();
+    cameraTransform.Position = Vector3(0, 0, 0);
     
     app.Run();
 

@@ -63,11 +63,11 @@ namespace Bamboo
         //sprite 
         {
             auto view = registry.view< SpriteRendererComponent, TransformComponent>();
+            size_t size =  view.size();
             for (auto entity : view)
             {
                 auto& [sprite, transform] = view.get<SpriteRendererComponent, TransformComponent>(entity);
-
-                Renderer2D::DrawSprite(transform.Position, sprite.Size, sprite.SpriteColor,sprite.SpriteTexture);
+                Renderer2D::DrawSprite(transform.LocalToWorldMatrix, sprite.SpriteColor, sprite.SpriteTexture);
             }
         }
         Renderer2D::EndScene();

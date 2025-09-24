@@ -17,6 +17,9 @@ namespace Bamboo
             // 无效的窗口
         }
 
+        m_ViewportWidth = width;
+        m_ViewportHeight = height;
+
         m_AspectRatio = (float)width / (float)height;
         ReCalculateProjectionMatrix();
     }

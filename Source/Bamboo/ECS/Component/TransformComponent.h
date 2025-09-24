@@ -16,6 +16,17 @@ namespace Bamboo{
         TransformComponent() = default;
         TransformComponent(const TransformComponent& other) = default;
 
+        void SetLocalToWorldMatrix(Vector3& position,Vector3&scale) {
+            LocalToWorldMatrix(0, 3) = position.x;
+            LocalToWorldMatrix(1, 3) = position.y;
+            LocalToWorldMatrix(2, 3) = position.z;
+
+            LocalToWorldMatrix(0, 0) = scale.x;
+            LocalToWorldMatrix(1, 1) = scale.y;
+            LocalToWorldMatrix(2, 2) = scale.z;
+
+        }
+
     };
     
 }

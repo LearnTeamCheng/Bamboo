@@ -37,6 +37,14 @@ namespace Bamboo
 
         /// @brief 窗口大小变
         void SetViewportSize(uint32_t width, uint32_t height);
+
+        float GetOrthographicSize()const { return m_OrthographicSize; }
+
+        float GetAspecatRatio()const { return m_AspectRatio; }
+
+        size_t GetViewportWidth()const { return m_ViewportWidth; }
+        size_t GetViewportHeight() const {return m_ViewportHeight;}
+
     protected:
         /// @brief 计算投影矩阵
         void ReCalculateProjectionMatrix();
@@ -51,6 +59,9 @@ namespace Bamboo
         float m_OrthographicSize =10.0f;
         float m_OrhtographicNear = -10.0f;
         float m_OrhtographicFar = 10.0f;
+
+        size_t m_ViewportWidth = 0;
+        size_t m_ViewportHeight = 0;
 
         Matrix4 m_ProjectionMatrix;
         ProjectionType m_ProjectionType;

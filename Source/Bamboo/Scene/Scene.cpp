@@ -8,6 +8,7 @@
 #include "../Bamboo/ECS/Entity.h"
 #include "../Bamboo/ECS/System/SpriteRendererSystem.h"
 #include"../Bamboo/ECS/System/RendererSystem.h"
+#include "../Bamboo/ECS/System/TransformSystem.h"
 
 namespace Bamboo
 {
@@ -19,6 +20,9 @@ namespace Bamboo
         //m_Systems.push_back(CreateScope<SpriteRendererSystem>());
         m_Systems.push_back(CreateScope<RendererSystem>());
 
+        m_TransformSystem = CreateScope<TransformSystem>();
+        m_SpriteRendererSystem = CreateScope<SpriteRendererSystem>();
+
 
         //auto entity = CreateEntity();
         //entity.AddComponent<TriangleComponet>();
@@ -27,6 +31,10 @@ namespace Bamboo
 
     void Scene::Update(float deltaTime) 
     {
+
+        m_TransformSystem->Update(m_Registry,deltaTime);
+        m_SpriteRendererSystem->Update(m_Registry,deltaTime);
+
         for (auto& system : m_Systems)
         {
            system->Update(m_Registry,deltaTime);

@@ -19,6 +19,7 @@ namespace Bamboo
 
         float &operator()(int row, int col) { return m_data[row * 4 + col]; }
         const float &operator()(int row, int col) const { return m_data[row * 4 + col]; }
+       
         ///运算符重载
         Matrix4 operator*(const Matrix4 &other) const;
 

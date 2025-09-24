@@ -10,7 +10,10 @@ namespace Bamboo
         Color SpriteColor = Color::White;
         Ref<Texture2D>  SpriteTexture; 
         Vector2 Size;
-        
+        //排序层级
+        int ZOrder = 0;
+     
+
         SpriteRendererComponent()=default;
         SpriteRendererComponent(const SpriteRendererComponent&)=default;
         SpriteRendererComponent(const Color& color):SpriteColor(color)  {}

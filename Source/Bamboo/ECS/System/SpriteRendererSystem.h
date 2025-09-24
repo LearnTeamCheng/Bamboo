@@ -4,6 +4,6 @@
 namespace Bamboo {
     class SpriteRendererSystem : public ISystem {
         public:
-            virtual void Update(entt::registry& registry, float deltaTime) = 0;
+            virtual void Update(entt::registry& registry, float deltaTime) ;
     };
 }

@@ -36,6 +36,8 @@ namespace Bamboo
         entt::registry m_Registry;
 
     private:
+        Scope<ISystem> m_TransformSystem;
+        Scope<ISystem> m_SpriteRendererSystem;
         std::vector<Scope<ISystem>> m_Systems;
         std::unordered_map<UUID, Entity> m_EntityMap;
     };

@@ -14,6 +14,7 @@ namespace Bamboo
 
     WindowsWindow::~WindowsWindow()
     {
+        BAMBOO_CORE_INFO("~WindowsWindow");
         Shutdown();
     }
 

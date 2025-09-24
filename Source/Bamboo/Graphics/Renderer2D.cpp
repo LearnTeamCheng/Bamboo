@@ -34,6 +34,7 @@ namespace Bamboo
         Color Color;
         //纹理坐标
         Vector2 TexCoord;
+        float TexIndex;
     };
 
     struct Renderer2DData
@@ -46,6 +47,9 @@ namespace Bamboo
         static const uint32_t MaxIndices = MaxVertices * 3;
         ///最大纹理槽数量
         static const uint32_t MaxTextureSlots = 32;
+
+        static const uint32_t QuadVertexCount = 4;
+        static const uint32_t MaxQuadIndices = 6;
 
         Ref<VertexArray> TriangleVertexArray;
         Ref<VertexBuffer> TriangleBuffer;
@@ -75,6 +79,8 @@ namespace Bamboo
         SpriteVertex *SpriteVertices = nullptr;
         SpriteVertex *SpriteVerticesPtr = nullptr;
         uint32_t SpriteIndexCount = 0;
+
+        uint32_t SpriteCount = 0;
 
         std::array<Ref<Texture2D>, MaxTextureSlots> TextureSlots;
 
@@ -130,32 +136,73 @@ namespace Bamboo
         s_Data.QuadVertexPosition[2] = { 0.5f,0.5f,0.0f,1.0f };
         s_Data.QuadVertexPosition[3] = { -0.5f,0.5f,0.0f,1.0f };
         //顶点数据，围成一个矩形
-        uint32_t quadIndices[] = { 0,1,2,2,3,0 };
-        Ref<IndexBuffer> quadIndexBuffer = IndexBuffer::Create(quadIndices, sizeof(quadIndices) / sizeof(quadIndices[0]));
+        //uint32_t quadIndices[] = { 0,1,2,2,3,0 };
+
+        uint32_t* quadIndices = new uint32_t[6*2];
+        uint32_t offset = 0;
+        for (uint32_t i = 0; i < 2*s_Data.QuadIndexCount; i+=6) 
+        {
+            quadIndices[i + 0] = offset + 0;
+            quadIndices[i + 1] = offset + 1;
+            quadIndices[i + 2] = offset + 2;
+
+            quadIndices[i + 3] = offset + 2;
+            quadIndices[i + 4] = offset + 3;
+            quadIndices[i + 5] = offset + 0;
+
+            offset += 4;
+        }
+
+
+        Ref<IndexBuffer> quadIndexBuffer = IndexBuffer::Create(quadIndices, 2);
         s_Data.QuadVertexArray->SetIndexBuffer(quadIndexBuffer);
+
+        delete[] quadIndices;
+
         s_Data.QuadShader = Shader::Create("Quad", "BambooAssets/Shaders/triangle.vert", "BambooAssets/Shaders/triangle.frag");
         s_Data.QuadVertexArray->AddVertexBuffer(s_Data.QuadBuffer);
 
 
         //Sprite
         s_Data.SpriteVertexArray = VertexArray::Create();
-        s_Data.SpriteBuffer = VertexBuffer::Create(sizeof(SpriteVertex));
+        s_Data.SpriteBuffer = VertexBuffer::Create(sizeof(SpriteVertex) *2);
         s_Data.SpriteBuffer->SetLayout({
             {ShaderDatatType::Float3,"a_Position"},
             {ShaderDatatType::Float4,"a_Color"},
-            {ShaderDatatType::Float2,"a_TexCoord"}
+            {ShaderDatatType::Float2,"a_TexCoord"},
+            {ShaderDatatType::Float,"a_TexIndex"}
+
         });
 
-        s_Data.SpriteVertices = new SpriteVertex[4];
+        s_Data.SpriteVertices = new SpriteVertex[s_Data.QuadVertexCount*2];
         s_Data.SpriteVertexPositions[0] = { -0.5f, -0.5f, 0.0f };
         s_Data.SpriteVertexPositions[1] = { 0.5f, -0.5f, 0.0f };
         s_Data.SpriteVertexPositions[2] = { 0.5f, 0.5f, 0.0f };
         s_Data.SpriteVertexPositions[3] = { -0.5f, 0.5f, 0.0f };
         
         //顶点数据，围成一个矩形
-        uint32_t spriteIndices[] = { 0,1,2,2,3,0 };
-        Ref<IndexBuffer> spriteIndexBuffer = IndexBuffer::Create(spriteIndices, sizeof(spriteIndices) / sizeof(spriteIndices[0]));
+        // uint32_t spriteIndices[] = { 0,1,2,2,3,0 };
+        uint32_t* spriteIndices =  new uint32_t[s_Data.MaxQuadIndices*2];
+        offset = 0;
+
+        for(int i = 0;i<2*s_Data.MaxQuadIndices;i+=6){
+            spriteIndices[i+0] = offset + 0;
+            spriteIndices[i+1] = offset + 1;
+            spriteIndices[i+2] = offset + 2;
+
+            spriteIndices[i+3] = offset + 2;
+            spriteIndices[i+4] = offset + 3;
+            spriteIndices[i+5] = offset + 0;
+            offset += 4;
+    
+        }
+
+
+        
+        Ref<IndexBuffer> spriteIndexBuffer = IndexBuffer::Create(spriteIndices, 2*6);
         s_Data.SpriteVertexArray->SetIndexBuffer(spriteIndexBuffer);
+        delete[] spriteIndices;
+
         s_Data.SpriteShader = Shader::Create("Sprite", "BambooAssets/Shaders/sprite.vert", "BambooAssets/Shaders/sprite.frag");
         s_Data.SpriteVertexArray->AddVertexBuffer(s_Data.SpriteBuffer);
 
@@ -166,7 +213,7 @@ namespace Bamboo
     void Renderer2D::BeginScene()
     {
         StartBatch();
-    }
+    }  
 
     void Renderer2D::BeginScene(const Camera& camera) 
     {
@@ -203,7 +250,7 @@ namespace Bamboo
             uint32_t dataSize = std::distance(s_Data.SpriteVertices, s_Data.SpriteVerticesPtr) * sizeof(*s_Data.SpriteVertices);
             s_Data.SpriteBuffer->SetData(s_Data.SpriteVertices, dataSize);
             //绑定纹理
-            for(int i = 0;i<1;i++){
+            for(int i = 0;i< s_Data.SpriteCount;i++){
                 s_Data.TextureSlots[i]->Bind(i);
             }
 
@@ -221,6 +268,7 @@ namespace Bamboo
         s_Data.QuadIndexCount = 0;
         s_Data.QuadVerticesPtr = s_Data.QuadVertices;
 
+        s_Data.SpriteCount = 0;
         s_Data.SpriteIndexCount = 0;
         s_Data.SpriteVerticesPtr = s_Data.SpriteVertices;
     }
@@ -265,7 +313,7 @@ namespace Bamboo
         s_Data.QuadIndexCount += 6;
     }
 
-    void Renderer2D::DrawSprite(const Vector3 & position, const Vector2 & size, const Color & color, Ref<Texture2D>& texture)
+    void Renderer2D::DrawSprite(const Matrix4& localMatrix, const Color & color, Ref<Texture2D>& texture)
     {   
         // 纹理坐标
         Vector2 TexCoord[] = {
@@ -275,25 +323,25 @@ namespace Bamboo
             {0.0f, 1.0f} // 左上
         };
 
-        /*Matrix3 tempScale;*/
-        
-        Matrix4 translation = Matrix4::Translate(position);
-        Matrix4 scale = Matrix4::Scale(Vector3(size.x,size.y,1.0f));
-        
-        auto model = translation * scale;
 
         for(int i = 0;i<4;i++)
         {
-            s_Data.SpriteVerticesPtr->Position = s_Data.SpriteVertexPositions[i];
-            //Vector3 localPos = model * s_Data.SpriteVertexPositions[i];
-            //s_Data.SpriteVerticesPtr->Position = localPos;
+            s_Data.SpriteVerticesPtr->Position = localMatrix * Vector4(s_Data.SpriteVertexPositions[i]) ;
 
             s_Data.SpriteVerticesPtr->Color = color;
             s_Data.SpriteVerticesPtr->TexCoord = TexCoord[i];
+            s_Data.SpriteVerticesPtr->TexIndex = (float)s_Data.SpriteCount;
             s_Data.SpriteVerticesPtr++;
         }
 
-        s_Data.TextureSlots[0] = texture;
+        s_Data.TextureSlots[s_Data.SpriteCount] = texture;
         s_Data.SpriteIndexCount += 6;
+        s_Data.SpriteCount++;
+    }
+
+    void Renderer2D::Shutdown(){
+        delete [] s_Data.TriangleVertices;
+        delete [] s_Data.QuadVertices;
+        delete [] s_Data.SpriteVertices;
     }
 }

@@ -24,13 +24,15 @@ namespace Bamboo
         Vector3(float x, float y, float z) : x(x), y(y), z(z) {}
         Vector3(const Vector3 &other) = default;
         Vector3(const Vector4 &other);
+
+        Vector3(const Vector2& other);
         
         Vector3 &operator=(const Vector3 &other)=default;
         Vector3& operator=(const Vector4& other);
 
 
 
-        Vector3(const Vector2 &v);
+       
         ~Vector3() = default;
 
         float Dot(const Vector3 &other) const
