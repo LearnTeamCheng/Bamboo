@@ -17,10 +17,9 @@ namespace Bamboo
         virtual uint32_t GetHeight() const override {return m_Height;};
         virtual uint32_t GetRendererID() const override {return m_RendererID;};
 
-        virtual const std::string &GetPath() const override {return m_Path;};
-
+        //virtual const std::string &GetPath() const override {return m_Path;};
         virtual void Bind(uint32_t slot = 0) const override;
-        virtual bool IsLoaded()const override { return m_IsLoaded; }
+        //virtual bool IsLoaded()const override { return m_IsLoaded; }
         virtual bool operator==(const Texture &other) const override
         {
             return m_RendererID == other.GetRendererID();
@@ -29,14 +28,13 @@ namespace Bamboo
 
         virtual void SetData(void* data, uint32_t size) const override 
         {
-        
+            
         }
     private:
         TextureSpecification m_TextureSpecification;
-        bool m_IsLoaded = false;
-        std::string m_Path;
         uint32_t m_RendererID;
         uint32_t m_Width, m_Height;
+        Ref<ImageAsset> m_ImageAsset;
         int m_Channels;
     };
 }

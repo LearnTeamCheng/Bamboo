@@ -9,9 +9,14 @@ namespace Bamboo
     {
         Color SpriteColor = Color::White;
         Ref<Texture2D>  SpriteTexture; 
+        /// @brief 大小
         Vector2 Size;
-        //排序层级
+        /// @brief 排序层级
         int ZOrder = 0;
+        /// @brief 透明度
+        float Opacity = 1.0f;
+        /// @brief 是否可见
+        bool Visible = true;
      
 
         SpriteRendererComponent()=default;

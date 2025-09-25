@@ -10,7 +10,7 @@
 namespace Bamboo
 {
 
-    OpenGLTexture2D::OpenGLTexture2D(const std::string &path) : m_Path(path)
+    OpenGLTexture2D::OpenGLTexture2D(const std::string &path) 
     {
         // 翻转纹理y轴
         stbi_set_flip_vertically_on_load(1);
@@ -22,7 +22,7 @@ namespace Bamboo
 
         if (data)
         {
-            m_IsLoaded = true;
+            //m_IsLoaded = true;
             m_Width = width;
             m_Height = height;
             GLenum internalFormat = 0, dataFormat = 0;
@@ -74,7 +74,7 @@ namespace Bamboo
         m_Width = imageAsset->GetWidth();
         m_Height = imageAsset->GetHeight();
         m_Channels = imageAsset->GetChannels();
-
+        m_ImageAsset = imageAsset;
         GLenum internalFormat = 0, dataFormat = 0;
         // 设置纹理格式
         if (m_Channels == 4)
@@ -114,5 +114,4 @@ namespace Bamboo
     {
         glDeleteTextures(1, &m_RendererID);
     }
-
 };

@@ -66,18 +66,22 @@ namespace Bamboo
         {
             auto view = registry.view< SpriteRendererComponent, TransformComponent>();
             size_t size =  view.size();
-            std::vector<std::tuple<int, SpriteRendererComponent*>> sprites;
+            std::vector<std::tuple<int, SpriteRendererComponent*, TransformComponent*>> sprites;
             for (auto entity : view)
             {
                 auto& [sprite, transform] = view.get<SpriteRendererComponent, TransformComponent>(entity);
-                Renderer2D::DrawSprite(transform.LocalToWorldMatrix, sprite.SpriteColor, sprite.SpriteTexture);
-
-                sprites.emplace_back(sprite.ZOrder,&sprite);
+                //Renderer2D::DrawSprite(transform.LocalToWorldMatrix, sprite.SpriteColor, sprite.SpriteTexture);
+                sprites.emplace_back(sprite.ZOrder,&sprite,&transform);
             }
-
+            
+            //根据Zorder 排序
             std::sort(sprites.begin(), sprites.end(), [](const auto&a,const auto &b) {
                 return std::get<0>(a) < std::get<0>(b);
                 });
+
+            for (auto& [zOrder, sprite, transform] : sprites) {
+                Renderer2D::DrawSprite(transform->LocalToWorldMatrix, sprite->SpriteColor, sprite->SpriteTexture);
+            }
         }
         Renderer2D::EndScene();
     }

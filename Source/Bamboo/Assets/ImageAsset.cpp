@@ -16,7 +16,7 @@ namespace Bamboo
         std::string fullPath = std::string(BAMBOO_ASSET_ROOT) + "/Texture2d/" + path;
         int width, height, channels;
         unsigned char *data = stbi_load(fullPath.c_str(), &width, &height, &channels, 0);
-
+        m_Path = path;
         if (data)
         {
             m_Width = width;
@@ -27,6 +27,7 @@ namespace Bamboo
 
             m_Data.assign(data,data+ size);
             stbi_image_free(data);
+            m_IsLoaded = true;
         }
         else
         {
