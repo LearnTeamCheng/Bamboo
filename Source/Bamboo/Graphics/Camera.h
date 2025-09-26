@@ -1,5 +1,6 @@
 #pragma once
 #include "../Bamboo/Core/Ref.h"
+#include "../Bamboo/Math/Vector2.h"
 #include "../Bamboo/Math/Vector3.h"
 #include "../Bamboo/Math/Matrix4.h"
 namespace Bamboo
@@ -39,11 +40,17 @@ namespace Bamboo
         void SetViewportSize(uint32_t width, uint32_t height);
 
         float GetOrthographicSize()const { return m_OrthographicSize; }
-
-        float GetAspecatRatio()const { return m_AspectRatio; }
+        /// @brief 获取宽高比 
+        float GetAspectRatio()const { return m_AspectRatio; }
 
         size_t GetViewportWidth()const { return m_ViewportWidth; }
         size_t GetViewportHeight() const {return m_ViewportHeight;}
+
+        Vector3 ScreenToWorldPosition(const Vector3& screenPos) const;
+        Vector3 PixelSizeToWorldSize(const Vector2& pixelSize) const;
+
+        void SetPrimaryCamera(bool primary) { m_PrimaryCamera = primary; }
+        bool IsPrimaryCamera() const { return m_PrimaryCamera; }
 
     protected:
         /// @brief 计算投影矩阵
@@ -65,6 +72,18 @@ namespace Bamboo
 
         Matrix4 m_ProjectionMatrix;
         ProjectionType m_ProjectionType;
+
+        struct CameraData
+        {
+           float left;
+            float right;
+            float bottom;
+            float top;
+        };
+
+        CameraData m_CameraData;
+        /// @brief 是否是主摄像机
+        bool m_PrimaryCamera = false;
     };
 
 }

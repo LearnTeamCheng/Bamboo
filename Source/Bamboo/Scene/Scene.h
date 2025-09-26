@@ -29,7 +29,7 @@ namespace Bamboo
 
         Entity CreateEntityWithUUID(UUID uuid, const std::string& name = std::string());
 
-        
+        Entity FindEntityByName(const std::string_view& name);
 
         void DestroyEntity(Entity entity);
 
