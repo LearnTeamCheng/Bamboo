@@ -4,6 +4,9 @@
 
 # 分组：核心逻辑
 set(EDITOR_CORE
+    Source/Core/Application.cpp
+    Source/Core/Application.h
+
     # src/Core/EditorLayer.cpp
     # src/Core/EditorLayer.h
     # src/Core/EditorApplication.cpp
@@ -38,17 +41,18 @@ add_executable(Editor ${EDITOR_SRC})
 # 包含路径
 target_include_directories(Editor
     PRIVATE
-        ${CMAKE_CURRENT_SOURCE_DIR}/src
+        ${CMAKE_CURRENT_SOURCE_DIR}/Source
 )
 
-# 链接依赖
-target_link_libraries(Editor
-    PRIVATE
-        Bamboo      # 引擎库
-        imgui       # UI
-        spdlog::spdlog_header_only
-        stb
-)
+
+
+target_link_libraries(Editor PRIVATE 
+    Bamboo 
+    imgui 
+    spdlog::spdlog_header_only 
+    stb
+    glfw
+    )
 
 # 如果想分组显示在 IDE（比如 VS / Xcode）里更清晰
 source_group("Core" FILES ${EDITOR_CORE})

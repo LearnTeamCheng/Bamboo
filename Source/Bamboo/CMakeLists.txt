@@ -1,4 +1,4 @@
-
+#Bamboo
 
 file(GLOB_RECURSE BAMBOO_SRC
     ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp
@@ -11,7 +11,6 @@ target_include_directories(Bamboo PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
 target_link_libraries(Bamboo
     PUBLIC
-        imgui
         glfw
         glad
         entt

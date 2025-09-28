@@ -1,6 +1,6 @@
 #include "GraphicsContext.h"
 #include "RendererAPI.h"
-#include "../Bamboo/GraphicsAPI/OpenGL/OpenGLContext.h";
+#include "../Bamboo/GraphicsAPI/OpenGL/OpenGLContext.h"
 
 namespace Bamboo {
 	Scope<GraphicsContext> GraphicsContext::Create(void* window) {

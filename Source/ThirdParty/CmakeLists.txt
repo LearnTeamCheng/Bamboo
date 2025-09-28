@@ -65,3 +65,10 @@ target_include_directories(imgui PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/imgui/backends
 )
 
+
+# 添加 GLFW 依赖
+if(IMGUI_BACKEND_GLFW_OPENGL3 OR IMGUI_BACKEND_VULKAN)
+    target_link_libraries(imgui PUBLIC glfw)
+    # 如果 GLFW 的头文件路径不在标准位置，可以显式添加
+    target_include_directories(imgui PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/GLFW/include)
+endif()

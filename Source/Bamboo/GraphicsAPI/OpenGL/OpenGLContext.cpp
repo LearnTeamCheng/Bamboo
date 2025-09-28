@@ -1,6 +1,6 @@
 #include "OpenGLContext.h"
 #include "./Core/Log.h"
-#include "../Bamboo/Core/Assert.h";
+#include "../Bamboo/Core/Assert.h"
 #include<glad/glad.h>
 #include<GLFW/glfw3.h>
 

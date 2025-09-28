@@ -33,6 +33,7 @@ configure_file(
   ${CMAKE_BINARY_DIR}/generated/Config.h
   @ONLY
 )
+
 # 让目标能包含到这个生成头
 target_include_directories(Bamboo  PUBLIC ${CMAKE_BINARY_DIR}/generated)
 target_include_directories(Sandbox PUBLIC ${CMAKE_BINARY_DIR}/generated)
