@@ -25,8 +25,10 @@ namespace Bamboo
 
         static Application* GetInstance() { return s_Instance; }
 
-    private:
+        Scope<Window>& GetWindow() { return m_Window; }
+
         void OnEvent(Event& event);
+private:
         bool OnWindowClose(ApplicationClosedEvent& event);
         bool OnWindowResize(ApplicationResizeEvent& event);
     private:

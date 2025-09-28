@@ -21,6 +21,8 @@ add_subdirectory(Bamboo)
 # Sandbox
 add_subdirectory(Sandbox)
 
+#编辑器
+add_subdirectory(Editor)
 
 
 # 规范化路径

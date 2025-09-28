@@ -21,6 +21,7 @@
 #include "../Bamboo/Assets/ImageAsset.h"
 
 
+
 int main(int argc, char** argv) {
     using Bamboo::Vector3;
     Bamboo::Application app;
@@ -44,7 +45,8 @@ int main(int argc, char** argv) {
         // auto imageAsset = app.GetAssetManager()->Load<Bamboo::ImageAsset>("container.jpg");
         auto imageAsset = app.GetAssetManager()->Load<Bamboo::ImageAsset>(textList[i]);
         spriteComponent.SpriteTexture = Bamboo::Texture2D::Create(imageAsset);
-        spriteComponent.Size = Bamboo::Vector2(imageAsset->GetWidth(), imageAsset->GetHeight());   
+        spriteComponent.Size = Bamboo::Vector2(imageAsset->GetWidth(), imageAsset->GetHeight()); 
+        spriteComponent.ZOrder = i;
         
         auto & transform = entity.AddComponent<Bamboo::TransformComponent>();
         // transform.Position = Vector3(1280/2, 720/2, 0);

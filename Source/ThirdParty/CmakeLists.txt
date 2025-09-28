@@ -20,3 +20,48 @@ target_include_directories(stb INTERFACE
     ${CMAKE_CURRENT_SOURCE_DIR}/stb
 )
 
+
+# ImGui 核心源文件
+set(IMGUI_SRC
+    ${CMAKE_CURRENT_SOURCE_DIR}/imgui/imgui.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/imgui/imgui_demo.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/imgui/imgui_draw.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/imgui/imgui_tables.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/imgui/imgui_widgets.cpp
+)
+
+# 后端开关
+option(IMGUI_BACKEND_GLFW_OPENGL3 "Enable ImGui GLFW+OpenGL3 backend" ON)
+option(IMGUI_BACKEND_DX12         "Enable ImGui DirectX12 backend"   OFF)
+option(IMGUI_BACKEND_VULKAN       "Enable ImGui Vulkan backend"      OFF)
+
+if(IMGUI_BACKEND_GLFW_OPENGL3)
+    list(APPEND IMGUI_SRC
+        ${CMAKE_CURRENT_SOURCE_DIR}/imgui/backends/imgui_impl_glfw.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/imgui/backends/imgui_impl_opengl3.cpp
+    )
+endif()
+
+if(IMGUI_BACKEND_DX12)
+    list(APPEND IMGUI_SRC
+        ${CMAKE_CURRENT_SOURCE_DIR}/imgui/backends/imgui_impl_win32.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/imgui/backends/imgui_impl_dx12.cpp
+    )
+endif()
+
+if(IMGUI_BACKEND_VULKAN)
+    list(APPEND IMGUI_SRC
+        ${CMAKE_CURRENT_SOURCE_DIR}/imgui/backends/imgui_impl_glfw.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/imgui/backends/imgui_impl_vulkan.cpp
+    )
+endif()
+
+# 定义 imgui 静态库
+add_library(imgui ${IMGUI_SRC})
+
+# 包含路径（始终添加 core/backends，方便 #include "imgui.h"）
+target_include_directories(imgui PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}/imgui
+    ${CMAKE_CURRENT_SOURCE_DIR}/imgui/backends
+)
+
