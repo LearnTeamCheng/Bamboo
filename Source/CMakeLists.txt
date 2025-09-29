@@ -17,10 +17,8 @@ add_subdirectory(./ThirdParty ${CMAKE_BINARY_DIR}/ThirdParty_build)
 
 # 引擎
 add_subdirectory(Bamboo)
-
 # Sandbox
 add_subdirectory(Sandbox)
-
 #编辑器
 add_subdirectory(Editor)
 

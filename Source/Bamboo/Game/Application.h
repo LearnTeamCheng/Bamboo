@@ -1,4 +1,5 @@
 #pragma once
+#include <string>
 #include "Window.h"
 #include "../Bamboo/Core/Base.h"
 #include "../Bamboo/Core/Ref.h"
@@ -14,7 +15,8 @@ namespace Bamboo
     class Application
     {
     public:
-        Application();
+        //Application();
+        Application(const std::string& name);
         virtual ~Application();
         void Run();
         void Stop();
@@ -35,6 +37,7 @@ private:
         static Application* s_Instance;
         bool m_Minimize;
         bool m_Running;
+        std::string m_Name;
         Scope<Window> m_Window;
 
         Scope<SceneManager> m_SceneManager;

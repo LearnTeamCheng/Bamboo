@@ -201,6 +201,10 @@ namespace Bamboo
         s_Data.SpriteVertexArray->AddVertexBuffer(s_Data.SpriteBuffer);
 
         s_Data.CameraUniformBuffer = UniformBuffer::Create(sizeof(Renderer2DData::CameraData), 0);
+        //白色纹理
+        s_Data.TextureSlots[0] =  Texture2D::Create(TextureSpecification());
+        uint32_t whiteTextureData = 0xffffffff;
+        s_Data.TextureSlots[0]->SetData(&whiteTextureData,sizeof(uint32_t));
     }
 
     void Renderer2D::BeginScene()
