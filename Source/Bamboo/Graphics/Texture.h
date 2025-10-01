@@ -38,7 +38,7 @@ namespace Bamboo
 
         /// @brief 获取路径
         // virtual const std::string &GetPath()const = 0;
-        virtual void SetData(void* data, uint32_t size) const = 0;
+        virtual void SetData(void* data, uint32_t size) = 0;
 
         /// @brief 绑定纹理到指定槽位
         virtual void Bind(uint32_t slot = 0)const = 0;

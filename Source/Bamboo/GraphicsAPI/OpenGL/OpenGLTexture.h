@@ -2,6 +2,9 @@
 #include "../Bamboo/Assets/ImageAsset.h"
 #include "../Bamboo/Graphics/Texture.h"
 
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
+
 namespace Bamboo
 {
 
@@ -26,15 +29,15 @@ namespace Bamboo
         }
 
 
-        virtual void SetData(void* data, uint32_t size) const override 
-        {
-            
-        }
+        virtual void SetData(void* data, uint32_t size) override;
+   
     private:
         TextureSpecification m_TextureSpecification;
         uint32_t m_RendererID;
         uint32_t m_Width, m_Height;
         Ref<ImageAsset> m_ImageAsset;
+        GLenum m_InternalFormat;
+        GLenum m_DataFormat;
         int m_Channels;
     };
 }

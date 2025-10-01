@@ -236,7 +236,7 @@ namespace Bamboo
         s_Data.SpriteIndexCount = 0;
         s_Data.SpriteVerticesPtr = s_Data.SpriteVertices;
 
-        s_Data.TextureSlotIndex = 0;
+        s_Data.TextureSlotIndex = 1;
     }
 
     void Renderer2D::NextBatch()
@@ -275,7 +275,7 @@ namespace Bamboo
             uint32_t dataSize = std::distance(s_Data.SpriteVertices, s_Data.SpriteVerticesPtr) * sizeof(*s_Data.SpriteVertices);
             s_Data.SpriteBuffer->SetData(s_Data.SpriteVertices, dataSize);
             // 绑定纹理
-            for (int i = 0; i < s_Data.SpriteCount; i++)
+            for (int i = 0; i <s_Data.TextureSlotIndex; i++)
             {
                 s_Data.TextureSlots[i]->Bind(i);
             }
@@ -367,7 +367,7 @@ namespace Bamboo
 
             s_Data.SpriteVerticesPtr->Color = color;
             s_Data.SpriteVerticesPtr->TexCoord = TexCoord[i];
-            s_Data.SpriteVerticesPtr->TexIndex = (float)s_Data.SpriteCount;
+            s_Data.SpriteVerticesPtr->TexIndex = (float)(s_Data.SpriteCount  +1);
             s_Data.SpriteVerticesPtr++;
         }
 

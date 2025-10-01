@@ -2,8 +2,8 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "OpenGLTexture.h"
 #include <stb_image.h>
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
+//#include <glad/glad.h>
+//#include <GLFW/glfw3.h>
 
 #include "../Bamboo/Core/Log.h"
 #include "Config.h"
@@ -90,8 +90,9 @@ namespace Bamboo
 
             glCreateTextures(GL_TEXTURE_2D, 1, &m_RendererID);
             GLenum internalFormat = 0, dataFormat = 0;
-            dataFormat = Utils::ImageFormatToGLDataFormat(textureSpecification.textureFormat);
-            internalFormat = Utils::ImageFormatToGLInternalFormat(textureSpecification.textureFormat);
+            dataFormat = Utils::ImageFormatToGLDataFormat(textureSpecification.Format);
+            internalFormat = Utils::ImageFormatToGLInternalFormat(textureSpecification.Format);
+            m_DataFormat = dataFormat;
 
             // 设置纹理数据
             glTextureStorage2D(m_RendererID, 1, internalFormat, m_Width, m_Height);
@@ -124,6 +125,7 @@ namespace Bamboo
                 dataFormat = GL_RGB;
             }
 
+            m_DataFormat = dataFormat;
             // 生成纹理并绑定
             glCreateTextures(GL_TEXTURE_2D, 1, &m_RendererID);
             // 设置纹理数据
@@ -144,6 +146,12 @@ namespace Bamboo
         void OpenGLTexture2D::Bind(uint32_t slot) const
         {
             glBindTextureUnit(slot, m_RendererID);
+        }
+
+
+        void OpenGLTexture2D::SetData(void* data, uint32_t size){
+            uint32_t bpp = m_DataFormat == GL_RGBA ? 4 : 3;
+            glTextureSubImage2D(m_RendererID, 0, 0, 0, m_Width, m_Height, m_DataFormat, GL_UNSIGNED_BYTE, data);
         }
 
         OpenGLTexture2D::~OpenGLTexture2D()

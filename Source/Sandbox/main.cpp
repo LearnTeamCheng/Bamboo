@@ -6,27 +6,27 @@
 #include<filesystem>
 
 
-// #include "../Bamboo/Game/Application.h"
-// #include "../Bamboo/Scene/Scene.h"
-// #include "../Bamboo/Scene/SceneManager.h"
+ #include "../Bamboo/Game/Application.h"
+ #include "../Bamboo/Scene/Scene.h"
+ #include "../Bamboo/Scene/SceneManager.h"
 
-// #include "../Bamboo/ECS/Entity.h"
-// #include "../Bamboo/ECS/Component/Component.h"
+ #include "../Bamboo/ECS/Entity.h"
+ #include "../Bamboo/ECS/Component/Component.h"
 
-// #include "../Bamboo/Math/Color.h"
-// #include "../Bamboo/Graphics/Texture.h"
+ #include "../Bamboo/Math/Color.h"
+ #include "../Bamboo/Graphics/Texture.h"
 
-// #include "../Bamboo/Graphics/Camera.h"
+ #include "../Bamboo/Graphics/Camera.h"
 
-// #include "../Bamboo/Assets/ImageAsset.h"
+ #include "../Bamboo/Assets/ImageAsset.h"
 
 #include "BreakoutDemo/BreakoutApp.h"
 
 
 
 int main(int argc, char** argv) {
-    //using Bamboo::Vector3;
-    //Bamboo::Application app;
+    using Bamboo::Vector3;
+    Bamboo::Application app{"test"};
     
    
     //auto& component = entity.AddComponent<Bamboo::TriangleComponent>();
@@ -36,7 +36,7 @@ int main(int argc, char** argv) {
 
     // auto& quadComponent = entity.AddComponent<Bamboo::QuadComponent>();
     // quadComponent.Color = Bamboo::Color::Blue;
-    /** 
+ 
     std::string textList[] = {"container.jpg","awesomeface.png"};
     Bamboo::Vector3 vectorList[] = {Bamboo::Vector3(1280 / 2, 720 / 2, 0),Bamboo::Vector3(300,300,0)};
 
@@ -70,9 +70,9 @@ int main(int argc, char** argv) {
     app.Run();
 
     std::cout << std::filesystem::current_path() << std::endl;
-    **/
+    
 
-    BreakoutApp app;
-    app.Run();
-    return 0;
+    //BreakoutApp app;
+    //app.Run();
+    //return 0;
 }
