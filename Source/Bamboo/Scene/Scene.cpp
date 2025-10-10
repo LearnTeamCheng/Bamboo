@@ -45,7 +45,7 @@ namespace Bamboo
     Entity Scene::CreateEntityWithUUID(UUID uuid, const std::string &name)
     {
         Entity entity = {m_Registry.create(), this};
-
+        entity.AddComponent<TransformComponent>();
         m_EntityMap[uuid] = entity;
         return entity;
     }

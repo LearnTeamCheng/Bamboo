@@ -1,5 +1,5 @@
 #version 420 core
-layout(binding = 0) uniform sampler2D textureSampler[2];
+layout(binding = 0) uniform sampler2D textureSampler[3];
 
 in vec2 TexCoord;
 layout (location = 4)in flat float TexIndex;
@@ -15,6 +15,8 @@ void main()
         case 1:
             color = texture(textureSampler[1], TexCoord);
             break;
+        case 2:
+            color = texture(textureSampler[2], TexCoord);
         default:
             break;
     }
