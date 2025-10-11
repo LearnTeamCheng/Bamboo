@@ -45,21 +45,55 @@ namespace Bamboo
 
         glfwSetWindowUserPointer(m_Window,&m_Data);
 
-        //
-        glfwSetWindowCloseCallback(m_Window, [] (GLFWwindow * window) {
+        //窗口关闭
+        glfwSetWindowCloseCallback(m_Window, [] (GLFWwindow * window) 
+        {
             WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
             ApplicationClosedEvent event;
             data.m_EventCallback(event);
-               
-            });
+        });
 
         
-        glfwSetWindowSizeCallback(m_Window, [](GLFWwindow* window, int width, int height) {
-               WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
-               ApplicationResizeEvent event(width,height);
-               data.m_EventCallback(event);
+        glfwSetWindowSizeCallback(m_Window, [](GLFWwindow* window, int width, int height) 
+        {
+            WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
+            ApplicationResizeEvent event(width,height);
+            data.m_EventCallback(event);
+        });
 
-            });
+        //键盘事件
+        glfwSetKeyCallback(m_Window, [](GLFWwindow* window, int key, int scancode, int action, int mods) {
+            WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
+            switch (action) {
+                case GLFW_PRESS:
+                {
+                    KeyPressedEvent event(key, false);
+                    data.m_EventCallback(event);
+                    break;
+                }
+                case GLFW_RELEASE:
+                {
+                    KeyReleasedEvent event(key);
+                    data.m_EventCallback(event);
+                    break;
+                }
+                case GLFW_REPEAT:
+                {
+                    break;
+                }
+            }
+        });
+
+        glfwSetCharCallback(m_Window, [](GLFWwindow* window, unsigned int keycode) {
+            WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
+
+        });
+
+        glfwSetMouseButtonCallback(m_Window, [](GLFWwindow* window, int button, int action, int mods) {
+            WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
+            switch (action) {
+            }
+        });
     }
 
     void WindowsWindow::Update() {

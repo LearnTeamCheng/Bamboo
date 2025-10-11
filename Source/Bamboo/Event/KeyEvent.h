@@ -36,4 +36,19 @@ namespace Bamboo
         /// @brief   是否重复按键
         bool m_Repeat;
     };
+
+    ///@brief 按键释放事件
+    class KeyReleasedEvent : public KeyEvent
+    {
+    public:
+        KeyReleasedEvent(KeyCode keyCode) : KeyEvent(keyCode) {}
+        EVENT_CLASS_TYPE(KeyReleasedEvent);
+
+        std::string ToString() const override
+        {
+            std::stringstream ss;
+            ss<< "KeyReleasedEvent: " << m_keyCode;
+            return ss.str();
+        }
+    };
 }
