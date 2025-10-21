@@ -1,6 +1,7 @@
 #pragma once
-#include "../Bamboo/ECS/System.h"
-class BallSystem :public ISystem
+//#include "../Bamboo/ECS/System.h"
+#include "../Bamboo/ECS/System/ISystem.h"
+class BallSystem :public Bamboo::ISystem
 {
 public:
     BallSystem(/* args */);

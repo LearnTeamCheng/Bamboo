@@ -80,7 +80,11 @@ namespace Bamboo
                 });
 
             for (auto& [zOrder, sprite, transform] : sprites) {
-                Renderer2D::DrawSprite(transform->LocalToWorldMatrix, sprite->SpriteColor, sprite->SpriteTexture);
+                if (sprite->SpriteTexture == nullptr) {
+                    sprite->SpriteTexture = Renderer2D::GetNormalTexture();
+                }
+               Renderer2D::DrawSprite(transform->LocalToWorldMatrix, sprite->SpriteColor, sprite->SpriteTexture);
+    
             }
         }
         Renderer2D::EndScene();

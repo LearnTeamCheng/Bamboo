@@ -1,6 +1,7 @@
 
 
 #include "../Bamboo/Event/ApplicationEvent.h"
+#include "../Bamboo/Event/KeyEvent.h"
 #include "../Bamboo/Core/Log.h"
 #include "WindowsWindow.h"
 

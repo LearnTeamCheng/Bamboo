@@ -5,7 +5,7 @@ namespace Bamboo
 {
     bool Input::IsKeyPressed(KeyCode key)
     {
-        auto * window = static_cast<GLFWwindow*> (Application::GetInstance().GetWindow().GetNativeWindow());
+        auto * window = static_cast<GLFWwindow*> (Application::GetInstance()->GetWindow()->GetNativeWindow());
         auto state = glfwGetKey(window, key);
         return state == GLFW_PRESS;
     }
@@ -13,7 +13,7 @@ namespace Bamboo
 
     Vector2 Input::GetMousePosition()
     {
-        auto * window = static_cast<GLFWwindow*> (Application::GetInstance().GetWindow().GetNativeWindow());
+        auto * window = static_cast<GLFWwindow*> (Application::GetInstance()->GetWindow()->GetNativeWindow());
         double xpos, ypos;
         glfwGetCursorPos(window, &xpos, &ypos);
         return Vector2((float)xpos, (float)ypos);

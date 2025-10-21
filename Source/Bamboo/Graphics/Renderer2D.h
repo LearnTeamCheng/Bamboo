@@ -28,6 +28,8 @@ namespace Bamboo
 
         static void DrawTriangle(const Vector3& position, const Color& color);
 
+        static Ref<Texture2D> GetNormalTexture();
+
     private:
         static void StartBatch();
         static void NextBatch();

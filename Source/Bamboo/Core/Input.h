@@ -1,8 +1,7 @@
 #pragma once
 
-
-#include "../Bamboo/Core/KeyCodes.h";
-#include "../Bamboo/Math/Vector2.h";
+#include "../Bamboo/Core/KeyCodes.h"
+#include "../Bamboo/Math/Vector2.h"
 
 
 namespace Bamboo

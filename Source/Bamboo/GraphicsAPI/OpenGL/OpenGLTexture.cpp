@@ -1,5 +1,7 @@
 #pragma once
 #define STB_IMAGE_IMPLEMENTATION
+
+#include "../Bamboo//Core/Assert.h"
 #include "OpenGLTexture.h"
 #include <stb_image.h>
 //#include <glad/glad.h>
@@ -85,14 +87,18 @@ namespace Bamboo
             }
         }
 
-        OpenGLTexture2D::OpenGLTexture2D(const TextureSpecification &textureSpecification) : m_TextureSpecification(textureSpecification), m_Width(textureSpecification.Height), m_Height(textureSpecification.Width)
+        OpenGLTexture2D::OpenGLTexture2D(const TextureSpecification &textureSpecification) : m_TextureSpecification(textureSpecification), m_Width(textureSpecification.Width), m_Height(textureSpecification.Height)
         {
 
             glCreateTextures(GL_TEXTURE_2D, 1, &m_RendererID);
             GLenum internalFormat = 0, dataFormat = 0;
+
             dataFormat = Utils::ImageFormatToGLDataFormat(textureSpecification.Format);
             internalFormat = Utils::ImageFormatToGLInternalFormat(textureSpecification.Format);
             m_DataFormat = dataFormat;
+
+            //m_Channels = dataFormat;
+            m_InternalFormat = internalFormat;
 
             // 设置纹理数据
             glTextureStorage2D(m_RendererID, 1, internalFormat, m_Width, m_Height);
@@ -151,6 +157,7 @@ namespace Bamboo
 
         void OpenGLTexture2D::SetData(void* data, uint32_t size){
             uint32_t bpp = m_DataFormat == GL_RGBA ? 4 : 3;
+            //BAMBOO_ASSESERT(size == m_Width *m_Height *bpp,"Data must be entire texture!")
             glTextureSubImage2D(m_RendererID, 0, 0, 0, m_Width, m_Height, m_DataFormat, GL_UNSIGNED_BYTE, data);
         }
 

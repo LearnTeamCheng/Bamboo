@@ -20,7 +20,7 @@
 
  #include "../Bamboo/Assets/ImageAsset.h"
 
-#include "BreakoutDemo/BreakoutApp.h"
+// #include "BreakoutDemo/BreakoutApp.h"
 
 
 
@@ -37,10 +37,12 @@ int main(int argc, char** argv) {
     // auto& quadComponent = entity.AddComponent<Bamboo::QuadComponent>();
     // quadComponent.Color = Bamboo::Color::Blue;
  
-    std::string textList[] = {"container.jpg","awesomeface.png"};
-    Bamboo::Vector3 vectorList[] = {Bamboo::Vector3(1280 / 2, 720 / 2, 0),Bamboo::Vector3(300,300,0)};
+    // std::string textList[] = {"container.jpg","awesomeface.png","arrow.png","armor.png"};
+    std::string textList[] = {"arrow.png","armor.png","arrow.png","armor.png"};
+    size_t length = sizeof(textList)/sizeof(textList[0]);
+    Bamboo::Vector3 vectorList[] = {Bamboo::Vector3(1280 / 2, 720 / 2, 0),Bamboo::Vector3(300,300,0),Bamboo::Vector3(100,100,0),Bamboo::Vector3(500,500,0)};
 
-    for(int i = 0;i<2;i++){
+    for(int i = 0;i<length;i++){
 
         auto entity = app.GetSceneManager()->GetActiveScene()->CreateEntity();
         auto & spriteComponent = entity.AddComponent<Bamboo::SpriteRendererComponent>();
@@ -50,10 +52,17 @@ int main(int argc, char** argv) {
         spriteComponent.Size = Bamboo::Vector2(imageAsset->GetWidth(), imageAsset->GetHeight()); 
         spriteComponent.ZOrder = i;
         
-        auto & transform = entity.AddComponent<Bamboo::TransformComponent>();
+        // auto & transform = entity.AddComponent<Bamboo::TransformComponent>();
+        auto & transform = entity.GetComponent<Bamboo::TransformComponent>();
         // transform.Position = Vector3(1280/2, 720/2, 0);
         transform.Position = vectorList[i];
     }
+
+
+     auto whiteEntity = app.GetSceneManager()->GetActiveScene()->CreateEntity();
+     whiteEntity.AddComponent<Bamboo::SpriteRendererComponent>();
+     auto & whiteTransform = whiteEntity.GetComponent<Bamboo::TransformComponent>();
+     whiteTransform.Position = Bamboo::Vector3(1000,600,0);
 
 
     auto cameraentity = app.GetSceneManager()->GetActiveScene()->CreateEntity();
@@ -64,8 +73,8 @@ int main(int argc, char** argv) {
     cameraComponent.CurrentCamera.SetOrthographic(10, 1, 100.0f);
     cameraComponent.CurrentCamera.SetViewportSize(1280,720);
 
-    auto& cameraTransform =  cameraentity.AddComponent<Bamboo::TransformComponent>();
-    cameraTransform.Position = Vector3(0, 0, 0);
+    // auto& cameraTransform =  cameraentity.AddComponent<Bamboo::TransformComponent>();
+    // cameraTransform.Position = Vector3(0, 0, 0);
     
     app.Run();
 

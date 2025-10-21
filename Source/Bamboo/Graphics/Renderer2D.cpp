@@ -51,6 +51,8 @@ namespace Bamboo
         static const uint32_t MaxIndices = MaxVertices * 3;
         /// 最大纹理槽数量
         static const uint32_t MaxTextureSlots = 32;
+        /// @brief  最大精灵个数
+        static const uint32_t MaxSpriteCount = 100;
 
         static const uint32_t QuadVertexCount = 4;
         static const uint32_t MaxQuadIndices = 6;
@@ -84,7 +86,7 @@ namespace Bamboo
         uint32_t SpriteCount = 0;
 
         uint32_t TextureSlotIndex = 1;
-
+        Ref<Texture2D> WhiteTexture;
         std::array<Ref<Texture2D>, MaxTextureSlots> TextureSlots;
 
         struct CameraData
@@ -162,7 +164,7 @@ namespace Bamboo
 
         // Sprite
         s_Data.SpriteVertexArray = VertexArray::Create();
-        s_Data.SpriteBuffer = VertexBuffer::Create(sizeof(SpriteVertex) * 2);
+        s_Data.SpriteBuffer = VertexBuffer::Create(sizeof(SpriteVertex) * s_Data.MaxSpriteCount);
         s_Data.SpriteBuffer->SetLayout({{ShaderDatatType::Float3, "a_Position"},
                                         {ShaderDatatType::Float4, "a_Color"},
                                         {ShaderDatatType::Float2, "a_TexCoord"},
@@ -170,7 +172,7 @@ namespace Bamboo
 
         });
 
-        s_Data.SpriteVertices = new SpriteVertex[s_Data.QuadVertexCount * 2];
+        s_Data.SpriteVertices = new SpriteVertex[s_Data.QuadVertexCount * s_Data.MaxSpriteCount];
         s_Data.SpriteVertexPositions[0] = {-0.5f, -0.5f, 0.0f};
         s_Data.SpriteVertexPositions[1] = {0.5f, -0.5f, 0.0f};
         s_Data.SpriteVertexPositions[2] = {0.5f, 0.5f, 0.0f};
@@ -178,10 +180,10 @@ namespace Bamboo
 
         // 顶点数据，围成一个矩形
         //  uint32_t spriteIndices[] = { 0,1,2,2,3,0 };
-        uint32_t *spriteIndices = new uint32_t[s_Data.MaxQuadIndices * 2];
+        uint32_t *spriteIndices = new uint32_t[s_Data.MaxQuadIndices * s_Data.MaxSpriteCount];
         offset = 0;
 
-        for (int i = 0; i < 2 * s_Data.MaxQuadIndices; i += 6)
+        for (int i = 0; i < s_Data.MaxSpriteCount * s_Data.MaxQuadIndices; i += 6)
         {
             spriteIndices[i + 0] = offset + 0;
             spriteIndices[i + 1] = offset + 1;
@@ -193,7 +195,7 @@ namespace Bamboo
             offset += 4;
         }
 
-        Ref<IndexBuffer> spriteIndexBuffer = IndexBuffer::Create(spriteIndices, 2 * 6);
+        Ref<IndexBuffer> spriteIndexBuffer = IndexBuffer::Create(spriteIndices, s_Data.MaxSpriteCount * 6);
         s_Data.SpriteVertexArray->SetIndexBuffer(spriteIndexBuffer);
         delete[] spriteIndices;
 
@@ -202,9 +204,11 @@ namespace Bamboo
 
         s_Data.CameraUniformBuffer = UniformBuffer::Create(sizeof(Renderer2DData::CameraData), 0);
         //白色纹理
-        s_Data.TextureSlots[0] =  Texture2D::Create(TextureSpecification());
+        s_Data.WhiteTexture =  Texture2D::Create(TextureSpecification());
         uint32_t whiteTextureData = 0xffffffff;
-        s_Data.TextureSlots[0]->SetData(&whiteTextureData,sizeof(uint32_t));
+        s_Data.WhiteTexture->SetData(&whiteTextureData,sizeof(uint32_t));
+
+        s_Data.TextureSlots[0] = s_Data.WhiteTexture;
     }
 
     void Renderer2D::BeginScene()
@@ -336,6 +340,7 @@ namespace Bamboo
             {0.0f, 1.0f}  // 左上
         };
 
+
         constexpr size_t spriteVertexCount = 4;
 
         float textureIndex = 0.0f;
@@ -385,5 +390,9 @@ namespace Bamboo
         delete[] s_Data.TriangleVertices;
         delete[] s_Data.QuadVertices;
         delete[] s_Data.SpriteVertices;
+    }
+
+    Ref<Texture2D> Renderer2D::GetNormalTexture() {
+        return s_Data.WhiteTexture;
     }
 }

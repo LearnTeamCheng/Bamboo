@@ -25,6 +25,8 @@ namespace Bamboo
 
         unsigned int GetWidth() const override { return m_Data.Width; }
         unsigned int GetHeight() const override { return m_Data.Height; }
+
+        virtual void* GetNativeWindow()const override { return  m_Window; }
     private:
         virtual void Initialize(const WindowProps& props);
         virtual void Shutdown();

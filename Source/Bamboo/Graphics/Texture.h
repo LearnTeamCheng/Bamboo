@@ -19,8 +19,8 @@ namespace Bamboo
     struct TextureSpecification
     {
         TextureFormat Format = TextureFormat::RGBA8;
-        uint32_t Width = 0;
-        uint32_t Height = 0;
+        uint32_t Width = 1;
+        uint32_t Height = 1;
         /// @brief 是否需要mipmap
         bool Mipmap = false;
     };

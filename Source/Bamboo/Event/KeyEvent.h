@@ -1,5 +1,6 @@
 #pragma once
-#include <string
+#include <string>
+#include <sstream>
 #include "../Bamboo/Event/Event.h"
 #include "../Bamboo/Core/KeyCodes.h"
 
@@ -11,7 +12,7 @@ namespace Bamboo
     public:
         KeyEvent() = default;
         KeyCode GetKeyCode() const { return m_keyCode; }
-        EVENT_CLASS_TYPE(KeyEvent);
+        EVENT_CLASS_CATEGORY(EventCategoryKeyboard |EventCategoryInput);
 
     protected:
         KeyEvent(KeyCode keyCode) : m_keyCode(keyCode) {}
@@ -23,7 +24,7 @@ namespace Bamboo
     {
     public:
         KeyPressedEvent(KeyCode keyCode, bool isRepeat = false) : KeyEvent(keyCode), m_Repeat(isRepeat) {}
-        EVENT_CLASS_TYPE(KeyPressedEvent);
+        EVENT_CLASS_TYPE(KeyPressed)
 
         std::string ToString() const override
         {
@@ -42,7 +43,7 @@ namespace Bamboo
     {
     public:
         KeyReleasedEvent(KeyCode keyCode) : KeyEvent(keyCode) {}
-        EVENT_CLASS_TYPE(KeyReleasedEvent);
+        EVENT_CLASS_TYPE(KeyReleased);
 
         std::string ToString() const override
         {
