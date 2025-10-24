@@ -2,6 +2,16 @@
  * @file main.cpp
  * @brief 测试文件
  */
+
+//#define _CRTDBG_MAP_ALLOC
+
+//#ifdef _DEBUG
+//#ifndef DBG_NEW
+//#define DBG_NEW new ( _NORMAL_BLOCK , __FILE__ , __LINE__ )
+//#define new DBG_NEW
+//#endif
+//#endif
+
 #include <iostream>
 #include<filesystem>
 
@@ -22,11 +32,16 @@
 
 // #include "BreakoutDemo/BreakoutApp.h"
 
-
+//#ifdef _DEBUG
+//#define new new( _NORMAL_BLOCK, __FILE__, __LINE__ )
+//#endif
 
 int main(int argc, char** argv) {
+
+    std::cout << "========================================" << std::endl;
+    //_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
     using Bamboo::Vector3;
-    Bamboo::Application app{"test"};
+    Bamboo::Application app{"test"};  
     
    
     //auto& component = entity.AddComponent<Bamboo::TriangleComponent>();
@@ -60,9 +75,10 @@ int main(int argc, char** argv) {
 
 
      auto whiteEntity = app.GetSceneManager()->GetActiveScene()->CreateEntity();
-     whiteEntity.AddComponent<Bamboo::SpriteRendererComponent>();
+     auto &whiteSprite = whiteEntity.AddComponent<Bamboo::SpriteRendererComponent>();
      auto & whiteTransform = whiteEntity.GetComponent<Bamboo::TransformComponent>();
      whiteTransform.Position = Bamboo::Vector3(1000,600,0);
+     whiteSprite.Size = Bamboo::Vector2(300, 100);
 
 
     auto cameraentity = app.GetSceneManager()->GetActiveScene()->CreateEntity();
@@ -75,13 +91,21 @@ int main(int argc, char** argv) {
 
     // auto& cameraTransform =  cameraentity.AddComponent<Bamboo::TransformComponent>();
     // cameraTransform.Position = Vector3(0, 0, 0);
+
+
+    //_CrtSetBreakAlloc(1224);
+
+    //int flags = _CrtSetDbgFlag(_CRTDBG_REPORT_FLAG);
+    //flags |= _CRTDBG_LEAK_CHECK_DF;   // 程序退出时自动 dump
+    //flags |= _CRTDBG_ALLOC_MEM_DF;    // 启用内存分配跟踪
+    //_CrtSetDbgFlag(flags);
     
     app.Run();
 
-    std::cout << std::filesystem::current_path() << std::endl;
-    
+    //_CrtDumpMemoryLeaks();  // 程序结束时自动打印泄漏
+    std::cout <<"============================"<< std::filesystem::current_path() << std::endl;
 
-    //BreakoutApp app;
-    //app.Run();
-    //return 0;
+
+
+    
 }
