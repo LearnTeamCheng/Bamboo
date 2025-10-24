@@ -30,7 +30,7 @@
 
  #include "../Bamboo/Assets/ImageAsset.h"
 
-// #include "BreakoutDemo/BreakoutApp.h"
+ #include "BreakoutDemo/BreakoutApp.h"
 
 //#ifdef _DEBUG
 //#define new new( _NORMAL_BLOCK, __FILE__, __LINE__ )
@@ -38,6 +38,7 @@
 
 int main(int argc, char** argv) {
 
+    /***
     std::cout << "========================================" << std::endl;
     //_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
     using Bamboo::Vector3;
@@ -105,7 +106,8 @@ int main(int argc, char** argv) {
     //_CrtDumpMemoryLeaks();  // 程序结束时自动打印泄漏
     std::cout <<"============================"<< std::filesystem::current_path() << std::endl;
 
-
-
+    **/
+    BreakoutApp app;
+    app.Run();
     
 }
