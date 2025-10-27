@@ -7,7 +7,7 @@
 #include "../Bamboo/ECS/System/SpriteRendererSystem.h"
 #include "../Bamboo/ECS/System/RendererSystem.h"
 #include "../Bamboo/ECS/System/TransformSystem.h"
-
+#include "../Bamboo/Physics/PhysicsSystem.h"
 namespace Bamboo
 {
 
@@ -19,6 +19,8 @@ namespace Bamboo
         m_TransformSystem = CreateScope<TransformSystem>();
         m_SpriteRendererSystem = CreateScope<SpriteRendererSystem>();
 
+        //m_PhysicsSystem = CreateScope<PhysicsSystem>();
+
         auto entity = CreateEntity("MainCamera");
         auto &cameraComponent = entity.AddComponent<CameraComponent>();
         cameraComponent.CurrentCamera = Camera();
@@ -29,6 +31,8 @@ namespace Bamboo
 
     void Scene::Update(float deltaTime)
     {
+
+        //更新物理 m_PhysicsSystem.Update(m_Registry, deltaTime);
 
         m_TransformSystem->Update(m_Registry, deltaTime);
         m_SpriteRendererSystem->Update(m_Registry, deltaTime);

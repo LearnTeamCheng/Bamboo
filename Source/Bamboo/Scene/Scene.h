@@ -19,6 +19,8 @@ namespace Bamboo
     class Entity;
     class Camera;
 
+    //class PhysicsSystem;
+
     class Scene
     {
     public:
@@ -43,6 +45,8 @@ namespace Bamboo
     private:
         Scope<ISystem> m_TransformSystem;
         Scope<ISystem> m_SpriteRendererSystem;
+        //Scope<PhysicsSystem> m_PhysicsSystem;
+
         std::vector<Scope<ISystem>> m_Systems;
         std::unordered_map<UUID, Entity> m_EntityMap;
     };
