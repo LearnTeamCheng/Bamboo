@@ -8,4 +8,5 @@
 #include "TriangleComponent.h"
 #include "QuadComponent.h"
 #include "CameraComponent.h"
+#include "TagComponent.h"
 

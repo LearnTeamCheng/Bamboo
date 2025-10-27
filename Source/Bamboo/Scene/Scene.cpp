@@ -15,14 +15,16 @@ namespace Bamboo
     {
         BAMBOO_CORE_INFO("init scene");
 
-        // m_Systems.push_back(CreateScope<SpriteRendererSystem>());
         m_Systems.push_back(CreateScope<RendererSystem>());
-
         m_TransformSystem = CreateScope<TransformSystem>();
         m_SpriteRendererSystem = CreateScope<SpriteRendererSystem>();
 
-        // auto entity = CreateEntity();
-        // entity.AddComponent<TriangleComponet>();
+        auto entity = CreateEntity("MainCamera");
+        auto &cameraComponent = entity.AddComponent<CameraComponent>();
+        cameraComponent.CurrentCamera = Camera();
+
+        cameraComponent.CurrentCamera.SetOrthographic(10, 1, 100.0f);
+        cameraComponent.CurrentCamera.SetViewportSize(1280, 720);
     }
 
     void Scene::Update(float deltaTime)
@@ -46,19 +48,40 @@ namespace Bamboo
     {
         Entity entity = {m_Registry.create(), this};
         entity.AddComponent<TransformComponent>();
+        entity.AddComponent<TagComponent>().Tag = name;
         m_EntityMap[uuid] = entity;
         return entity;
     }
 
     Entity Scene::FindEntityByName(const std::string_view &name)
     {
+        auto view = m_Registry.view<TagComponent>();
+        for (auto entity : view)
+        {
+            auto &tag = view.get<TagComponent>(entity);
+            if (tag.Tag == name)
+            {
+                return {entity, this};
+            }
+        }
+
         return {};
     }
 
     void Scene::DestroyEntity(Entity entity)
     {
         m_Registry.destroy(entity);
-        // m_EntityMap.erase(entity)
+    }
+
+    Camera *Scene::GetMainCamera()
+    {
+        auto entity = FindEntityByName("MainCamera");
+        if (entity.HasComponent<CameraComponent>())
+        {
+            return &entity.GetComponent<CameraComponent>().CurrentCamera;
+        }
+
+        return nullptr;
     }
 
     Scene::~Scene()

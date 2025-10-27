@@ -372,14 +372,10 @@ namespace Bamboo
 
             s_Data.SpriteVerticesPtr->Color = color;
             s_Data.SpriteVerticesPtr->TexCoord = TexCoord[i];
-            s_Data.SpriteVerticesPtr->TexIndex = (float)(s_Data.SpriteCount  +1);
+            s_Data.SpriteVerticesPtr->TexIndex = textureIndex;
             s_Data.SpriteVerticesPtr++;
         }
 
-        // if (s_Data.SpriteCount < s_Data.MaxTextureSlots)
-        // {
-        //     s_Data.TextureSlots[s_Data.SpriteCount] = texture;
-        // }
 
         s_Data.SpriteIndexCount += 6;
         s_Data.SpriteCount++;

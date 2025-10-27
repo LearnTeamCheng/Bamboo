@@ -4,32 +4,37 @@
 #include <vector>
 #include <unordered_map>
 
-
 #include "../Bamboo/Core/Ref.h"
 #include "../Bamboo/Core/UUID.h"
 #include "../Bamboo/ECS/System/ISystem.h"
 
 #include "entt.hpp"
+
+// #include "../Bamboo/ECS/Entity.h"
+
 namespace Bamboo
 {
     // 八叉树
     class Octree;
     class Entity;
+    class Camera;
 
     class Scene
     {
     public:
-        Scene();    
+        Scene();
         // 添加实体
         ~Scene();
 
         void Update(float deltaTime);
 
-        Entity CreateEntity(const std::string& name = std::string());
+        Entity CreateEntity(const std::string &name = std::string());
 
-        Entity CreateEntityWithUUID(UUID uuid, const std::string& name = std::string());
+        Entity CreateEntityWithUUID(UUID uuid, const std::string &name = std::string());
 
-        Entity FindEntityByName(const std::string_view& name);
+        Entity FindEntityByName(const std::string_view &name);
+
+        Camera* GetMainCamera();
 
         void DestroyEntity(Entity entity);
 
