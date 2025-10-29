@@ -10,7 +10,6 @@
 
 #include "entt.hpp"
 
-// #include "../Bamboo/ECS/Entity.h"
 
 namespace Bamboo
 {
@@ -43,8 +42,8 @@ namespace Bamboo
         entt::registry m_Registry;
 
     private:
-        Scope<ISystem> m_TransformSystem;
-        Scope<ISystem> m_SpriteRendererSystem;
+        // Scope<ISystem> m_TransformSystem;
+        // Scope<ISystem> m_SpriteRendererSystem;
         //Scope<PhysicsSystem> m_PhysicsSystem;
 
         std::vector<Scope<ISystem>> m_Systems;

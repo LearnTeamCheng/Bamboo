@@ -1,13 +1,11 @@
-#pragma once
-#include "../Bamboo/Core/Log.h"
-
 #include "Scene.h"
-
+#include "../Bamboo/Core/Log.h"
 #include "../Bamboo/ECS/Entity.h"
 #include "../Bamboo/ECS/System/SpriteRendererSystem.h"
 #include "../Bamboo/ECS/System/RendererSystem.h"
 #include "../Bamboo/ECS/System/TransformSystem.h"
 #include "../Bamboo/Physics/PhysicsSystem.h"
+
 namespace Bamboo
 {
 
@@ -15,15 +13,13 @@ namespace Bamboo
     {
         BAMBOO_CORE_INFO("init scene");
 
+        // 
+        m_Systems.push_back(CreateScope<TransformSystem>());
+        m_Systems.push_back(CreateScope<SpriteRendererSystem>());
         m_Systems.push_back(CreateScope<RendererSystem>());
-        m_TransformSystem = CreateScope<TransformSystem>();
-        m_SpriteRendererSystem = CreateScope<SpriteRendererSystem>();
-
-        //m_PhysicsSystem = CreateScope<PhysicsSystem>();
 
         auto entity = CreateEntity("MainCamera");
         auto &cameraComponent = entity.AddComponent<CameraComponent>();
-        cameraComponent.CurrentCamera = Camera();
 
         cameraComponent.CurrentCamera.SetOrthographic(10, 1, 100.0f);
         cameraComponent.CurrentCamera.SetViewportSize(1280, 720);
@@ -31,12 +27,7 @@ namespace Bamboo
 
     void Scene::Update(float deltaTime)
     {
-
-        //更新物理 m_PhysicsSystem.Update(m_Registry, deltaTime);
-
-        m_TransformSystem->Update(m_Registry, deltaTime);
-        m_SpriteRendererSystem->Update(m_Registry, deltaTime);
-
+        //椤哄簭 Trasnform -> Physics -> SpriteRenderer -> Renderer
         for (auto &system : m_Systems)
         {
             system->Update(m_Registry, deltaTime);
@@ -75,6 +66,7 @@ namespace Bamboo
     void Scene::DestroyEntity(Entity entity)
     {
         m_Registry.destroy(entity);
+        //m_EntityMap.erase(entity.GetUUID());
     }
 
     Camera *Scene::GetMainCamera()
@@ -90,5 +82,7 @@ namespace Bamboo
 
     Scene::~Scene()
     {
+        m_Systems.clear();
+        m_EntityMap.clear();
     }
-};
+}
