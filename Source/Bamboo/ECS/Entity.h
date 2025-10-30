@@ -8,54 +8,6 @@
 #include "entt.hpp"
 namespace Bamboo
 {
-    //class Entity
-    //{
-    //public:
-    //    Entity() = default;
-    //    Entity(entt::entity handle, Scene* scene);
-    //    Entity(const Entity& other) = default;
-
-    //    template <typename T, typename... Args>
-    //    T& AddComponent(Args &&...args) 
-    //    {
-    //        T& component = m_Scene->m_Registry.emplace<T>(m_EntityHandle, std::forward < Args(args)...);
-    //        return component;
-    //       
-    //    }
-
-
-    //    template <typename T>
-    //    T& GetComponent() {
-    //        return m_Scene->m_Registry.get<T>(m_EntityHandle);
-    //             
-    //    }
-
-    //    template <typename T>
-    //    bool HasComponent() const 
-    //    {
-    //        return false;
-    //    }
-
-    //    template <typename T>
-    //    void RemoveComponent() 
-    //    {
-    //   
-    //    }
-
-    //    bool operator==(const Entity &other) const 
-    //    {
-    //        return m_EntityHandle == other.m_EntityHandle && m_Scene == other.m_Scene;
-    //    }
-
-    //    UUID GetUUID() const { return m_uuid; }
-
-    //    entt::entity GetHandle(){ return m_EntityHandle; }
-
-    //private:
-    //    entt::entity m_EntityHandle{entt::null}; 
-    //    UUID m_uuid;
-    //    Scene* m_Scene;
-    //};
 
 	class Entity
 	{
@@ -117,7 +69,7 @@ namespace Bamboo
 			return !(*this == other);
 		}
 
-		UUID GetUUID() { return GetComponent<UUID>(); }
+		//UUID GetUUID() { return GetComponent<UUID>(); }
 
 	private:
 		entt::entity m_EntityHandle{ entt::null };

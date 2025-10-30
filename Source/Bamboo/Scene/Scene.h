@@ -10,7 +10,6 @@
 
 #include "entt.hpp"
 
-
 namespace Bamboo
 {
     // 八叉树
@@ -18,7 +17,7 @@ namespace Bamboo
     class Entity;
     class Camera;
 
-    //class PhysicsSystem;
+    // class PhysicsSystem;
 
     class Scene
     {
@@ -35,7 +34,7 @@ namespace Bamboo
 
         Entity FindEntityByName(const std::string_view &name);
 
-        Camera* GetMainCamera();
+        Camera *GetMainCamera();
 
         void DestroyEntity(Entity entity);
 
@@ -44,9 +43,10 @@ namespace Bamboo
     private:
         // Scope<ISystem> m_TransformSystem;
         // Scope<ISystem> m_SpriteRendererSystem;
-        //Scope<PhysicsSystem> m_PhysicsSystem;
+        // Scope<PhysicsSystem> m_PhysicsSystem;
 
         std::vector<Scope<ISystem>> m_Systems;
+        std::vector<Scope<ISystem>> m_LogicSystems;
         std::unordered_map<UUID, Entity> m_EntityMap;
     };
 }

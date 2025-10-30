@@ -1,3 +1,4 @@
+#pragma once
 #include "Scene.h"
 #include "../Bamboo/Core/Log.h"
 #include "../Bamboo/ECS/Entity.h"
@@ -5,7 +6,6 @@
 #include "../Bamboo/ECS/System/RendererSystem.h"
 #include "../Bamboo/ECS/System/TransformSystem.h"
 #include "../Bamboo/Physics/PhysicsSystem.h"
-
 namespace Bamboo
 {
 
@@ -23,6 +23,7 @@ namespace Bamboo
 
         cameraComponent.CurrentCamera.SetOrthographic(10, 1, 100.0f);
         cameraComponent.CurrentCamera.SetViewportSize(1280, 720);
+
     }
 
     void Scene::Update(float deltaTime)
@@ -66,7 +67,7 @@ namespace Bamboo
     void Scene::DestroyEntity(Entity entity)
     {
         m_Registry.destroy(entity);
-        //m_EntityMap.erase(entity.GetUUID());
+        // m_EntityMap.erase(entity.GetUUID());
     }
 
     Camera *Scene::GetMainCamera()
@@ -82,7 +83,5 @@ namespace Bamboo
 
     Scene::~Scene()
     {
-        m_Systems.clear();
-        m_EntityMap.clear();
     }
-}
+};
