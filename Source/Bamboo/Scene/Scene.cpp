@@ -13,7 +13,7 @@ namespace Bamboo
     {
         BAMBOO_CORE_INFO("init scene");
 
-        // 
+        //
         m_Systems.push_back(CreateScope<TransformSystem>());
         m_Systems.push_back(CreateScope<SpriteRendererSystem>());
         m_Systems.push_back(CreateScope<RendererSystem>());
@@ -23,12 +23,21 @@ namespace Bamboo
 
         cameraComponent.CurrentCamera.SetOrthographic(10, 1, 100.0f);
         cameraComponent.CurrentCamera.SetViewportSize(1280, 720);
-
     }
 
     void Scene::Update(float deltaTime)
     {
-        //顺序 Trasnform -> Physics -> SpriteRenderer -> Renderer
+        // todo
+
+        // logicsSystem
+        for (auto &system : m_LogicSystems)
+        {
+            system->Update(m_Registry, deltaTime);
+        }
+
+        // PhysicsSystem
+
+        // 顺序 Trasnform -> Physics -> SpriteRenderer -> Renderer
         for (auto &system : m_Systems)
         {
             system->Update(m_Registry, deltaTime);
@@ -80,6 +89,7 @@ namespace Bamboo
 
         return nullptr;
     }
+
 
     Scene::~Scene()
     {

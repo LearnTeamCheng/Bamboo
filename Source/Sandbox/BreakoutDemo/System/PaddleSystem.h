@@ -4,7 +4,5 @@
 class PaddleSystem : public Bamboo::ISystem
 {
     public:
-        PaddleSystem();
-        ~PaddleSystem();
         virtual void Update(entt::registry& registry, float deltaTime)  override;
 };

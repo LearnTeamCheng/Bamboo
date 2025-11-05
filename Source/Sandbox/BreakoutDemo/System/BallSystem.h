@@ -4,8 +4,6 @@
 class BallSystem :public Bamboo::ISystem
 {
 public:
-    BallSystem(/* args */);
-    ~BallSystem();
     virtual void Update(entt::registry& registry, float deltaTime) override;
 };
 

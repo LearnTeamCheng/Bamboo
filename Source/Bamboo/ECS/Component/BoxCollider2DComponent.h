@@ -4,14 +4,15 @@ namespace Bamboo
 {
     struct BoxCollider2DComponent
     {
-        Vecto2 Size;
-        Vecto2 Offset;
+        Vector2 Size;
+        Vector2 Offset;
 
         /// @brief 摩擦力
         float  Friction;
-
         /// @brief 密度
         float Density;
+        /// @brief 是否为触发器
+        bool IsTrigger;
     };
 
 }

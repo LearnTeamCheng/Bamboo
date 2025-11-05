@@ -1,5 +1,5 @@
 #pragma once
-#include "../Bamboo/Physics/RigidbodyType.h"
+#include "../Bamboo/Physics/PhysicsDefine.h"
 namespace Bamboo
 {
 

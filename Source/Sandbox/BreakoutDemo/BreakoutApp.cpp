@@ -1,17 +1,24 @@
+#include <random>
+
 #include "BreakoutApp.h"
 #include "../Bamboo/ECS/Entity.h"
 
-#include <random>
+//system headers
+#include "System/BallSystem.h"
+#include "System/PaddleSystem.h"
+
+#include"../Bamboo/Math/Random.h"
+
 
 BreakoutApp::BreakoutApp(const std::string &appName) : Application(appName)
 {
 
-    // 创建一个随机设备来生成种子
-    std::random_device rd;
-    // 使用种子初始化随机数生成器
-    std::mt19937 gen(rd());
-    // 定义范围，比如生成0到99之间的随机数
-    std::uniform_int_distribution<> dis(0, 255);
+    //// 创建一个随机设备来生成种子
+    //std::random_device rd;
+    //// 使用种子初始化随机数生成器
+    //std::mt19937 gen(rd());
+    //// 定义范围，比如生成0到99之间的随机数
+    //std::uniform_int_distribution<> dis(0, 255);
     // 生成随机数
 
     for (int i = 0; i < 50; i++)
@@ -22,9 +29,13 @@ BreakoutApp::BreakoutApp(const std::string &appName) : Application(appName)
 
         sprite.Size = Bamboo::Vector2(100.0f, 50.0f);
 
-        float r = dis(gen) / 255.0f;
-        float g = dis(gen) / 255.0f;
-        float b = dis(gen) / 255.0f;
+        //float r = dis(gen) / 255.0f;
+        //float g = dis(gen) / 255.0f;
+        //float b = dis(gen) / 255.0f;
+
+        float r =   Bamboo::Random::GlobalFloat(0, 1.0f);
+        float g = Bamboo::Random::GlobalFloat(0, 1.0f);
+        float b =  Bamboo::Random::GlobalFloat(0, 1.0f);
 
         sprite.SpriteColor = Bamboo::Color(r, g, b);
 
@@ -36,6 +47,9 @@ BreakoutApp::BreakoutApp(const std::string &appName) : Application(appName)
 
         transform.Position = Bamboo::Vector3(x, y, 0);
     }
+
+    GetSceneManager()->GetActiveScene()->AddSystem<PaddleSystem>();
+    //GetSceneManager()->GetActiveScene()->AddSystem<BallSystem>();
 }
 
 BreakoutApp::~BreakoutApp() {}

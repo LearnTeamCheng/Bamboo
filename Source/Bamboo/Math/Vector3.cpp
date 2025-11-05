@@ -12,12 +12,17 @@ namespace Bamboo
 
     Vector3& Vector3::operator=(const Vector4& other)
     {
-        //Vector3 result{other.x,other.y,other.z};
-        //return result;
-
         x = other.x;
         y = other.y;
         z = other.z;
         return *this;
+    }
+
+    Vector3 Vector3::Min(const Vector3 &a, const Vector3 &b){
+        return Vector3(Math::Min(a.x, b.x), Math::Min(a.y, b.y), Math::Min(a.z, b.z));
+    }
+
+    Vector3 Vector3::Max(const Vector3 &a, const Vector3 &b){
+        return Vector3(Math::Max(a.x, b.x), Math::Max(a.y, b.y), Math::Max(a.z, b.z));
     }
 }

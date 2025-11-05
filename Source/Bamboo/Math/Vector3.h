@@ -1,8 +1,6 @@
 #pragma once
 #include "Math.h"
 
-
-
 namespace Bamboo
 {
     class Vector2;
@@ -25,14 +23,11 @@ namespace Bamboo
         Vector3(const Vector3 &other) = default;
         Vector3(const Vector4 &other);
 
-        Vector3(const Vector2& other);
-        
-        Vector3 &operator=(const Vector3 &other)=default;
-        Vector3& operator=(const Vector4& other);
+        Vector3(const Vector2 &other);
 
+        Vector3 &operator=(const Vector3 &other) = default;
+        Vector3 &operator=(const Vector4 &other);
 
-
-       
         ~Vector3() = default;
 
         float Dot(const Vector3 &other) const
@@ -44,8 +39,6 @@ namespace Bamboo
         {
             return Vector3(y * other.z - z * other.y, z * other.x - x * other.z, x * other.y - y * other.x);
         }
-
-
 
         float Length() const
         {
@@ -173,13 +166,15 @@ namespace Bamboo
             return Vector3(vector.x * scalar, vector.y * scalar, vector.z * scalar);
         }
 
-        //反射 
+        // 反射
         Vector3 Reflect(const Vector3 &normal) const
         {
             return *this - 2.0f * Dot(normal) * normal;
         }
 
-
+        static Vector3 Min(const Vector3 &a, const Vector3 &b);
+        static Vector3 Max(const Vector3 &a, const Vector3 &b);
+    
 
     public:
         // 常量定义

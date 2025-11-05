@@ -35,15 +35,19 @@ namespace Bamboo
         Entity FindEntityByName(const std::string_view &name);
 
         Camera *GetMainCamera();
+        /// @brief 添加系统 只能是逻辑系统
+        template <typename T, typename... Args>
+        void AddSystem(Args &&...args)
+        {
+            auto system = std::make_unique<T>(std::forward<Args>(args)...);
+            m_LogicSystems.emplace_back(std::move(system)); 
+        }
 
         void DestroyEntity(Entity entity);
 
         entt::registry m_Registry;
 
     private:
-        // Scope<ISystem> m_TransformSystem;
-        // Scope<ISystem> m_SpriteRendererSystem;
-        // Scope<PhysicsSystem> m_PhysicsSystem;
 
         std::vector<Scope<ISystem>> m_Systems;
         std::vector<Scope<ISystem>> m_LogicSystems;
