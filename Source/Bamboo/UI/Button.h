@@ -29,27 +29,30 @@ namespace Bamboo::UI
         Button(const std::string &pressedTexture, const std::string &normalTexture, const std::string &hoverTexture);
         ~Button();
 
-        void SetText(const std::string &text);
-        std::string GetText() const;
+        void SetText(const std::string &text) { m_Text = text; }
+        const std::string& GetText() const { return m_Text; }
 
         void SetNormalTexture(const std::string &texture);
         void SetPressedTexture(const std::string &texture);
         void SetHoverTexture(const std::string &texture);
 
         /// @brief 设置按钮的过渡效果
-        void SetTransition(ButtonTransition transition);
-        ButtonTransition GetTransition() const;
+        void SetTransition(ButtonTransition transition) { m_Transition = transition; }
+        ButtonTransition GetTransition() const {return m_Transition; }
 
         /// @brief 设置按钮是否可以交互
-        void SetInteractable(bool interactable);
-        bool IsInteractable() const;
+        void SetInteractable(bool interactable) { m_IsInteractable = interactable; }
+        bool IsInteractable() const { return m_IsInteractable; }
 
-        void SetClickListener(ButtonClickListener &listener);
-        void RemoveClickListener();
+        void SetClickListener(ButtonClickListener &listener) { m_ClickListener = listener; }
+        void RemoveClickListener() { m_ClickListener = nullptr; }
 
     private:
+        ButtonTransition m_Transition;
+        bool m_IsInteractable;
         ButtonClickListener m_ClickListener;
-        std::string m_text;
+
+        std::string m_Text;
         bool m_isClicked;
     };
 }

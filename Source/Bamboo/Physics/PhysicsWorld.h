@@ -12,9 +12,10 @@ namespace Bamboo::Physics
         void SetGravity(const Vector3 &gravity) { m_Gravity = gravity; }
         const Vector3 &GetGravity() const { return m_Gravity; }
 
+        void Step(float deltaTime);
+
     private:
         /// @brief 默认重力
         Vector3 m_Gravity = {0.0f, -9.8f, 0.0f};
-        
     };
 }

@@ -4,7 +4,17 @@
 namespace Bamboo
 {
 
-    Vector2::Vector2(const Vector3& v) :x(v.x), y(v.y) {}
+    Vector2::Vector2(const Vector3 &v) : x(v.x), y(v.y) {}
+
+    Vector2 Vector2::Max(const Vector2 &a, const Vector2 &b)
+    {
+        return Vector2(Math::Max(a.x, b.x), Math::Max(a.y, b.y));
+    }
+
+    Vector2 Vector2::Min(const Vector2 &a, const Vector2 &b)
+    {
+        return Vector2(Math::Min(a.x, b.x), Math::Min(a.y, b.y));
+    }
 
     const Vector2 Vector2::Zero = Vector2(0.0f, 0.0f);
     const Vector2 Vector2::One = Vector2(1.0f, 1.0f);

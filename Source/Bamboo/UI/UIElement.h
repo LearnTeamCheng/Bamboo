@@ -13,6 +13,8 @@ namespace Bamboo::UI
             ~UIElement();
             // transform
             void SetPosition(const Vector2& position);
+            Vector2 GetPosition() const { return m_Position; }
+
             void SetScale(const Vector2& scale);
             void SetRotation(float angle);
             void SetSize(const Vector2& size);
@@ -23,10 +25,12 @@ namespace Bamboo::UI
 
             //
             void OnUpdate(float deltaTime);
-            void OnRender();
+            virtual void OnRender();
 
             void SetParent(Ref<UIElement> parent);
             WeakRef<UIElement> GetParent() const { return m_Parent; }
+
+            void SetLayer(int layer);
 
         protected:
             void AddChild(Ref<UIElement> child);
