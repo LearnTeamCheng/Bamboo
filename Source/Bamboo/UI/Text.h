@@ -14,6 +14,7 @@ namespace Bamboo::UI
             Right
         };
 
+
     public:
         void SetText(const std::string &text) { m_Text = text; }
         const std::string &GetText() const { return m_Text; }
@@ -29,7 +30,7 @@ namespace Bamboo::UI
 
         void SetAlign(TextAlign align) { m_Align = align; }
         TextAlign GetAlign() const { return m_Align; }
-
+        /// @brief 设置是否加粗
         void SetBold(bool bold) { m_Bold = bold; }
         bool IsBold() const { return m_Bold; }
         virtual void Render() override;

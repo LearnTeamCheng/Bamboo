@@ -5,12 +5,12 @@ namespace Bamboo::UI
     {
     }
 
-    void UIElement::SetPosition(const Vector2& position)
+    void UIElement::SetPosition(const Vector2 &position)
     {
         m_Position = position;
     }
 
-    void UIElement::SetScale(const Vector2& scale)
+    void UIElement::SetScale(const Vector2 &scale)
     {
         m_Scale = scale;
     }
@@ -20,23 +20,25 @@ namespace Bamboo::UI
         m_Rotation = angle;
     }
 
-    void UIElement::SetSize(const Vector2& size)
+    void UIElement::SetSize(const Vector2 &size)
     {
         m_Size = size;
     }
 
-    void UIElement::SetAnchor(const Vector2& anchor)
+    void UIElement::SetAnchor(const Vector2 &anchor)
     {
         m_Anchor = anchor;
     }
 
     void UIElement::AddChild(Ref<UIElement> child)
     {
-        if (!child) {
+        if (!child)
+        {
             return;
         }
 
-        if (std::find(m_Children.begin(), m_Children.end(), child) != m_Children.end()) {
+        if (std::find(m_Children.begin(), m_Children.end(), child) != m_Children.end())
+        {
             return;
         }
 
@@ -65,15 +67,19 @@ namespace Bamboo::UI
     void UIElement::SetParent(Ref<UIElement> parent)
     {
         auto self = shared_from_this();
-        if (auto oldParent = m_Parent.lock()) {
+        if (auto oldParent = m_Parent.lock())
+        {
             oldParent->RemoveChild(self);
         }
 
         m_Parent = parent;
 
-        if (parent) {
+        if (parent)
+        {
             parent->AddChild(self);
         }
     }
+
+
 
 }
