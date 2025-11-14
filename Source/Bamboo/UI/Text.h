@@ -33,7 +33,7 @@ namespace Bamboo::UI
         /// @brief 设置是否加粗
         void SetBold(bool bold) { m_Bold = bold; }
         bool IsBold() const { return m_Bold; }
-        virtual void Render() override;
+        virtual void OnRender() override;
 
     private:
         bool m_Bold = false;

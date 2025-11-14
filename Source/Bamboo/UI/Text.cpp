@@ -2,7 +2,8 @@
 
 namespace Bamboo::UI
 {
-    void Text::Render()
+    void Text::OnRender()
     {
+    
     }
 }
