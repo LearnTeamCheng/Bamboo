@@ -24,8 +24,4 @@ namespace Bamboo
         m_Assets.clear();
     }
 
-    void AssetManager::AsynLoad(const std::string &path, const std::function<void(Ref<Asset>)> &callback)
-    {
-
-    }
 }

@@ -2,6 +2,7 @@
 
 #include "../Bamboo/ECS/Component/RigidbodyComponent.h"
 #include "../Bamboo/ECS/Component/BoxCollider2DComponent.h"
+#include "../ECS/Component/TransformComponent.h"
 namespace Bamboo::Physics
 {
     void PhysicsSystem::Init()
@@ -13,14 +14,15 @@ namespace Bamboo::Physics
 
     void PhysicsSystem::Update(entt::registry &registry, float deltaTime)
     {
-        auto view = registry.view<RigidbodyComponent>();
+        auto view = registry.view<RigidbodyComponent,TransformComponent>();
         for (auto entity : view)
         {
-            auto &rigidbody = view.get<RigidbodyComponent>(entity);
+            auto &[rigidbody,transform] = view.get<RigidbodyComponent,TransformComponent>(entity);
             // 动态物体 才受力的影响
             if (rigidbody.Type == RigidbodyType::Dynamic)
             {
-                //todo 动态物体 受力的影响
+                
+
             }
             else if (rigidbody.Type == RigidbodyType::Static)
             {   

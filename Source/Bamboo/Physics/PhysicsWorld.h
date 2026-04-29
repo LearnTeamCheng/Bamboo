@@ -5,8 +5,8 @@ namespace Bamboo::Physics
     class PhysicsWorld
     {
     public:
-        PhysicsWorld();
-        ~PhysicsWorld();
+        PhysicsWorld() = default;
+        ~PhysicsWorld() = default;
 
         // 重力设置
         void SetGravity(const Vector3 &gravity) { m_Gravity = gravity; }

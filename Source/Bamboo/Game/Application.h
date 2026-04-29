@@ -34,6 +34,7 @@ namespace Bamboo
     private:
         bool OnWindowClose(ApplicationClosedEvent &event);
         bool OnWindowResize(ApplicationResizeEvent &event);
+  
 
     private:
         static Application *s_Instance;

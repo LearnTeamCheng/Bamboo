@@ -9,4 +9,5 @@
 #include "QuadComponent.h"
 #include "CameraComponent.h"
 #include "TagComponent.h"
+#include "IDComponent.h"
 

@@ -4,16 +4,19 @@ namespace BambooEditor
     class Application
     {
     public:
-        static Application& GetInstance();
-    private:
         Application(/* args */);
-        ~Application();
+        ~Application()=default;
+
+        static Application& GetInstance();
+    public:
+        void Run();
+
+    private:
         bool Initialize();
         void Update();
         void Renderer();
         
         void Shoudown();
-        void Run();
 
     private:
         bool m_IsRunning;

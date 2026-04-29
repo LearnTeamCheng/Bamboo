@@ -1,10 +1,10 @@
 #include "Scene.h"
-#include "../Bamboo/Core/Log.h"
-#include "../Bamboo/ECS/Entity.h"
-#include "../Bamboo/ECS/System/SpriteRendererSystem.h"
-#include "../Bamboo/ECS/System/RendererSystem.h"
-#include "../Bamboo/ECS/System/TransformSystem.h"
-#include "../Bamboo/Physics/PhysicsSystem.h"
+#include "../Core/Log.h"
+#include "../ECS/Entity.h"
+#include "../ECS/System/SpriteRendererSystem.h"
+#include "../ECS/System/RendererSystem.h"
+#include "../ECS/System/TransformSystem.h"
+#include "../Physics/PhysicsSystem.h"
 namespace Bamboo
 {
 
@@ -15,6 +15,7 @@ namespace Bamboo
         //
         m_Systems.push_back(CreateScope<TransformSystem>());
         m_Systems.push_back(CreateScope<SpriteRendererSystem>());
+        m_Systems.push_back(CreateScope<Physics::PhysicsSystem>());
         m_Systems.push_back(CreateScope<RendererSystem>());
 
         auto entity = CreateEntity("MainCamera");
@@ -51,6 +52,7 @@ namespace Bamboo
     Entity Scene::CreateEntityWithUUID(UUID uuid, const std::string &name)
     {
         Entity entity = {m_Registry.create(), this};
+        entity.AddComponent<IDComponent>(uuid);
         entity.AddComponent<TransformComponent>();
         entity.AddComponent<TagComponent>().Tag = name;
         m_EntityMap[uuid] = entity;

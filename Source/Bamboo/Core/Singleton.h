@@ -1,13 +1,18 @@
 namespace Bamboo
 {
- 
+    template <typename T>
     class Singleton
     {
-        public:
-            static Singleton* Instance()
-            {
-                static Singleton instance;
-                return &instance;
-            }
+    public:
+        static T *Instance()
+        {
+            static T instance;
+            return &instance;
+        }
+
+        Singleton(const Singleton &) = delete;
+    Singleton &operator=(const Singleton &) = delete
+
+        private : Singleton() = default;
     };
 };

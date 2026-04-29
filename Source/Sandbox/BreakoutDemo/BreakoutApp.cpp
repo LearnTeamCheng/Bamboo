@@ -29,9 +29,6 @@ BreakoutApp::BreakoutApp(const std::string &appName) : Application(appName)
 
         sprite.Size = Bamboo::Vector2(100.0f, 50.0f);
 
-        //float r = dis(gen) / 255.0f;
-        //float g = dis(gen) / 255.0f;
-        //float b = dis(gen) / 255.0f;
 
         float r =   Bamboo::Random::GlobalFloat(0, 1.0f);
         float g = Bamboo::Random::GlobalFloat(0, 1.0f);
@@ -48,7 +45,17 @@ BreakoutApp::BreakoutApp(const std::string &appName) : Application(appName)
         transform.Position = Bamboo::Vector3(x, y, 0);
     }
 
-    GetSceneManager()->GetActiveScene()->AddSystem<PaddleSystem>();
+    //创建球拍
+    {
+        GetSceneManager()->GetActiveScene()->AddSystem<PaddleSystem>();
+        auto &paddleEntity = GetSceneManager()->GetActiveScene()->CreateEntity();
+        auto& sprite = paddleEntity.AddComponent<Bamboo::SpriteRendererComponent>();
+        sprite.Size = Bamboo::Vector2(200, 40.0f);
+        sprite.SpriteColor = Bamboo::Color::Red;
+
+        auto& transform = paddleEntity.GetComponent<Bamboo::TransformComponent>();
+        transform.Position = Bamboo::Vector3(GetWindow().get()->GetWidth() / 2 ,50.0f, 0.0f);
+    }
     //GetSceneManager()->GetActiveScene()->AddSystem<BallSystem>();
 }
 

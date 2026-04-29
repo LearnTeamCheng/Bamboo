@@ -1,8 +1,8 @@
 #pragma once
-#include "../Bamboo/Core/UUID.h"
-#include "../Bamboo/Scene/Scene.h"
-#include "../Bamboo/ECS/Component/Component.h"
-#include "../Bamboo/Core/Assert.h"
+#include "../Core/UUID.h"
+#include "../Scene/Scene.h"
+#include "../ECS/Component/Component.h"
+#include "../Core/Assert.h"
 
 
 #include "entt.hpp"
@@ -56,8 +56,8 @@ namespace Bamboo
 		operator entt::entity() const { return m_EntityHandle; }
 		operator uint32_t() const { return (uint32_t)m_EntityHandle; }
 
-		//UUID GetUUID() { return GetComponent<IDComponent>().ID; }
-		//const std::string& GetName() { return GetComponent<TagComponent>().Tag; }
+		UUID GetUUID() { return GetComponent<IDComponent>().ID; }
+		const std::string& GetName() { return GetComponent<TagComponent>().Tag; }
 
 		bool operator==(const Entity& other) const
 		{
@@ -68,8 +68,6 @@ namespace Bamboo
 		{
 			return !(*this == other);
 		}
-
-		UUID GetUUID() { return GetComponent<UUID>(); }
 
 	private:
 		entt::entity m_EntityHandle{ entt::null };

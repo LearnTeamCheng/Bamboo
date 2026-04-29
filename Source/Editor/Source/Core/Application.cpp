@@ -1,17 +1,23 @@
 #include "Application.h"
 #include "../Bamboo/Core/Log.h"
+#include <imgui.h>
+#include <imgui_impl_glfw.h>
 
+#include <GLFW/glfw3.h>
 namespace BambooEditor
 {
 
-    Application::Application() : m_IsRunning(false)
+    Application::Application() : m_IsRunning(true)
     {
+        Initialize();
     }
 
     bool Application::Initialize()
     {
+
+        glfwInit();
         // todo: 初始化相关操作
-        return false;
+        return true;
     }
 
     void Application::Update()
@@ -26,17 +32,49 @@ namespace BambooEditor
 
     void Application::Run()
     {
+        GLFWwindow* window = glfwCreateWindow(800,600,"Editor",nullptr,nullptr);
+
+      
+
         if (!Initialize())
         {
             BAMBOO_CORE_ERROR("Failed to initialize application");
             return;
         }
 
-        while (m_IsRunning)
+        //while (m_IsRunning)
+        //{
+        //    // 事件
+        //    Update();
+        //    Renderer();
+
+        // 
+
+        //    glfwPollEvents();
+        //    glfwSwapBuffers(window);
+        //    ImGui::Render();
+        //}
+
+        ImGui::CreateContext();
+        ImGui_ImplGlfw_InitForOpenGL(window, false);
+
+        while (!glfwWindowShouldClose(window))
         {
-            // 事件
-            Update();
-            Renderer();
+            //一些注释...
+            glfwPollEvents();
+            // Start the Dear ImGui frame
+          
+            ImGui_ImplGlfw_NewFrame();
+            ImGui::NewFrame();
+            /*
+            * 添加自己的代码,App的实现见下面的代码
+            */
+            //App::RenderUI();
+
+            // Rendering
+            ImGui::Render();
+            //一些代码和注释
+            glfwSwapBuffers(window);
         }
     }
 

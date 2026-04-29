@@ -1,9 +1,9 @@
 #pragma once
-#include "../Bamboo/Core/Ref.h"
-#include "../Bamboo/ECS/Entity.h"
-#include "../Bamboo/Math/Vector3.h"
-#include "../Bamboo/ECS/System/ISystem.h"
-#include "../Bamboo/Physics/PhysicsWorld.h"
+#include "../Core/Ref.h"
+#include "../ECS/Entity.h"
+#include "../Math/Vector3.h"
+#include "../ECS/System/ISystem.h"
+#include "../Physics/PhysicsWorld.h"
 
 namespace Bamboo::Physics
 {

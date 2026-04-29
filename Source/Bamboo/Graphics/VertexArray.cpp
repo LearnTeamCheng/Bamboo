@@ -1,6 +1,6 @@
 #include "VertexArray.h"
 
-#include "../GraphicsAPI/OpenGL/OpenGLVertextArray.h"
+#include "../GraphicsAPI/OpenGL/OpenGLVertexArray.h"
 
 
 

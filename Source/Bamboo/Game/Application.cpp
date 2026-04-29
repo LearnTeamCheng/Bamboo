@@ -19,6 +19,8 @@ namespace Bamboo
         m_Window = Window::Create({name});
 
         m_Window->SetEventCallback(BIND_CALLBACK_FN(Application::OnEvent));
+
+
         m_SceneManager = CreateScope<SceneManager>();
         m_AssetManager = CreateScope<AssetManager>();
 
@@ -65,6 +67,8 @@ namespace Bamboo
         EventDispatcher dispatcher(event);
 
         dispatcher.Dispatch<ApplicationClosedEvent>(BIND_CALLBACK_FN(Application::OnWindowClose));
+        dispatcher.Dispatch<ApplicationResizeEvent>(BIND_CALLBACK_FN(Application::OnWindowResize));
+        
     }
 
     bool Application::OnWindowClose(ApplicationClosedEvent &event)
