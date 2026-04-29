@@ -64,8 +64,8 @@ namespace Bamboo
         float m_AspectRatio = 1.0f;
 
         float m_OrthographicSize =10.0f;
-        float m_OrhtographicNear = -10.0f;
-        float m_OrhtographicFar = 10.0f;
+        float m_OrthographicNear = -10.0f;
+        float m_OrthographicFar = 10.0f;
 
         size_t m_ViewportWidth = 0;
         size_t m_ViewportHeight = 0;

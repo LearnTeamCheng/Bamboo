@@ -1,15 +1,15 @@
 #pragma once
 #include <iostream>
-#include "../Bamboo/Graphics/VertexArray.h"
+#include "../../Graphics/VertexArray.h"
 
 namespace Bamboo
 {
 
-    class OpenGLVertextArray : public VertexArray
+    class OpenGLVertexArray : public VertexArray
     {
     public:
-        OpenGLVertextArray();
-        virtual ~OpenGLVertextArray();
+        OpenGLVertexArray();
+        virtual ~OpenGLVertexArray();
         virtual void Bind() const override;
         virtual void Unbind() const override;
 

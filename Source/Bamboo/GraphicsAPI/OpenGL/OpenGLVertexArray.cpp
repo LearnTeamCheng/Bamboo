@@ -1,4 +1,4 @@
-#include "OpenGLVertextArray.h"
+#include "OpenGLVertexArray.h"
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
@@ -6,28 +6,28 @@
 namespace Bamboo
 {
 
-    OpenGLVertextArray::OpenGLVertextArray()
+    OpenGLVertexArray::OpenGLVertexArray()
     {
         glGenVertexArrays(1, &m_RendererID);
         // glCreateVertexArrays(1, &m_RendererID);
     }
 
-    OpenGLVertextArray::~OpenGLVertextArray()
+    OpenGLVertexArray::~OpenGLVertexArray()
     {
         glDeleteVertexArrays(1, &m_RendererID);
     }
 
-    void OpenGLVertextArray::Bind() const
+    void OpenGLVertexArray::Bind() const
     {
         glBindVertexArray(m_RendererID);
     }
 
-    void OpenGLVertextArray::Unbind() const
+    void OpenGLVertexArray::Unbind() const
     {
         glBindVertexArray(0);
     }
 
-    void OpenGLVertextArray::AddVertexBuffer(const Ref<VertexBuffer> &vertexBuffer)
+    void OpenGLVertexArray::AddVertexBuffer(const Ref<VertexBuffer> &vertexBuffer)
     {
 
         glBindVertexArray(m_RendererID);
@@ -58,7 +58,7 @@ namespace Bamboo
         m_VertexBuffers.push_back(vertexBuffer);
     }
 
-    void OpenGLVertextArray::SetIndexBuffer(const Ref<IndexBuffer> &indexBuffer)
+    void OpenGLVertexArray::SetIndexBuffer(const Ref<IndexBuffer> &indexBuffer)
     {
         Bind();
         indexBuffer->Bind();

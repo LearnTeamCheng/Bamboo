@@ -19,7 +19,7 @@ namespace Bamboo
 		template<typename T, typename... Args>
 		T& AddComponent(Args&&... args)
 		{
-			BAMBOO_ASSESERT(!HasComponent<T>(), "Entity already has component!");
+			BAMBOO_ASSERT(!HasComponent<T>(), "Entity already has component!");
 			T& component = m_Scene->m_Registry.emplace<T>(m_EntityHandle, std::forward<Args>(args)...);
 			return component;
 		}
@@ -69,7 +69,7 @@ namespace Bamboo
 			return !(*this == other);
 		}
 
-		//UUID GetUUID() { return GetComponent<UUID>(); }
+		UUID GetUUID() { return GetComponent<UUID>(); }
 
 	private:
 		entt::entity m_EntityHandle{ entt::null };

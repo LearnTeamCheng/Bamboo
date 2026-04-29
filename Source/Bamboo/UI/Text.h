@@ -1,3 +1,4 @@
+#pragma once
 #include "../Bamboo/UI/UIElement.h"
 
 #include "../Bamboo/Math/Color.h"

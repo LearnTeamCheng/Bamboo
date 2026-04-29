@@ -4,8 +4,8 @@ namespace Bamboo
     void Camera::SetOrthographic(float size, float nearClip, float farClip)
     {
         m_OrthographicSize = size;
-        m_OrhtographicNear = nearClip;
-        m_OrhtographicFar = farClip;
+        m_OrthographicNear = nearClip;
+        m_OrthographicFar = farClip;
         m_ProjectionType = ProjectionType::Orthographic;
     }
 
@@ -39,7 +39,7 @@ namespace Bamboo
             m_CameraData.right = right;
             m_CameraData.bottom = bottom;
             m_CameraData.top = top;
-            m_ProjectionMatrix = Matrix4::Orthographic(left, right, bottom, top, m_OrhtographicNear, m_OrhtographicFar);
+            m_ProjectionMatrix = Matrix4::Orthographic(left, right, bottom, top, m_OrthographicNear, m_OrthographicFar);
         }
         else
         {

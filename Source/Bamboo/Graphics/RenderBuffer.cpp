@@ -1,6 +1,6 @@
 #include "RenderBuffer.h"
 
-#include "../Bamboo/GraphicsAPI/OpenGL/OpenGLBuffer.h"
+#include "../GraphicsAPI/OpenGL/OpenGLBuffer.h"
 namespace Bamboo
 {
     Ref<IndexBuffer> IndexBuffer::Create(uint32_t *indices, uint32_t count)

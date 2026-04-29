@@ -15,26 +15,28 @@ namespace Bamboo
     class Application
     {
     public:
-        //Application();
-        Application(const std::string& name);
+        // Application();
+        Application(const std::string &name);
         virtual ~Application();
         void Run();
         void Stop();
         bool IsRunning();
-        
-        Scope<SceneManager>& GetSceneManager() { return  m_SceneManager; }
-        Scope<AssetManager>& GetAssetManager() { return m_AssetManager; }
 
-        static Application* GetInstance() { return s_Instance; }
+        Scope<SceneManager> &GetSceneManager() { return m_SceneManager; }
+        Scope<AssetManager> &GetAssetManager() { return m_AssetManager; }
 
-        Scope<Window>& GetWindow() { return m_Window; }
+        static Application *GetInstance() { return s_Instance; }
 
-        void OnEvent(Event& event);
-private:
-        bool OnWindowClose(ApplicationClosedEvent& event);
-        bool OnWindowResize(ApplicationResizeEvent& event);
+        Scope<Window> &GetWindow() { return m_Window; }
+
+        void OnEvent(Event &event);
+
     private:
-        static Application* s_Instance;
+        bool OnWindowClose(ApplicationClosedEvent &event);
+        bool OnWindowResize(ApplicationResizeEvent &event);
+
+    private:
+        static Application *s_Instance;
         bool m_Minimize;
         bool m_Running;
         std::string m_Name;

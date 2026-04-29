@@ -359,7 +359,7 @@ namespace Bamboo
 
             textureIndex = (float)s_Data.TextureSlotIndex;
 
-            BAMBOO_ASSESERT(s_Data.TextureSlotIndex >=s_Data.TextureSlots.size(),"Texture slot index out of range");
+            BAMBOO_ASSERT(s_Data.TextureSlotIndex >=s_Data.TextureSlots.size(),"Texture slot index out of range");
             s_Data.TextureSlots.at(s_Data.TextureSlotIndex) = texture;
             s_Data.TextureSlotIndex++;
         }

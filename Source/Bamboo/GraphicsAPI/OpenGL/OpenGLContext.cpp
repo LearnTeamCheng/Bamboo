@@ -12,12 +12,11 @@ namespace Bamboo {
     
     }
 
-
-   void OpenGLContext::Initiaize(){
+   void OpenGLContext::Initialize(){
 
         glfwMakeContextCurrent(m_WindowHandle);
         int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
-        BAMBOO_ASSESERT(status , "glad init failur");
+        BAMBOO_ASSERT(status , "glad init failur");
    
     }
 

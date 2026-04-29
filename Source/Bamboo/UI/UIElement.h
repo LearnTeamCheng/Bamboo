@@ -11,7 +11,7 @@ namespace Bamboo::UI
     {
     public:
         UIElement();
-        ~UIElement();
+        virtual ~UIElement();
         // transform
         void SetPosition(const Vector2 &position);
         Vector2 GetPosition() const { return m_Position; }
@@ -22,7 +22,7 @@ namespace Bamboo::UI
         void SetAnchor(const Vector2 &anchor);
 
         void RemoveChild(Ref<UIElement> child);
-        void UIElement::ClearChildren();
+        void ClearChildren();
 
         template <typename T, typename... Args>
         Ref<T> AddComponent(Args &&...args)

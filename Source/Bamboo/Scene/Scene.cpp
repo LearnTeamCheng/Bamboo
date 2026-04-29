@@ -1,4 +1,3 @@
-#pragma once
 #include "Scene.h"
 #include "../Bamboo/Core/Log.h"
 #include "../Bamboo/ECS/Entity.h"
@@ -76,7 +75,7 @@ namespace Bamboo
     void Scene::DestroyEntity(Entity entity)
     {
         m_Registry.destroy(entity);
-        // m_EntityMap.erase(entity.GetUUID());
+        m_EntityMap.erase(entity.GetUUID());
     }
 
     Camera *Scene::GetMainCamera()

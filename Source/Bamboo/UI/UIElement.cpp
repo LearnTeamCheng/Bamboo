@@ -51,7 +51,7 @@ namespace Bamboo::UI
         if (it != m_Children.end())
         {
             m_Children.erase(it);
-            child->m_Parent = shared_from_this();
+            child->m_Parent.reset();
         }
     }
 
@@ -79,7 +79,5 @@ namespace Bamboo::UI
             parent->AddChild(self);
         }
     }
-
-
 
 }

@@ -11,8 +11,6 @@ namespace Bamboo
             case RendererAPI::API::OpenGL:
             {
                 // TODO: create OpenGL texture
-                //return  CreateRef<OpenGLTexture2D>(path);
-                //return  CreateRef<OpenGLTexture2D>(path);
                 return CreateRef<OpenGLTexture2D>(Application::GetInstance()->GetAssetManager()->Load<ImageAsset>(path));
             }
             default:

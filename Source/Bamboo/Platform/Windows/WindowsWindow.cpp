@@ -42,7 +42,7 @@ namespace Bamboo
         }
         
         m_Context = GraphicsContext::Create(m_Window);
-        m_Context->Initiaize();
+        m_Context->Initialize();
 
         glfwSetWindowUserPointer(m_Window,&m_Data);
 

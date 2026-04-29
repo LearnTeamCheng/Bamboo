@@ -4,7 +4,7 @@
 
 namespace Bamboo {
 
-#define BAMBOO_ASSESERT(check, ...)                                                   \
+#define BAMBOO_ASSERT(check, ...)                                                   \
     {                                                                             \
         if (!check)                                                                \
         {                                                                         \

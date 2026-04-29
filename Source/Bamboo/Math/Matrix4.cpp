@@ -171,8 +171,8 @@ namespace Bamboo
      {
          Matrix4 result;
          result.m_data[0] = scale.x;
-         result.m_data[5] = scale.x;
-         result.m_data[10] = scale.x;
+         result.m_data[5] = scale.y;
+         result.m_data[10] = scale.z;
          return result;
      }
 }
