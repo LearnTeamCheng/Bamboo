@@ -6,7 +6,7 @@
 #pragma once
 #include "Math.h"
 #include <string>
-//#include <format>
+// #include <format>
 #include <charconv>
 #include <sstream>
 
@@ -22,6 +22,8 @@ namespace Bamboo
         Color() : r(0.0f), g(0.0f), b(0.0f), a(1.0f) {}
         Color(float r, float g, float b, float a = 1.0f) : r(r), g(g), b(b), a(a) {}
         Color(const Color &other) : r(other.r), g(other.g), b(other.b), a(other.a) {}
+        Color(const std::string &str) { SetColorToHex(str); }
+        Color(unsigned int hex) : r(hex >> 24 & 0xff) ,g(hex >> 16 & 0xff) , b(hex >> 8 & 0xff) ,a(hex & 0xff) {}
 
         Color &operator=(const Color &other) = default;
 
@@ -125,7 +127,7 @@ namespace Bamboo
     public:
         // 常量定义
 
-        // 黑色
+        ///@brief 黑色
         static const Color Black;
         // 白色
         static const Color White;

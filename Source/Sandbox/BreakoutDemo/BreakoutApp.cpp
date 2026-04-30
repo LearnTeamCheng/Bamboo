@@ -9,6 +9,8 @@
 
 #include"../Bamboo/Math/Random.h"
 
+#include "Component/PaddleComponent.h"
+
 
 BreakoutApp::BreakoutApp(const std::string &appName) : Application(appName)
 {
@@ -50,6 +52,7 @@ BreakoutApp::BreakoutApp(const std::string &appName) : Application(appName)
         GetSceneManager()->GetActiveScene()->AddSystem<PaddleSystem>();
         auto &paddleEntity = GetSceneManager()->GetActiveScene()->CreateEntity();
         auto& sprite = paddleEntity.AddComponent<Bamboo::SpriteRendererComponent>();
+        paddleEntity.AddComponent<PaddleComponent>();
         sprite.Size = Bamboo::Vector2(200, 40.0f);
         sprite.SpriteColor = Bamboo::Color::Red;
 
