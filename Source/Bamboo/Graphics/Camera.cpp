@@ -1,4 +1,5 @@
 #include "Camera.h"
+
 namespace Bamboo
 {
     void Camera::SetOrthographic(float size, float nearClip, float farClip)
@@ -24,8 +25,6 @@ namespace Bamboo
         ReCalculateProjectionMatrix();
     }
 
-
-
     void Camera::ReCalculateProjectionMatrix()
     {
         if (m_ProjectionType == ProjectionType::Orthographic)
@@ -46,7 +45,8 @@ namespace Bamboo
         }
     }
 
-    Vector3 Camera::ScreenToWorldPosition(const Vector3& screenPosition) const{
+    Vector3 Camera::ScreenToWorldPosition(const Vector3 &screenPosition) const
+    {
         Vector3 worldPosition;
         worldPosition.x = m_CameraData.left + (screenPosition.x / m_ViewportWidth) * (m_CameraData.right - m_CameraData.left);
         worldPosition.y = m_CameraData.bottom + (screenPosition.y / m_ViewportHeight) * (m_CameraData.top - m_CameraData.bottom);
@@ -54,12 +54,17 @@ namespace Bamboo
         return worldPosition;
     }
 
-    Vector3 Camera::PixelSizeToWorldSize(const Vector2& pixelSize) const 
+    Vector3 Camera::PixelSizeToWorldSize(const Vector2 &pixelSize) const
     {
         Vector3 worldSize;
         worldSize.x = (pixelSize.x / m_ViewportWidth) * (m_CameraData.right - m_CameraData.left);
         worldSize.y = (pixelSize.y / m_ViewportHeight) * (m_CameraData.top - m_CameraData.bottom);
         worldSize.z = 1.0f;
         return worldSize;
+    }
+    
+    Matrix4 Camera::GetViewProjection() const
+    {
+        return Matrix4::LookAt(m_Position, m_Position + m_Forward, m_Up);
     }
 }

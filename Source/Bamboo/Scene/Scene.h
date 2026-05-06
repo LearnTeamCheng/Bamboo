@@ -23,7 +23,6 @@ namespace Bamboo
     {
     public:
         Scene();
-        // 添加实体
         ~Scene();
 
         void Update(float deltaTime);
@@ -33,6 +32,7 @@ namespace Bamboo
         Entity CreateEntityWithUUID(UUID uuid, const std::string &name = std::string());
 
         Entity FindEntityByName(const std::string_view &name);
+
 
         Camera *GetMainCamera();
         /// @brief 添加系统 只能是逻辑系统

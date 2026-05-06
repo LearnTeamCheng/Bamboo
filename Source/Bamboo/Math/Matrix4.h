@@ -53,6 +53,8 @@ namespace Bamboo
 
         /// @brief 创建一个正交矩阵
         static Matrix4 Orthographic(float left, float right, float bottom, float top, float zNear, float zFar);
+        
+        static Matrix4 LookAt(const Vector3& eye, const Vector3& target, const Vector3& up);
 
     private:
         float m_data[16];

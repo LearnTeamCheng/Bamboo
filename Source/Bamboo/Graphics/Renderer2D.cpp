@@ -12,7 +12,6 @@
 #include "../Bamboo/Graphics/Camera.h"
 #include "../Bamboo/Graphics/UniformBuffer.h"
 
-
 #include <array>
 
 namespace Bamboo
@@ -87,8 +86,8 @@ namespace Bamboo
 
         uint32_t TextureSlotIndex = 1;
         Ref<Texture2D> WhiteTexture;
-        std::array<Ref<Texture2D>, MaxTextureSlots> TextureSlots;
-        // std::unordered_map<Ref<Texture2D>, uint32_t> TextureSlotMap;
+        // std::array<Ref<Texture2D>, MaxTextureSlots> TextureSlots;
+        std::unordered_map<Ref<Texture2D>, uint32_t> TextureSlotMap;
 
         struct CameraData
         {
@@ -103,115 +102,121 @@ namespace Bamboo
     void Renderer2D::Init()
     {
         // Triangle
-        s_Data.TriangleVertexArray = VertexArray::Create();
-        s_Data.TriangleBuffer = VertexBuffer::Create(sizeof(TriangleVertex));
+        {
+            s_Data.TriangleVertexArray = VertexArray::Create();
+            s_Data.TriangleBuffer = VertexBuffer::Create(sizeof(TriangleVertex));
 
-        s_Data.TriangleBuffer->SetLayout({
-            {ShaderDatatType::Float3, "a_WorldPosition"},
-            {ShaderDatatType::Float4, "a_Color"},
-        });
+            s_Data.TriangleBuffer->SetLayout({
+                {ShaderDatatType::Float3, "a_WorldPosition"},
+                {ShaderDatatType::Float4, "a_Color"},
+            });
 
-        s_Data.TriangleVertices = new TriangleVertex[3];
+            s_Data.TriangleVertices = new TriangleVertex[3];
 
-        uint32_t trianglesIndices[3] = {0, 1, 2};
-        Ref<IndexBuffer> indexBuffer = IndexBuffer::Create(trianglesIndices, sizeof(trianglesIndices) / sizeof(trianglesIndices[0]));
-        s_Data.TriangleVertexArray->SetIndexBuffer(indexBuffer);
+            uint32_t trianglesIndices[3] = {0, 1, 2};
+            Ref<IndexBuffer> indexBuffer = IndexBuffer::Create(trianglesIndices, sizeof(trianglesIndices) / sizeof(trianglesIndices[0]));
+            s_Data.TriangleVertexArray->SetIndexBuffer(indexBuffer);
 
-        s_Data.TriangleShader = Shader::Create("triangle", "BambooAssets/Shaders/triangle.vert", "BambooAssets/Shaders/triangle.frag");
+            s_Data.TriangleShader = Shader::Create("triangle", "BambooAssets/Shaders/triangle.vert", "BambooAssets/Shaders/triangle.frag");
 
-        s_Data.TriangleVertexArray->AddVertexBuffer(s_Data.TriangleBuffer);
+            s_Data.TriangleVertexArray->AddVertexBuffer(s_Data.TriangleBuffer);
 
-        // 增加顶点 数据
-        s_Data.TriangleVertexPositions[0] = {-0.5, -0.5, 0.0};
-        s_Data.TriangleVertexPositions[1] = {0.5, -0.5, 0.0};
-        s_Data.TriangleVertexPositions[2] = {0.0, 0.5, 0.0};
+            // 增加顶点 数据
+            s_Data.TriangleVertexPositions[0] = {-0.5, -0.5, 0.0};
+            s_Data.TriangleVertexPositions[1] = {0.5, -0.5, 0.0};
+            s_Data.TriangleVertexPositions[2] = {0.0, 0.5, 0.0};
+        }
 
         // Quad
-        s_Data.QuadVertexArray = VertexArray::Create();
-        s_Data.QuadBuffer = VertexBuffer::Create(sizeof(QuadVertex));
-        s_Data.QuadBuffer->SetLayout({{ShaderDatatType::Float3, "a_WorldPosition"},
-                                      {ShaderDatatType::Float4, "a_Color"}});
-
-        s_Data.QuadVertices = new QuadVertex[4];
-        s_Data.QuadVertexPosition[0] = {-0.5f, -0.5f, 0.0f, 1.0f};
-        s_Data.QuadVertexPosition[1] = {0.5f, -0.5f, 0.0f, 1.0f};
-        s_Data.QuadVertexPosition[2] = {0.5f, 0.5f, 0.0f, 1.0f};
-        s_Data.QuadVertexPosition[3] = {-0.5f, 0.5f, 0.0f, 1.0f};
-        // 顶点数据，围成一个矩形
-        // uint32_t quadIndices[] = { 0,1,2,2,3,0 };
-
-        uint32_t *quadIndices = new uint32_t[6 * 2];
-        uint32_t offset = 0;
-        for (uint32_t i = 0; i < 2 * s_Data.QuadIndexCount; i += 6)
         {
-            quadIndices[i + 0] = offset + 0;
-            quadIndices[i + 1] = offset + 1;
-            quadIndices[i + 2] = offset + 2;
 
-            quadIndices[i + 3] = offset + 2;
-            quadIndices[i + 4] = offset + 3;
-            quadIndices[i + 5] = offset + 0;
+            s_Data.QuadVertexArray = VertexArray::Create();
+            s_Data.QuadBuffer = VertexBuffer::Create(sizeof(QuadVertex));
+            s_Data.QuadBuffer->SetLayout({{ShaderDatatType::Float3, "a_WorldPosition"},
+                                          {ShaderDatatType::Float4, "a_Color"}});
 
-            offset += 4;
+            s_Data.QuadVertices = new QuadVertex[4];
+            s_Data.QuadVertexPosition[0] = {-0.5f, -0.5f, 0.0f, 1.0f};
+            s_Data.QuadVertexPosition[1] = {0.5f, -0.5f, 0.0f, 1.0f};
+            s_Data.QuadVertexPosition[2] = {0.5f, 0.5f, 0.0f, 1.0f};
+            s_Data.QuadVertexPosition[3] = {-0.5f, 0.5f, 0.0f, 1.0f};
+            // 顶点数据，围成一个矩形
+            // uint32_t quadIndices[] = { 0,1,2,2,3,0 };
+
+            uint32_t *quadIndices = new uint32_t[6 * 2];
+            uint32_t offset = 0;
+            for (uint32_t i = 0; i < 2 * s_Data.QuadIndexCount; i += 6)
+            {
+                quadIndices[i + 0] = offset + 0;
+                quadIndices[i + 1] = offset + 1;
+                quadIndices[i + 2] = offset + 2;
+
+                quadIndices[i + 3] = offset + 2;
+                quadIndices[i + 4] = offset + 3;
+                quadIndices[i + 5] = offset + 0;
+
+                offset += 4;
+            }
+
+            Ref<IndexBuffer> quadIndexBuffer = IndexBuffer::Create(quadIndices, 2);
+            s_Data.QuadVertexArray->SetIndexBuffer(quadIndexBuffer);
+
+            delete[] quadIndices;
+
+            s_Data.QuadShader = Shader::Create("Quad", "BambooAssets/Shaders/triangle.vert", "BambooAssets/Shaders/triangle.frag");
+            s_Data.QuadVertexArray->AddVertexBuffer(s_Data.QuadBuffer);
         }
-
-        Ref<IndexBuffer> quadIndexBuffer = IndexBuffer::Create(quadIndices, 2);
-        s_Data.QuadVertexArray->SetIndexBuffer(quadIndexBuffer);
-
-        delete[] quadIndices;
-
-        s_Data.QuadShader = Shader::Create("Quad", "BambooAssets/Shaders/triangle.vert", "BambooAssets/Shaders/triangle.frag");
-        s_Data.QuadVertexArray->AddVertexBuffer(s_Data.QuadBuffer);
 
         // Sprite
-        s_Data.SpriteVertexArray = VertexArray::Create();
-        s_Data.SpriteBuffer = VertexBuffer::Create(sizeof(SpriteVertex) * s_Data.MaxSpriteCount);
-        s_Data.SpriteBuffer->SetLayout({{ShaderDatatType::Float3, "a_Position"},
-                                        {ShaderDatatType::Float4, "a_Color"},
-                                        {ShaderDatatType::Float2, "a_TexCoord"},
-                                        {ShaderDatatType::Float, "a_TexIndex"}
-
-        });
-
-        s_Data.SpriteVertices = new SpriteVertex[s_Data.QuadVertexCount * s_Data.MaxSpriteCount];
-        s_Data.SpriteVertexPositions[0] = {-0.5f, -0.5f, 0.0f};
-        s_Data.SpriteVertexPositions[1] = {0.5f, -0.5f, 0.0f};
-        s_Data.SpriteVertexPositions[2] = {0.5f, 0.5f, 0.0f};
-        s_Data.SpriteVertexPositions[3] = {-0.5f, 0.5f, 0.0f};
-
-        // 顶点数据，围成一个矩形
-        //  uint32_t spriteIndices[] = { 0,1,2,2,3,0 };
-        uint32_t *spriteIndices = new uint32_t[s_Data.MaxQuadIndices * s_Data.MaxSpriteCount];
-        offset = 0;
-
-        for (int i = 0; i < s_Data.MaxSpriteCount * s_Data.MaxQuadIndices; i += 6)
         {
-            spriteIndices[i + 0] = offset + 0;
-            spriteIndices[i + 1] = offset + 1;
-            spriteIndices[i + 2] = offset + 2;
+            s_Data.SpriteVertexArray = VertexArray::Create();
+            s_Data.SpriteBuffer = VertexBuffer::Create(sizeof(SpriteVertex) * s_Data.MaxSpriteCount);
+            s_Data.SpriteBuffer->SetLayout({{ShaderDatatType::Float3, "a_Position"},
+                                            {ShaderDatatType::Float4, "a_Color"},
+                                            {ShaderDatatType::Float2, "a_TexCoord"},
+                                            {ShaderDatatType::Float, "a_TexIndex"}
 
-            spriteIndices[i + 3] = offset + 2;
-            spriteIndices[i + 4] = offset + 3;
-            spriteIndices[i + 5] = offset + 0;
-            offset += 4;
+            });
+
+            s_Data.SpriteVertices = new SpriteVertex[s_Data.QuadVertexCount * s_Data.MaxSpriteCount];
+            s_Data.SpriteVertexPositions[0] = {-0.5f, -0.5f, 0.0f};
+            s_Data.SpriteVertexPositions[1] = {0.5f, -0.5f, 0.0f};
+            s_Data.SpriteVertexPositions[2] = {0.5f, 0.5f, 0.0f};
+            s_Data.SpriteVertexPositions[3] = {-0.5f, 0.5f, 0.0f};
+
+            // 顶点数据，围成一个矩形
+            //  uint32_t spriteIndices[] = { 0,1,2,2,3,0 };
+            uint32_t *spriteIndices = new uint32_t[s_Data.MaxQuadIndices * s_Data.MaxSpriteCount];
+            uint32_t offset = 0;
+
+            for (int i = 0; i < s_Data.MaxSpriteCount * s_Data.MaxQuadIndices; i += 6)
+            {
+                spriteIndices[i + 0] = offset + 0;
+                spriteIndices[i + 1] = offset + 1;
+                spriteIndices[i + 2] = offset + 2;
+
+                spriteIndices[i + 3] = offset + 2;
+                spriteIndices[i + 4] = offset + 3;
+                spriteIndices[i + 5] = offset + 0;
+                offset += 4;
+            }
+
+            Ref<IndexBuffer> spriteIndexBuffer = IndexBuffer::Create(spriteIndices, s_Data.MaxSpriteCount *6 );
+            s_Data.SpriteVertexArray->SetIndexBuffer(spriteIndexBuffer);
+            delete[] spriteIndices;
+
+            s_Data.SpriteShader = Shader::Create("Sprite", "BambooAssets/Shaders/sprite.vert", "BambooAssets/Shaders/sprite.frag");
+            s_Data.SpriteVertexArray->AddVertexBuffer(s_Data.SpriteBuffer);
+
+            s_Data.CameraUniformBuffer = UniformBuffer::Create(sizeof(Renderer2DData::CameraData), 0);
+            // 白色纹理
+            s_Data.WhiteTexture = Texture2D::Create(TextureSpecification());
+            uint32_t whiteTextureData = 0xffffffff;
+            s_Data.WhiteTexture->SetData(&whiteTextureData, sizeof(uint32_t));
+
+            // s_Data.TextureSlots[0] = s_Data.WhiteTexture;
+            s_Data.TextureSlotMap[s_Data.WhiteTexture] = 0;
         }
-
-        Ref<IndexBuffer> spriteIndexBuffer = IndexBuffer::Create(spriteIndices, s_Data.MaxSpriteCount * 6);
-        s_Data.SpriteVertexArray->SetIndexBuffer(spriteIndexBuffer);
-        delete[] spriteIndices;
-
-        s_Data.SpriteShader = Shader::Create("Sprite", "BambooAssets/Shaders/sprite.vert", "BambooAssets/Shaders/sprite.frag");
-        s_Data.SpriteVertexArray->AddVertexBuffer(s_Data.SpriteBuffer);
-
-        s_Data.CameraUniformBuffer = UniformBuffer::Create(sizeof(Renderer2DData::CameraData), 0);
-        //白色纹理
-        s_Data.WhiteTexture =  Texture2D::Create(TextureSpecification());
-        uint32_t whiteTextureData = 0xffffffff;
-        s_Data.WhiteTexture->SetData(&whiteTextureData,sizeof(uint32_t));
-
-        s_Data.TextureSlots[0] = s_Data.WhiteTexture;
-
-        // s_Data.TextureSlotMap[s_Data.WhiteTexture] = 0;
     }
 
     void Renderer2D::BeginScene()
@@ -245,9 +250,9 @@ namespace Bamboo
 
         s_Data.TextureSlotIndex = 1;
 
-        //这里 设置成白色纹理
-        // s_Data.TextureSlotMap.clear();
-        // s_Data.TextureSlotMap[s_Data.WhiteTexture] = 0;
+        // 这里 设置成白色纹理
+        s_Data.TextureSlotMap.clear();
+        s_Data.TextureSlotMap[s_Data.WhiteTexture] = 0;
     }
 
     void Renderer2D::NextBatch()
@@ -283,18 +288,19 @@ namespace Bamboo
 
         if (s_Data.SpriteIndexCount > 0)
         {
+            // 计算数据大小 使用距离指针距离 * 数据大小
             uint32_t dataSize = std::distance(s_Data.SpriteVertices, s_Data.SpriteVerticesPtr) * sizeof(*s_Data.SpriteVertices);
             s_Data.SpriteBuffer->SetData(s_Data.SpriteVertices, dataSize);
             // 绑定纹理
-            for (int i = 0; i <s_Data.TextureSlotIndex; i++)
-            {
-                s_Data.TextureSlots[i]->Bind(i);    
-            }
-
-            // for(auto texture : s_Data.TextureSlotMap){
-            //     s_Data.TextureSlotMap[texture.first] = texture.second;
+            // for (int i = 0; i < s_Data.TextureSlotIndex; i++)
+            // {
+            //     s_Data.TextureSlots[i]->Bind(i);
             // }
 
+            for (auto texture : s_Data.TextureSlotMap)
+            {
+                texture.first->Bind();
+            }
 
             s_Data.SpriteVertexArray->Bind();
             s_Data.SpriteShader->Bind();
@@ -352,39 +358,42 @@ namespace Bamboo
             {0.0f, 1.0f}  // 左上
         };
 
-
         constexpr size_t spriteVertexCount = 4;
 
         float textureIndex = 0.0f;
-        for (uint32_t i = 1; i < s_Data.TextureSlotIndex; i++)
+        // for (uint32_t i = 1; i < s_Data.TextureSlotIndex; i++)
+        // {
+        //     if (*s_Data.TextureSlots[i] == *texture)
+        //     {
+        //         textureIndex = (float)i;
+        //         break;
+        //     }
+        // }
+
+        // 查找纹理使用的槽位
+     
+        if (s_Data.TextureSlotMap.find(texture) != s_Data.TextureSlotMap.end())
         {
-            if (*s_Data.TextureSlots[i] == *texture){
-                textureIndex=(float)i;
-                break;
-            }
+            textureIndex = (float)s_Data.TextureSlotMap[texture];
         }
 
-    //    //查找纹理使用的槽位
-    //    if(s_Data.TextureSlotMap.find(texture) != s_Data.TextureSlotMap.end()){
-    //         textureIndex = (float)s_Data.TextureSlotMap[texture];
-    //    }
-
-
-        if(textureIndex == 0.0f){
-            if(s_Data.TextureSlotIndex >= s_Data.MaxTextureSlots){
+        // 
+        // if (textureIndex == 0.0f);
+        if (textureIndex == 0.0f && texture != s_Data.WhiteTexture)
+        {
+            if (s_Data.TextureSlotIndex >= s_Data.MaxTextureSlots)
+            {
                 NextBatch();
             }
 
             textureIndex = (float)s_Data.TextureSlotIndex;
 
-            BAMBOO_ASSERT(s_Data.TextureSlotIndex >=s_Data.TextureSlots.size(),"Texture slot index out of range");
-            s_Data.TextureSlots.at(s_Data.TextureSlotIndex) = texture;
-            // s_Data.TextureSlotMap[texture] = s_Data.TextureSlotIndex;
+            // BAMBOO_ASSERT(s_Data.TextureSlotIndex >= s_Data.TextureSlots.size(), "Texture slot index out of range");
+            // s_Data.TextureSlots.at(s_Data.TextureSlotIndex) = texture;
+            BAMBOO_ASSERT(s_Data.TextureSlotIndex >= s_Data.MaxTextureSlots, "Texture slot index out of range");
+            s_Data.TextureSlotMap[texture] = s_Data.TextureSlotIndex;
             s_Data.TextureSlotIndex++;
-
         }
-        
-
 
         for (int i = 0; i < spriteVertexCount; i++)
         {
@@ -395,7 +404,6 @@ namespace Bamboo
             s_Data.SpriteVerticesPtr->TexIndex = textureIndex;
             s_Data.SpriteVerticesPtr++;
         }
-
 
         s_Data.SpriteIndexCount += 6;
         s_Data.SpriteCount++;
@@ -408,7 +416,8 @@ namespace Bamboo
         delete[] s_Data.SpriteVertices;
     }
 
-    Ref<Texture2D> Renderer2D::GetNormalTexture() {
+    Ref<Texture2D> Renderer2D::GetNormalTexture()
+    {
         return s_Data.WhiteTexture;
     }
 }

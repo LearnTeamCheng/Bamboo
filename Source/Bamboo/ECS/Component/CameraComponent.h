@@ -6,7 +6,8 @@ namespace Bamboo
     struct CameraComponent
     {
        Camera CurrentCamera;
-
+        
+       bool Primary = false;
        CameraComponent() = default;
        CameraComponent(const CameraComponent& ) = default;
     };

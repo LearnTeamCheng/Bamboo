@@ -57,7 +57,7 @@ namespace Bamboo
             z /= length;
         }
 
-        Vector3 Normalize() const
+        Vector3 Normalized() const
         {
             Vector3 result = *this;
             result.Normalize();
@@ -187,5 +187,6 @@ namespace Bamboo
         static const Vector3 Down;
         static const Vector3 Left;
         static const Vector3 Right;
+
     };
 }

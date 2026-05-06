@@ -175,4 +175,31 @@ namespace Bamboo
          result.m_data[10] = scale.z;
          return result;
      }
+
+     Matrix4 Matrix4::LookAt(const Vector3& eye, const Vector3& target, const Vector3& up){
+
+         Vector3 zAxis = (target - eye).Normalized();
+         Vector3 xAxis = up.Cross(zAxis).Normalized();
+         Vector3 yAxis = zAxis.Cross(xAxis);
+
+         Matrix4 result;
+         result.m_data[0] = xAxis.x;
+         result.m_data[1] = yAxis.x;
+         result.m_data[2] = zAxis.x;
+         result.m_data[3] = -xAxis.Dot(eye);
+
+         result.m_data[4] = xAxis.y;
+         result.m_data[5] = yAxis.y;
+         result.m_data[6] = zAxis.y;
+         result.m_data[7] = -yAxis.Dot(eye);
+
+         result.m_data[8] = xAxis.z;
+         result.m_data[9] = yAxis.z;
+         result.m_data[10] = zAxis.z;
+         result.m_data[11] = -zAxis.Dot(eye);
+
+         result.m_data[15] = 1.0f;
+
+         return result;
+     }
 }

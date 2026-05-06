@@ -1,4 +1,5 @@
 #pragma once
+#include <cstdint>
 #include "../Bamboo/Core/Ref.h"
 #include "../Bamboo/Math/Vector2.h"
 #include "../Bamboo/Math/Vector3.h"
@@ -15,7 +16,7 @@ namespace Bamboo
         };
 
     public:
-        Camera() =default;
+        Camera() = default;
         ~Camera() = default;
         /// @brief 设置 正交投影
         /// @param size 大小
@@ -24,30 +25,30 @@ namespace Bamboo
         void SetOrthographic(float size, float nearClip, float farClip);
 
         /// @brief 获取投影矩阵
-        Matrix4 GetProjection() const {return m_ProjectionMatrix;}
+        Matrix4 GetProjection() const { return m_ProjectionMatrix; }
         /// @brief 获取视图矩阵
-        //Matrix4 GetViewMatrix() const;
+        // Matrix4 GetViewMatrix() const;
         /// @brief 获取视图投影矩阵
-        Matrix4 GetViewProjectionMatrix() const;
+        Matrix4 GetViewProjection() const;
 
-        void SetPosition(const Vector3& position) {m_Position = position;}
-        const Vector3& GetPosition() const {return m_Position;}
+        void SetPosition(const Vector3 &position) { m_Position = position; }
+        const Vector3 &GetPosition() const { return m_Position; }
 
-        void SetRotation(const Vector3& rotation) {m_Rotation = rotation;}
-        const Vector3& GetRotation() const {return m_Rotation;}
+        void SetRotation(const Vector3 &rotation) { m_Rotation = rotation; }
+        const Vector3 &GetRotation() const { return m_Rotation; }
 
         /// @brief 窗口大小变
         void SetViewportSize(uint32_t width, uint32_t height);
 
-        float GetOrthographicSize()const { return m_OrthographicSize; }
-        /// @brief 获取宽高比 
-        float GetAspectRatio()const { return m_AspectRatio; }
+        float GetOrthographicSize() const { return m_OrthographicSize; }
+        /// @brief 获取宽高比
+        float GetAspectRatio() const { return m_AspectRatio; }
 
-        size_t GetViewportWidth()const { return m_ViewportWidth; }
-        size_t GetViewportHeight() const {return m_ViewportHeight;}
+        size_t GetViewportWidth() const { return m_ViewportWidth; }
+        size_t GetViewportHeight() const { return m_ViewportHeight; }
 
-        Vector3 ScreenToWorldPosition(const Vector3& screenPos) const;
-        Vector3 PixelSizeToWorldSize(const Vector2& pixelSize) const;
+        Vector3 ScreenToWorldPosition(const Vector3 &screenPos) const;
+        Vector3 PixelSizeToWorldSize(const Vector2 &pixelSize) const;
 
         void SetPrimaryCamera(bool primary) { m_PrimaryCamera = primary; }
         bool IsPrimaryCamera() const { return m_PrimaryCamera; }
@@ -63,7 +64,7 @@ namespace Bamboo
 
         float m_AspectRatio = 1.0f;
 
-        float m_OrthographicSize =10.0f;
+        float m_OrthographicSize = 10.0f;
         float m_OrthographicNear = -10.0f;
         float m_OrthographicFar = 10.0f;
 
@@ -73,9 +74,12 @@ namespace Bamboo
         Matrix4 m_ProjectionMatrix;
         ProjectionType m_ProjectionType;
 
+        Vector3 m_Forward {Vector3::Forward};
+        Vector3 m_Up {Vector3::Up};
+
         struct CameraData
         {
-           float left;
+            float left;
             float right;
             float bottom;
             float top;
