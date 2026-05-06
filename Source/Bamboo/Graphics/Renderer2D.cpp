@@ -88,6 +88,7 @@ namespace Bamboo
         uint32_t TextureSlotIndex = 1;
         Ref<Texture2D> WhiteTexture;
         std::array<Ref<Texture2D>, MaxTextureSlots> TextureSlots;
+        // std::unordered_map<Ref<Texture2D>, uint32_t> TextureSlotMap;
 
         struct CameraData
         {
@@ -209,6 +210,8 @@ namespace Bamboo
         s_Data.WhiteTexture->SetData(&whiteTextureData,sizeof(uint32_t));
 
         s_Data.TextureSlots[0] = s_Data.WhiteTexture;
+
+        // s_Data.TextureSlotMap[s_Data.WhiteTexture] = 0;
     }
 
     void Renderer2D::BeginScene()
@@ -241,6 +244,10 @@ namespace Bamboo
         s_Data.SpriteVerticesPtr = s_Data.SpriteVertices;
 
         s_Data.TextureSlotIndex = 1;
+
+        //这里 设置成白色纹理
+        // s_Data.TextureSlotMap.clear();
+        // s_Data.TextureSlotMap[s_Data.WhiteTexture] = 0;
     }
 
     void Renderer2D::NextBatch()
@@ -281,8 +288,13 @@ namespace Bamboo
             // 绑定纹理
             for (int i = 0; i <s_Data.TextureSlotIndex; i++)
             {
-                s_Data.TextureSlots[i]->Bind(i);
+                s_Data.TextureSlots[i]->Bind(i);    
             }
+
+            // for(auto texture : s_Data.TextureSlotMap){
+            //     s_Data.TextureSlotMap[texture.first] = texture.second;
+            // }
+
 
             s_Data.SpriteVertexArray->Bind();
             s_Data.SpriteShader->Bind();
@@ -352,6 +364,12 @@ namespace Bamboo
             }
         }
 
+    //    //查找纹理使用的槽位
+    //    if(s_Data.TextureSlotMap.find(texture) != s_Data.TextureSlotMap.end()){
+    //         textureIndex = (float)s_Data.TextureSlotMap[texture];
+    //    }
+
+
         if(textureIndex == 0.0f){
             if(s_Data.TextureSlotIndex >= s_Data.MaxTextureSlots){
                 NextBatch();
@@ -361,7 +379,9 @@ namespace Bamboo
 
             BAMBOO_ASSERT(s_Data.TextureSlotIndex >=s_Data.TextureSlots.size(),"Texture slot index out of range");
             s_Data.TextureSlots.at(s_Data.TextureSlotIndex) = texture;
+            // s_Data.TextureSlotMap[texture] = s_Data.TextureSlotIndex;
             s_Data.TextureSlotIndex++;
+
         }
         
 

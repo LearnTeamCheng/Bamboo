@@ -6,6 +6,7 @@
 
 namespace Bamboo {
 
+    //@brief 四边形组件
     struct QuadComponent
     {
         Color Color;

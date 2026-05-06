@@ -140,18 +140,18 @@ namespace Bamboo
             return result;
         }
 
-        // 向量点乘
+        ///@brief 向量点乘
         float Dot(const Vector2 &other) const
         {
             return x * other.x + y * other.y;
         }
-        // 向量叉乘
+        ///@brief 向量叉乘
         Vector2 Cross(const Vector2 &other) const
         {
             return Vector2(y * other.x - x * other.y, x * other.y - y * other.x);
         }
 
-        // 向量反射
+        ///@brief 向量反射
         Vector2 Reflect(const Vector2 &normal) const
         {
             return *this - 2.0f * Dot(normal) * normal;
@@ -173,12 +173,14 @@ namespace Bamboo
         static Vector2 Max(const Vector2 &a, const Vector2 &b);
         static Vector2 Min(const Vector2 &a, const Vector2 &b);
   
-        // 常量
+
+        /** 常量*/
         static const Vector2 Zero;
         static const Vector2 One;
         static const Vector2 Up;
         static const Vector2 Down;
         static const Vector2 Left;
         static const Vector2 Right;
+        static const Vector2 Half;
     };
 };

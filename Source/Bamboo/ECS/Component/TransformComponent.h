@@ -19,6 +19,13 @@ namespace Bamboo
 
         void SetLocalToWorldMatrix(Vector3 &position, Vector3 &scale)
         {
+            // 设置 矩阵 位置 缩放
+            /** sx,0,0,x
+             *  0,sy,0,y
+             *  0,0,sz,z
+             *  0,0,0,1
+             */
+
             LocalToWorldMatrix(0, 3) = position.x;
             LocalToWorldMatrix(1, 3) = position.y;
             LocalToWorldMatrix(2, 3) = position.z;
