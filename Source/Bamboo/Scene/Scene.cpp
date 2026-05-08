@@ -1,9 +1,9 @@
 #include "Scene.h"
 #include "../Core/Log.h"
 #include "../ECS/Entity.h"
-#include "../ECS/System/SpriteRendererSystem.h"
 #include "../ECS/System/RendererSystem.h"
 #include "../ECS/System/TransformSystem.h"
+#include "../ECS/System/CameraSystem.h"
 #include "../Physics/PhysicsSystem.h"
 namespace Bamboo
 {
@@ -11,15 +11,19 @@ namespace Bamboo
     Scene::Scene()
     {
         BAMBOO_CORE_INFO("init scene");
-
         //
         m_Systems.push_back(CreateScope<TransformSystem>());
-        m_Systems.push_back(CreateScope<SpriteRendererSystem>());
+        m_Systems.push_back(CreateScope<CameraSystem>());
         m_Systems.push_back(CreateScope<Physics::PhysicsSystem>());
         m_Systems.push_back(CreateScope<RendererSystem>());
 
         auto entity = CreateEntity("MainCamera");
         auto &cameraComponent = entity.AddComponent<CameraComponent>();
+        cameraComponent.Primary = true;
+
+        auto &transform = entity.GetComponent<TransformComponent>();
+        transform.Position = Vector3(0.0f, 0.0f, 10.0f);
+
 
         cameraComponent.CurrentCamera.SetOrthographic(10, 1, 100.0f);
         cameraComponent.CurrentCamera.SetViewportSize(1280, 720);

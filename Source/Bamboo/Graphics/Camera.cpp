@@ -29,13 +29,20 @@ namespace Bamboo
     {
         if (m_ProjectionType == ProjectionType::Orthographic)
         {
-            float left = -m_OrthographicSize * m_AspectRatio * 0.5f;
-            float right = m_OrthographicSize * m_AspectRatio * 0.5f;
-            float bottom = -m_OrthographicSize * 0.5f;
-            float top = m_OrthographicSize * 0.5f;
+            // float left = -m_OrthographicSize * m_AspectRatio * 0.5f;
+            // float right = m_OrthographicSize * m_AspectRatio * 0.5f;
+            // float bottom = -m_OrthographicSize * 0.5f;
+            // float top = m_OrthographicSize * 0.5f;
+            
+            
+            m_OrthographicSize = m_ViewportHeight *0.5f;
+            float left = -m_OrthographicSize * m_AspectRatio ;
+            float right = m_OrthographicSize * m_AspectRatio ;
+            float bottom = -m_OrthographicSize ;
+            float top = m_OrthographicSize;
 
             m_CameraData.left = left;
-            m_CameraData.right = right;
+            m_CameraData.right =right;
             m_CameraData.bottom = bottom;
             m_CameraData.top = top;
             m_ProjectionMatrix = Matrix4::Orthographic(left, right, bottom, top, m_OrthographicNear, m_OrthographicFar);
@@ -65,6 +72,7 @@ namespace Bamboo
     
     Matrix4 Camera::GetViewProjection() const
     {
-        return Matrix4::LookAt(m_Position, m_Position + m_Forward, m_Up);
+        // return Matrix4::LookAt(m_Position, m_Position + m_Forward, m_Up);
+        return m_ProjectionMatrix *m_ViewMatrix ;
     }
 }

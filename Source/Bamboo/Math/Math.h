@@ -121,6 +121,16 @@ namespace Bamboo::Math
 		{
 			return std::min(a, b);
 		}
+
+		inline float AngleToRadian(float angle)
+		{
+			return angle * B_PI / 180.0f;
+		}
+
+		inline float RadianToAngle(float radian)
+		{
+			return radian * 180.0f / B_PI;
+		}
 	
 
 }; // namespace Bamboo

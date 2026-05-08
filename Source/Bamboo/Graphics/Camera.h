@@ -31,11 +31,6 @@ namespace Bamboo
         /// @brief 获取视图投影矩阵
         Matrix4 GetViewProjection() const;
 
-        void SetPosition(const Vector3 &position) { m_Position = position; }
-        const Vector3 &GetPosition() const { return m_Position; }
-
-        void SetRotation(const Vector3 &rotation) { m_Rotation = rotation; }
-        const Vector3 &GetRotation() const { return m_Rotation; }
 
         /// @brief 窗口大小变
         void SetViewportSize(uint32_t width, uint32_t height);
@@ -53,14 +48,15 @@ namespace Bamboo
         void SetPrimaryCamera(bool primary) { m_PrimaryCamera = primary; }
         bool IsPrimaryCamera() const { return m_PrimaryCamera; }
 
+        void SetView(Matrix4 view) { m_ViewMatrix = view; }
+        const Matrix4 &GetView() const { return m_ViewMatrix; }
+
     protected:
         /// @brief 计算投影矩阵
         void ReCalculateProjectionMatrix();
 
     private:
         bool m_Orthographic;
-        Vector3 m_Position;
-        Vector3 m_Rotation;
 
         float m_AspectRatio = 1.0f;
 
@@ -72,6 +68,8 @@ namespace Bamboo
         size_t m_ViewportHeight = 0;
 
         Matrix4 m_ProjectionMatrix;
+        /// @brief 视图矩阵 
+        Matrix4 m_ViewMatrix;
         ProjectionType m_ProjectionType;
 
         Vector3 m_Forward {Vector3::Forward};

@@ -70,7 +70,7 @@ namespace Bamboo
             for (auto entity : view)
             {
                 auto &[sprite, transform] = view.get<SpriteRendererComponent, TransformComponent>(entity);
-                // Renderer2D::DrawSprite(transform.LocalToWorldMatrix, sprite.SpriteColor, sprite.SpriteTexture);
+                // Renderer2D::DrawSprite(transform.LocalMatrix, sprite.SpriteColor, sprite.SpriteTexture);
                 sprites.emplace_back(sprite.ZOrder, &sprite, &transform);
             }
 
@@ -84,7 +84,14 @@ namespace Bamboo
                 {
                     sprite->SpriteTexture = Renderer2D::GetNormalTexture();
                 }
-                Renderer2D::DrawSprite(transform->LocalToWorldMatrix, sprite->SpriteColor, sprite->SpriteTexture);
+                
+                // auto viewMatrix = mainCamera->GetViewProjection() ;
+                // auto model = viewMatrix* transform->WorldMatrix;
+                //todo 这里可以优化 把精灵大小放到 transformSystem 里面 直接计算出世界矩阵 多一次循环，这里可以优化
+                auto model = transform->WorldMatrix *Matrix4::Scale(sprite->Size);
+                Renderer2D::DrawSprite(model, sprite->SpriteColor, sprite->SpriteTexture);
+                // auto model = Matrix4::Translate(transform->Position) * Matrix4::Scale(sprite->Size);
+                // Renderer2 D::DrawSprite(transform->WorldMatrix, sprite->SpriteColor, sprite->SpriteTexture);
             }
         }
         Renderer2D::EndScene();

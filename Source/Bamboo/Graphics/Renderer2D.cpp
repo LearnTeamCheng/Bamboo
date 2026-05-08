@@ -215,7 +215,7 @@ namespace Bamboo
             s_Data.WhiteTexture->SetData(&whiteTextureData, sizeof(uint32_t));
 
             // s_Data.TextureSlots[0] = s_Data.WhiteTexture;
-            s_Data.TextureSlotMap[s_Data.WhiteTexture] = 0;
+           s_Data.TextureSlotMap[s_Data.WhiteTexture] = 0;
         }
     }
 
@@ -226,7 +226,7 @@ namespace Bamboo
 
     void Renderer2D::BeginScene(const Camera &camera)
     {
-        Matrix4 viewProjection = camera.GetProjection();
+        Matrix4 viewProjection = camera.GetViewProjection();
         s_Data.CameraUniformBuffer->SetData(&viewProjection, sizeof(Renderer2DData::CameraData));
         StartBatch();
     }
@@ -397,6 +397,7 @@ namespace Bamboo
 
         for (int i = 0; i < spriteVertexCount; i++)
         {
+            auto p = localMatrix * Vector4(s_Data.SpriteVertexPositions[i]);
             s_Data.SpriteVerticesPtr->Position = localMatrix * Vector4(s_Data.SpriteVertexPositions[i]);
 
             s_Data.SpriteVerticesPtr->Color = color;

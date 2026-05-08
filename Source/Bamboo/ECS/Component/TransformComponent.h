@@ -11,8 +11,8 @@ namespace Bamboo
         Vector3 Scale{1.0f, 1.0f, 1.0f};
 
         bool Dirty = true;
-        Matrix4 LocalToWorldMatrix;
-        Matrix4 WorldToLocalMatrix;
+        Matrix4 LocalMatrix;
+        Matrix4 WorldMatrix;
 
         TransformComponent() = default;
         TransformComponent(const TransformComponent &other) = default;
@@ -26,14 +26,16 @@ namespace Bamboo
              *  0,0,0,1
              */
 
-            LocalToWorldMatrix(0, 3) = position.x;
-            LocalToWorldMatrix(1, 3) = position.y;
-            LocalToWorldMatrix(2, 3) = position.z;
+            LocalMatrix(0, 3) = position.x;
+            LocalMatrix(1, 3) = position.y;
+            LocalMatrix(2, 3) = position.z;
 
-            LocalToWorldMatrix(0, 0) = scale.x;
-            LocalToWorldMatrix(1, 1) = scale.y;
-            LocalToWorldMatrix(2, 2) = scale.z;
+            LocalMatrix(0, 0) = scale.x;
+            LocalMatrix(1, 1) = scale.y;
+            LocalMatrix(2, 2) = scale.z;
         }
+
+  
     };
 
 }

@@ -18,8 +18,14 @@ namespace Bamboo
             auto &transform = view.get<TransformComponent>(entity);
             if (camera.Primary)
             {
-                mainCamera = &camera.CurrentCamera;
-                mainCamera->SetPosition(transform.Position);
+                // Matrix4 viewMatrix = transform.WorldMatrix.Inverse();
+
+                Matrix4 translation = Matrix4::Translate(-transform.Position);
+
+                Matrix4 rotation = Matrix4::RotateZ(-transform.Rotation.z);
+
+                // Matrix4 view = rotation * translation;
+                camera.CurrentCamera.SetView(translation *rotation);
             }
         }
     }
