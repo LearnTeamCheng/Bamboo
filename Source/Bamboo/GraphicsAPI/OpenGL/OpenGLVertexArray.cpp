@@ -33,14 +33,21 @@ namespace Bamboo
         glBindVertexArray(m_RendererID);
         vertexBuffer->Bind();
 
-        auto& layout = vertexBuffer->GetLayout();
+        auto &layout = vertexBuffer->GetLayout();
 
-     
-
-        for(const auto& element : layout.GetElements())
+        for (const auto &element : layout.GetElements())
         {
             switch (element.Type)
             {
+            case ShaderDatatType::Bool:
+            case ShaderDatatType::Int:
+            case ShaderDatatType::Int2:
+            case ShaderDatatType::Int3:
+            case ShaderDatatType::Int4:
+                glEnableVertexAttribArray(m_VertexBufferIndex);
+                glVertexAttribIPointer(m_VertexBufferIndex, element.GetComponentCount(), GL_INT, layout.GetStride(), (void *)element.Offset);
+                m_VertexBufferIndex++;
+                break;
             case ShaderDatatType::Float:
             case ShaderDatatType::Float2:
             case ShaderDatatType::Float3:

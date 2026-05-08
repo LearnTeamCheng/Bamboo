@@ -41,16 +41,27 @@ namespace Bamboo
 
     void OpenGLShader::SetInt(const std::string &name, int value)
     {
-    
     }
 
-    void OpenGLShader::SetFloat(const std::string &name, float value) {}
-    void OpenGLShader::SetVec2(const std::string &name, const Vector2 &value) {}
-    void OpenGLShader::SetVec3(const std::string &name, const Vector3 &value) {}
+    void OpenGLShader::SetFloat(const std::string &name, float value)
+    {
+        glUniform1f(glGetUniformLocation(m_RendererID, name.c_str()), value);
+    }
 
-    void OpenGLShader::SetMat4(const std::string &name, const Matrix4 &value) {}
+    void OpenGLShader::SetVec2(const std::string &name, const Vector2 &value) 
+    {
+        glUniform2f(glGetUniformLocation(m_RendererID, name.c_str()), value.x, value.y);
+    }
+    
+    void OpenGLShader::SetVec3(const std::string &name, const Vector3 &value) 
+    {
+        glUniform3f(glGetUniformLocation(m_RendererID, name.c_str()), value.x, value.y, value.z);
+    }
 
- 
+    void OpenGLShader::SetMat4(const std::string &name, const Matrix4 &value) 
+    {
+        glUniformMatrix4fv(glGetUniformLocation(m_RendererID, name.c_str()), 1, GL_FALSE,value.GetData());
+    }
 
     void OpenGLShader::Compile(const std::unordered_map<GLenum, std::string> &shaderSources)
     {
@@ -61,7 +72,7 @@ namespace Bamboo
             const std::string &source = kv.second;
 
             unsigned int shader = glCreateShader(type);
-            const char* shaderSource = source.c_str();
+            const char *shaderSource = source.c_str();
             glShaderSource(shader, 1, &shaderSource, 0);
             glCompileShader(shader);
 
@@ -94,14 +105,14 @@ namespace Bamboo
             glDeleteShader(kv.first);
         }
     }
-    
+
     std::string OpenGLShader::ReadFile(const std::string &filePath)
     {
-        //获取到文件名
+        // 获取到文件名
         std::string fileName = filePath.substr(filePath.find_last_of("/\\") + 1);
         m_Name = fileName.substr(0, fileName.find_last_of("."));
-        std::string fullPath = std::string(BAMBOO_ASSET_ROOT)+"/"+"Shaders/"  + fileName;
-      
+        std::string fullPath = std::string(BAMBOO_ASSET_ROOT) + "/" + "Shaders/" + fileName;
+
         std::string result;
         std::ifstream in(fullPath, std::ios::in | std::ios::binary);
         if (in)
@@ -127,22 +138,25 @@ namespace Bamboo
         return result;
     }
 
-    std::unordered_map<GLenum, std::string> OpenGLShader::Preprocess(const std::string &source) 
+    std::unordered_map<GLenum, std::string> OpenGLShader::Preprocess(const std::string &source)
     {
         std::unordered_map<GLenum, std::string> sources;
         const char *typeToken = "#type";
         size_t pos = source.find(typeToken, 0);
         GLenum shaderType = 0;
         while (pos != std::string::npos)
-        {   
-            //找到第一个换行符
+        {
+            // 找到第一个换行符
             size_t eol = source.find_first_of("\r\n", pos);
-            //获取到shader类型
-            std::string type = source.substr(pos + strlen(typeToken) +1, eol - pos - strlen(typeToken));
+            // 获取到shader类型
+            std::string type = source.substr(pos + strlen(typeToken) + 1, eol - pos - strlen(typeToken));
 
-            if(type == "vertex") {
+            if (type == "vertex")
+            {
                 shaderType = GL_VERTEX_SHADER;
-            }else if(type == "fragment") {
+            }
+            else if (type == "fragment")
+            {
                 shaderType = GL_FRAGMENT_SHADER;
             }
 
@@ -150,10 +164,8 @@ namespace Bamboo
             pos = source.find(typeToken, nextLinePos);
 
             sources[shaderType] = source.substr(nextLinePos, pos - (nextLinePos == std::string::npos ? source.size() - 1 : nextLinePos));
-        
         }
 
         return sources;
-        
     }
 }

@@ -56,6 +56,10 @@ namespace Bamboo
         
         static Matrix4 LookAt(const Vector3& eye, const Vector3& target, const Vector3& up);
 
+        const float* GetData() const { return m_data; }
+
+        void * ValuePtr() { return m_data; }
+
     private:
         float m_data[16];
     };

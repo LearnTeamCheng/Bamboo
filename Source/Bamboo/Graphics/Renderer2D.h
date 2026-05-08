@@ -16,7 +16,7 @@ namespace Bamboo
         static void Init();
 
         static void BeginScene();
-        static void BeginScene(const Camera& camera);
+        static void BeginScene(const Camera &camera);
         static void EndScene();
         static void Shutdown();
 
@@ -24,14 +24,20 @@ namespace Bamboo
         static void DrawQuad(const Vector3 &position, const Vector2 &size, const Color &color);
 
         static void DrawCircle(const Vector2 &center, float radius, const Color &color);
-        static void DrawSprite(const Matrix4& localMatrix, const Color & color, Ref<Texture2D>& texture);
+        static void DrawSprite(const Matrix4 &localMatrix, const Color &color, Ref<Texture2D> &texture);
 
-        static void DrawTriangle(const Vector3& position, const Color& color);
+        static void DrawTriangle(const Vector3 &position, const Color &color);
 
         static Ref<Texture2D> GetNormalTexture();
 
+        struct Statistics
+        {
+            int DrawCalls{0};
+        };
+
     private:
-        static void StartBatch();
+        static void
+        StartBatch();
         static void NextBatch();
         static void Flush();
     };

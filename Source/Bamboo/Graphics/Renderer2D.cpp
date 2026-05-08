@@ -95,6 +95,8 @@ namespace Bamboo
         };
 
         Ref<UniformBuffer> CameraUniformBuffer;
+
+        Renderer2D::Statistics Stats;
     };
 
     static Renderer2DData s_Data;
@@ -253,6 +255,8 @@ namespace Bamboo
         // 这里 设置成白色纹理
         s_Data.TextureSlotMap.clear();
         s_Data.TextureSlotMap[s_Data.WhiteTexture] = 0;
+
+        s_Data.Stats.DrawCalls = 0;
     }
 
     void Renderer2D::NextBatch()
@@ -273,6 +277,8 @@ namespace Bamboo
             s_Data.TriangleShader->Bind();
 
             RendererCommand::DrawIndexed(s_Data.TriangleVertexArray, s_Data.TriangleIndexCount);
+
+            s_Data.Stats.DrawCalls++;
         }
 
         if (s_Data.QuadIndexCount > 0)
@@ -284,6 +290,7 @@ namespace Bamboo
             s_Data.QuadShader->Bind();
 
             RendererCommand::DrawIndexed(s_Data.QuadVertexArray, s_Data.QuadIndexCount);
+            s_Data.Stats.DrawCalls++;
         }
 
         if (s_Data.SpriteIndexCount > 0)
@@ -305,6 +312,7 @@ namespace Bamboo
             s_Data.SpriteVertexArray->Bind();
             s_Data.SpriteShader->Bind();
             RendererCommand::DrawIndexed(s_Data.SpriteVertexArray, s_Data.SpriteIndexCount);
+            s_Data.Stats.DrawCalls++;
         }
     }
 
@@ -397,7 +405,7 @@ namespace Bamboo
 
         for (int i = 0; i < spriteVertexCount; i++)
         {
-            auto p = localMatrix * Vector4(s_Data.SpriteVertexPositions[i]);
+            // auto p = localMatrix * Vector4(s_Data.SpriteVertexPositions[i]);
             s_Data.SpriteVerticesPtr->Position = localMatrix * Vector4(s_Data.SpriteVertexPositions[i]);
 
             s_Data.SpriteVerticesPtr->Color = color;
