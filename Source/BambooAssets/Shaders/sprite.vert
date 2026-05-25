@@ -3,7 +3,7 @@
 layout(location = 0) in vec3 aPos;
 layout(location = 1) in vec4 Color;
 layout(location = 2) in vec2 aTexCoord;
-layout(location = 3) in float aTexIndex;
+layout(location = 3) in float   aTexIndex;
 
 layout(std140 ,binding = 0) uniform Camera
 {
@@ -12,7 +12,7 @@ layout(std140 ,binding = 0) uniform Camera
 
 out vec4 ourColor;
 out vec2 TexCoord;
-layout(location = 4) out float TexIndex;
+layout(location = 4) flat  out float TexIndex;
 
 
 void main() 
