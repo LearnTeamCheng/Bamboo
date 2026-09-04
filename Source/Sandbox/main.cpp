@@ -108,6 +108,7 @@ int main(int argc, char** argv) {
 
     **/
     BreakoutApp app;
+    
     app.Run();
     
 }

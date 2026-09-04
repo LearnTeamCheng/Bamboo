@@ -48,24 +48,27 @@ namespace Bamboo
         glUniform1f(glGetUniformLocation(m_RendererID, name.c_str()), value);
     }
 
-    void OpenGLShader::SetVec2(const std::string &name, const Vector2 &value) 
+    void OpenGLShader::SetVec2(const std::string &name, const Vector2 &value)
     {
         glUniform2f(glGetUniformLocation(m_RendererID, name.c_str()), value.x, value.y);
     }
-    
-    void OpenGLShader::SetVec3(const std::string &name, const Vector3 &value) 
+
+    void OpenGLShader::SetVec3(const std::string &name, const Vector3 &value)
     {
         glUniform3f(glGetUniformLocation(m_RendererID, name.c_str()), value.x, value.y, value.z);
     }
 
-    void OpenGLShader::SetMat4(const std::string &name, const Matrix4 &value) 
+    void OpenGLShader::SetMat4(const std::string &name, const Matrix4 &value)
     {
-        glUniformMatrix4fv(glGetUniformLocation(m_RendererID, name.c_str()), 1, GL_FALSE,value.GetData());
+        glUniformMatrix4fv(glGetUniformLocation(m_RendererID, name.c_str()), 1, GL_FALSE, value.GetData());
     }
 
     void OpenGLShader::Compile(const std::unordered_map<GLenum, std::string> &shaderSources)
     {
         m_RendererID = glCreateProgram();
+        
+        m_Shaders.reserve(shaderSources.size());
+        
         for (auto &kv : shaderSources)
         {
             GLenum type = kv.first;
@@ -87,6 +90,7 @@ namespace Bamboo
                 return;
             }
             glAttachShader(m_RendererID, shader);
+            m_Shaders.push_back(shader);
         }
         glLinkProgram(m_RendererID);
 
@@ -100,10 +104,15 @@ namespace Bamboo
             return;
         }
 
-        for (auto &kv : shaderSources)
+        // for (auto &kv : shaderSources)
+        // {
+        //     glDeleteShader(kv.first);
+        // }
+        for (auto shader : m_Shaders)
         {
-            glDeleteShader(kv.first);
+            glDeleteShader(shader);
         }
+        m_Shaders.clear();
     }
 
     std::string OpenGLShader::ReadFile(const std::string &filePath)

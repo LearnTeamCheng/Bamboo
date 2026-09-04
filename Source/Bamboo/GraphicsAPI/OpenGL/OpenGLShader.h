@@ -5,6 +5,7 @@
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include <vector>
 
 
 namespace Bamboo
@@ -36,8 +37,9 @@ namespace Bamboo
         std::unordered_map<GLenum, std::string> Preprocess(const std::string& source);
         std::string ReadFile(const std::string& filepath);
         void Compile(const std::unordered_map<GLenum, std::string>& shaderSources);
-
-    private:
+        
+        private:
+        std::vector<unsigned int> m_Shaders;
         uint32_t m_RendererID;
         std::string m_Name;
         std::string m_FilePath;

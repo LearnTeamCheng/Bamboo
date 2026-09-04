@@ -40,6 +40,13 @@ namespace Bamboo
         float TexIndex;
     };
 
+    /**圆的顶点 */
+    struct CircleVertex {
+        Vector3 Position;
+        Color Color;
+        float Radius;
+    };
+
     struct Renderer2DData
     {
         /// 最大三角形数量
@@ -306,7 +313,7 @@ namespace Bamboo
 
             for (auto texture : s_Data.TextureSlotMap)
             {
-                texture.first->Bind();
+                texture.first->Bind(texture.second);
             }
 
             s_Data.SpriteVertexArray->Bind();
@@ -398,7 +405,7 @@ namespace Bamboo
 
             // BAMBOO_ASSERT(s_Data.TextureSlotIndex >= s_Data.TextureSlots.size(), "Texture slot index out of range");
             // s_Data.TextureSlots.at(s_Data.TextureSlotIndex) = texture;
-            BAMBOO_ASSERT(s_Data.TextureSlotIndex >= s_Data.MaxTextureSlots, "Texture slot index out of range");
+            // BAMBOO_ASSERT(s_Data.TextureSlotIndex >= s_Data.MaxTextureSlots, "Texture slot index out of range");
             s_Data.TextureSlotMap[texture] = s_Data.TextureSlotIndex;
             s_Data.TextureSlotIndex++;
         }

@@ -11,8 +11,9 @@ namespace Bamboo
         }
 
         Singleton(const Singleton &) = delete;
-    Singleton &operator=(const Singleton &) = delete
+        Singleton &operator=(const Singleton &) = delete;
 
-        private : Singleton() = default;
+    private:
+        Singleton() = default;
     };
 };
