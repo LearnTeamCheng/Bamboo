@@ -41,7 +41,8 @@ namespace Bamboo
     };
 
     /**圆的顶点 */
-    struct CircleVertex {
+    struct CircleVertex
+    {
         Vector3 Position;
         Color Color;
         float Radius;
@@ -79,6 +80,15 @@ namespace Bamboo
         QuadVertex *QuadVerticesPtr = nullptr;
 
         uint32_t QuadIndexCount = 0;
+
+        // circle
+        Ref<VertexArray> CircleVertexArray;
+        Ref<VertexBuffer> CircleBuffer;
+        Ref<Shader> CircleShader;
+        Vector3 CircleVertexPosition;
+        CircleVertex *CircleVertices = nullptr;
+        CircleVertex *CircleVerticesPtr = nullptr;
+        uint32_t CircleIndexCount;
 
         // Sprite
         Ref<VertexArray> SpriteVertexArray;
@@ -175,7 +185,10 @@ namespace Bamboo
             s_Data.QuadShader = Shader::Create("Quad", "BambooAssets/Shaders/triangle.vert", "BambooAssets/Shaders/triangle.frag");
             s_Data.QuadVertexArray->AddVertexBuffer(s_Data.QuadBuffer);
         }
-
+        // circle
+        {
+        
+        }
         // Sprite
         {
             s_Data.SpriteVertexArray = VertexArray::Create();
@@ -210,7 +223,7 @@ namespace Bamboo
                 offset += 4;
             }
 
-            Ref<IndexBuffer> spriteIndexBuffer = IndexBuffer::Create(spriteIndices, s_Data.MaxSpriteCount *6 );
+            Ref<IndexBuffer> spriteIndexBuffer = IndexBuffer::Create(spriteIndices, s_Data.MaxSpriteCount * 6);
             s_Data.SpriteVertexArray->SetIndexBuffer(spriteIndexBuffer);
             delete[] spriteIndices;
 
@@ -224,7 +237,7 @@ namespace Bamboo
             s_Data.WhiteTexture->SetData(&whiteTextureData, sizeof(uint32_t));
 
             // s_Data.TextureSlots[0] = s_Data.WhiteTexture;
-           s_Data.TextureSlotMap[s_Data.WhiteTexture] = 0;
+            s_Data.TextureSlotMap[s_Data.WhiteTexture] = 0;
         }
     }
 
@@ -386,13 +399,13 @@ namespace Bamboo
         // }
 
         // 查找纹理使用的槽位
-     
+
         if (s_Data.TextureSlotMap.find(texture) != s_Data.TextureSlotMap.end())
         {
             textureIndex = (float)s_Data.TextureSlotMap[texture];
         }
 
-        // 
+        //
         // if (textureIndex == 0.0f);
         if (textureIndex == 0.0f && texture != s_Data.WhiteTexture)
         {

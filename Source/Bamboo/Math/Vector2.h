@@ -39,12 +39,17 @@ namespace Bamboo
         Vector2 operator*(const float &other) const { return Vector2(x * other, y * other); }
         Vector2 operator/(const float &other) const { return Vector2(x / other, y / other); }
 
-        friend static Vector2 operator*(const float &scalar, const Vector2 &vector)
+        friend Vector2 operator*(const float &scalar, const Vector2 &vector)
         {
             return Vector2(vector.x * scalar, vector.y * scalar);
         }
-        friend static Vector2 operator/(const float &scalar, const Vector2 &vector)
+
+        friend Vector2 operator/(const Vector2 &vector, const float &scalar)
         {
+            if (scalar == 0.0f)
+            {
+                return Vector2();
+            }
             return Vector2(vector.x / scalar, vector.y / scalar);
         }
 
@@ -162,17 +167,14 @@ namespace Bamboo
             return *this * (1.0f - t) + other * t;
         }
 
-
-
         Vector2 Clamp(const Vector2 &min, const Vector2 &max) const
         {
             return Vector2(Math::Clamp(x, min.x, max.x), Math::Clamp(y, min.y, max.y));
         }
 
-        
+
         static Vector2 Max(const Vector2 &a, const Vector2 &b);
         static Vector2 Min(const Vector2 &a, const Vector2 &b);
-  
 
         /** 常量*/
         static const Vector2 Zero;

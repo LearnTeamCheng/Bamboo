@@ -1,3 +1,5 @@
+#pragma once
+
 #include "../Bamboo/Math/Vector2.h"
 struct BallComponent
 {
