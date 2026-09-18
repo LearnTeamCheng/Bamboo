@@ -1,6 +1,7 @@
 # Bamboo 引擎架构（现状）
 
 > **本文档描述"代码现在是什么样"**，不描述"应该是什么样"。
+> - **想知道"现在哪里不对、要变成什么样、怎么迁" → `architecture_upgrade.md`（架构决策文档）**
 > - 想改什么 / 缺陷清单 → `refactor_plan.md`
 > - 想按什么顺序建 → `upgrade_plan.md`
 > - 做哪些游戏、编辑器怎么做 → `games_and_editor.md`
