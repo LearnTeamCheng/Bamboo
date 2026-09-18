@@ -88,7 +88,9 @@ namespace Bamboo
         Vector3 CircleVertexPosition;
         CircleVertex *CircleVertices = nullptr;
         CircleVertex *CircleVerticesPtr = nullptr;
-        uint32_t CircleIndexCount;
+        /// 注意：圆的批次尚未实现（Init 里是空的），StartBatch 也还没有重置这些成员。
+        /// 实现圆时必须同步在 StartBatch 里重置 CircleIndexCount / CircleVerticesPtr。
+        uint32_t CircleIndexCount = 0;
 
         // Sprite
         Ref<VertexArray> SpriteVertexArray;
@@ -103,7 +105,8 @@ namespace Bamboo
 
         uint32_t TextureSlotIndex = 1;
         Ref<Texture2D> WhiteTexture;
-        // std::array<Ref<Texture2D>, MaxTextureSlots> TextureSlots;
+        /// 纹理槽分配表：纹理 → 槽位索引。
+        /// 用 map 而不是定长数组，这样同一个纹理复用同一槽位。（早期版本用过定长数组 TextureSlots，已废弃）
         std::unordered_map<Ref<Texture2D>, uint32_t> TextureSlotMap;
 
         struct CameraData
@@ -159,9 +162,8 @@ namespace Bamboo
             s_Data.QuadVertexPosition[1] = {0.5f, -0.5f, 0.0f, 1.0f};
             s_Data.QuadVertexPosition[2] = {0.5f, 0.5f, 0.0f, 1.0f};
             s_Data.QuadVertexPosition[3] = {-0.5f, 0.5f, 0.0f, 1.0f};
-            // 顶点数据，围成一个矩形
-            // uint32_t quadIndices[] = { 0,1,2,2,3,0 };
 
+            // 顶点数据，围成一个矩形
             uint32_t *quadIndices = new uint32_t[6 * 2];
             uint32_t offset = 0;
             for (uint32_t i = 0; i < 2 * s_Data.QuadIndexCount; i += 6)
@@ -187,7 +189,8 @@ namespace Bamboo
         }
         // circle
         {
-        
+            // TODO(渲染): 圆的批次尚未实现 —— 需要 CircleVertexArray / CircleBuffer /
+            // CircleShader(CircleVertex 布局) 与索引表，并补齐 DrawCircle 的顶点写入。
         }
         // Sprite
         {
@@ -207,7 +210,6 @@ namespace Bamboo
             s_Data.SpriteVertexPositions[3] = {-0.5f, 0.5f, 0.0f};
 
             // 顶点数据，围成一个矩形
-            //  uint32_t spriteIndices[] = { 0,1,2,2,3,0 };
             uint32_t *spriteIndices = new uint32_t[s_Data.MaxQuadIndices * s_Data.MaxSpriteCount];
             uint32_t offset = 0;
 
@@ -231,12 +233,11 @@ namespace Bamboo
             s_Data.SpriteVertexArray->AddVertexBuffer(s_Data.SpriteBuffer);
 
             s_Data.CameraUniformBuffer = UniformBuffer::Create(sizeof(Renderer2DData::CameraData), 0);
-            // 白色纹理
+            // 白色纹理：作为"没有贴图"时的默认纹理，槽位固定为 0
             s_Data.WhiteTexture = Texture2D::Create(TextureSpecification());
             uint32_t whiteTextureData = 0xffffffff;
             s_Data.WhiteTexture->SetData(&whiteTextureData, sizeof(uint32_t));
 
-            // s_Data.TextureSlots[0] = s_Data.WhiteTexture;
             s_Data.TextureSlotMap[s_Data.WhiteTexture] = 0;
         }
     }
@@ -318,12 +319,8 @@ namespace Bamboo
             // 计算数据大小 使用距离指针距离 * 数据大小
             uint32_t dataSize = std::distance(s_Data.SpriteVertices, s_Data.SpriteVerticesPtr) * sizeof(*s_Data.SpriteVertices);
             s_Data.SpriteBuffer->SetData(s_Data.SpriteVertices, dataSize);
-            // 绑定纹理
-            // for (int i = 0; i < s_Data.TextureSlotIndex; i++)
-            // {
-            //     s_Data.TextureSlots[i]->Bind(i);
-            // }
 
+            // 按槽位绑定本批用到的所有纹理
             for (auto texture : s_Data.TextureSlotMap)
             {
                 texture.first->Bind(texture.second);
@@ -338,10 +335,14 @@ namespace Bamboo
 
     void Renderer2D::DrawTriangle(const Vector3 &position, const Color &color)
     {
-
+        // ⚠️ 已知缺陷（refactor_plan.md P1-7）：
+        //   1) 硬编码 1280/720 做坐标换算，换分辨率即错位；
+        //   2) 算出的 inPos 从未被使用 —— 传入的 position 实际被忽略；
+        //   3) 缩放硬编码 0.5，三角形永远画在原点附近。
+        // 正确做法：位置/缩放/旋转统一由变换矩阵参与，绘制函数不再接收裸坐标。
         Vector3 inPos = Vector3(position.x / 1280, position.y / 720, 0);
+        (void)inPos;
 
-        // Matrix4 m4 = Matrix4::Translate(inPos);
         float scale = 0.5f;
         Matrix3 m3 = Matrix3::Scale(scale, scale, scale);
 
@@ -389,24 +390,13 @@ namespace Bamboo
         constexpr size_t spriteVertexCount = 4;
 
         float textureIndex = 0.0f;
-        // for (uint32_t i = 1; i < s_Data.TextureSlotIndex; i++)
-        // {
-        //     if (*s_Data.TextureSlots[i] == *texture)
-        //     {
-        //         textureIndex = (float)i;
-        //         break;
-        //     }
-        // }
 
-        // 查找纹理使用的槽位
-
+        // 查这个纹理已经分配到的槽位（0 = 白纹理）
         if (s_Data.TextureSlotMap.find(texture) != s_Data.TextureSlotMap.end())
         {
             textureIndex = (float)s_Data.TextureSlotMap[texture];
         }
 
-        //
-        // if (textureIndex == 0.0f);
         if (textureIndex == 0.0f && texture != s_Data.WhiteTexture)
         {
             if (s_Data.TextureSlotIndex >= s_Data.MaxTextureSlots)
@@ -415,17 +405,12 @@ namespace Bamboo
             }
 
             textureIndex = (float)s_Data.TextureSlotIndex;
-
-            // BAMBOO_ASSERT(s_Data.TextureSlotIndex >= s_Data.TextureSlots.size(), "Texture slot index out of range");
-            // s_Data.TextureSlots.at(s_Data.TextureSlotIndex) = texture;
-            // BAMBOO_ASSERT(s_Data.TextureSlotIndex >= s_Data.MaxTextureSlots, "Texture slot index out of range");
             s_Data.TextureSlotMap[texture] = s_Data.TextureSlotIndex;
             s_Data.TextureSlotIndex++;
         }
 
         for (int i = 0; i < spriteVertexCount; i++)
         {
-            // auto p = localMatrix * Vector4(s_Data.SpriteVertexPositions[i]);
             s_Data.SpriteVerticesPtr->Position = localMatrix * Vector4(s_Data.SpriteVertexPositions[i]);
 
             s_Data.SpriteVerticesPtr->Color = color;

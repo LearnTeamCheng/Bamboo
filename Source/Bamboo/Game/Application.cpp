@@ -12,10 +12,8 @@ namespace Bamboo
     Application::Application(const std::string &name) : m_Running(true), m_Minimize(false)
     {
         s_Instance = this;
-        // 先在这里进行初始日志操作化操作
         Log::Init();
-        
-        // m_Window = CreateScope<Window>();
+
         m_Window = Window::Create({name});
 
         m_Window->SetEventCallback(BIND_CALLBACK_FN(Application::OnEvent));

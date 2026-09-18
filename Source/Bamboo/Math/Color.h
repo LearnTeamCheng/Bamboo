@@ -1,7 +1,6 @@
 /**
  * @file Color.h
- * @author <NAME> (<EMAIL>)
- * @brief 颜色类
+ * @brief 颜色类（RGBA，分量范围 0~1）
  */
 #pragma once
 #include "Math.h"

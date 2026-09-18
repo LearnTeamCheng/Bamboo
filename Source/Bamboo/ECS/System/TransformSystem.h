@@ -7,5 +7,6 @@ namespace Bamboo
     {
     public:
         void Update(entt::registry &registry, float deltaTime);
+        SystemPhase GetPhase() const override { return SystemPhase::Transform; }
     };
 }

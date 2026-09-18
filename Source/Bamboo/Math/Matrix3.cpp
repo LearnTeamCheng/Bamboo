@@ -114,19 +114,19 @@ namespace Bamboo
 
     // X轴旋转矩阵
     /**
-     * [1,0,0]
-     * [0,cosθ,-sinθ,]
-     * [0,sinθ,cosθ]
+     * 期望的结果（行主序）：
+     * [1,   0,    0  ]
+     * [0, cosθ, -sinθ]
+     * [0, sinθ,  cosθ]
+     *
+     * ⚠️ 已知缺陷：本文件的赋值索引用的是列主序约定，与 Matrix3::operator()
+     * 以及 Matrix3::operator* 不一致，等于返回了转置矩阵，见 refactor_plan.md P1-1。
      */
     Matrix3 Matrix3::RotateX(float angle)
     {
         Matrix3 result;
         float cos = cosf(angle);
         float sin = sinf(angle);
-        // result.m_data[1][1] = cos;
-        // result.m_data[1][2] = -sin;
-        // result.m_data[2][1] = sin;
-        // result.m_data[2][2] = cos;
         result.m_data[4] = cos;
         result.m_data[5] = -sin;
         result.m_data[7] = sin;
@@ -136,21 +136,15 @@ namespace Bamboo
 
     // Y轴旋转矩阵
     /**
-     * [cosθ，0,sinθ,]
-     * [0,1,0]
-     * [-sinθ,0,cosθ,]
-     * 
+     * [cosθ, 0, sinθ]
+     * [0,    1, 0   ]
+     * [-sinθ,0, cosθ]
      */
     Matrix3 Matrix3::RotateY(float angle)
     {
         Matrix3 result;
         float cos = cosf(angle);
         float sin = sinf(angle);
-        // result.m_data[0][0] = cos;
-        // result.m_data[0][2] = sin;
-        // result.m_data[2][0] = -sin;
-        // result.m_data[2][2] = cos;
-
         result.m_data[0] = cos;
         result.m_data[2] = -sin;
         result.m_data[6] = sin;
@@ -164,11 +158,6 @@ namespace Bamboo
         Matrix3 result;
         float cos = cosf(angle);
         float sin = sinf(angle);
-        // result.m_data[0][0] = cos;
-        // result.m_data[0][1] = -sin;
-        // result.m_data[1][0] = sin;
-        // result.m_data[1][1] = cos;
-
         result.m_data[0] = cos;
         result.m_data[3] = -sin;
         result.m_data[1] = sin;
@@ -180,10 +169,10 @@ namespace Bamboo
     Matrix3 Matrix3::Translate(float x, float y, float z)
     {
         Matrix3 result;
-        // result.m_data[0][2] = x;
-        // result.m_data[1][2] = y;
-        // result.m_data[2][2] = z;
-
+        // ⚠️ 已知缺陷：本引擎 Matrix3 按行主序存储，平移量应位于第 3 列
+        // （行主序索引 2 / 5 / 8 恰好就是第 3 列，但其余矩阵函数用的是列主序索引），
+        // 因此 Translate 与 RotateX/Y/Z 的约定不一致，合起来会算错。
+        // 详见 refactor_plan.md P1-1（Matrix3 整个类需要统一存储约定）。
         result.m_data[2] = x;
         result.m_data[5] = y;
         result.m_data[8] = z;

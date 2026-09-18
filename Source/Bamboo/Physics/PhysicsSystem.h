@@ -24,6 +24,7 @@ namespace Bamboo::Physics
         
         /// @brief 给实体施加阻力
         void ApplyTorqueImpulse(Entity entity, const Vector3 &torqueImpulse);
+        SystemPhase GetPhase() const override { return SystemPhase::Physics; }
     private:
         Scope<PhysicsWorld> m_PhysicsWorld;
     };

@@ -1,0 +1,119 @@
+# ============================================================
+# Bamboo 引擎 - Git 忽略规则
+# 原则：构建产物、IDE 生成文件、临时文件一律不入库；
+#       资源（Source/BambooAssets/**）、Scene、Prefab、.meta 必须入库。
+#
+# 注：原规则只有 /build/，只匹配仓库根的 build，
+#     而本工程的实际构建目录是 Source/build/，因此从未生效。
+#
+# 设计说明：不使用后置的 ! 反选（那会在整个仓库范围取消忽略，
+#           容易误伤，例如 !*.lib 会把构建产物重新纳入）。
+#           改为按目录锚定的精确规则。
+# ============================================================
+
+# ---------- 构建产物（按目录锚定） ----------
+Source/build/
+/build/
+Source/*/build/
+out/
+obj/
+*.dir/
+
+# ---------- CMake 生成物 ----------
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+compile_commands.json
+CTestTestfile.cmake
+Testing/
+install_manifest.txt
+CMakeScripts/
+CMakeUserPresets.json
+
+# ---------- 编译中间件（编译期产物都在 build/ 下，不锚定也不会误伤源码） ----------
+*.obj
+*.o
+*.lo
+*.slo
+*.pdb
+*.ilk
+*.idb
+*.exp
+*.res
+*.pgc
+*.pgd
+*.gcda
+*.gcno
+*.gcov
+
+# ---------- IDE / 生成工程文件（CMake 会重新生成） ----------
+.vs/
+.vscode/
+.idea/
+.VSCodeCounter/
+*.sln
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.vcxproj
+*.vcxproj.filters
+*.vcxproj.user
+*.code-workspace
+*.CppProperties.json
+
+# ---------- Visual Studio 中间目录 ----------
+Debug/
+Release/
+RelWithDebInfo/
+MinSizeRel/
+ipch/
+*.tlog
+*.buildlog
+*.aps
+*.ncb
+*.opendb
+*.opensdf
+*.sdf
+*.cachefile
+# 注意：不写 x64/ —— glad 的第三方源码目录里有合法内容
+
+# ---------- 工具 / 报告 / 临时文件 ----------
+all_*.txt
+Code-queries-main/
+Code-queries-main.zip
+*.tmp
+*.bak
+*.orig
+*.rej
+*~
+
+# ---------- 运行时产物 ----------
+*.log
+*.dmp
+crashdump/
+
+# ---------- .NET / C# 脚本层（R3 之后会用到） ----------
+project.lock.json
+*.nuget.g.props
+*.nuget.g.targets
+*.userprefs
+
+# ---------- 系统杂项 ----------
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+.DS_Store
+*.swp
+*.swo
+
+# ============================================================
+# 有意不忽略的（防止将来手滑加上）：
+#   Source/ThirdParty/**         —— vendored 源码，必须入库
+#   Source/BambooAssets/**       —— 引擎资源（Shaders/、Texture2d/）
+#   *.bamboo.json / *.prefab     —— 场景与预制体
+#   *.meta                       —— 资源 GUID 元数据（丢失即断链）
+#   .csproj                      —— 脚本工程定义
+#   CMakeLists.txt / CMakePresets.json
+# ============================================================

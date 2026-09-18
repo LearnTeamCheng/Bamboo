@@ -7,7 +7,7 @@ add_subdirectory(glad)
 # EnTT (header-only)
 add_library(entt INTERFACE)
 target_include_directories(entt INTERFACE
-    ${CMAKE_CURRENT_SOURCE_DIR}/entt/include()
+    ${CMAKE_CURRENT_SOURCE_DIR}/entt/include
 )
 
 # spdlog

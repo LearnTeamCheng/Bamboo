@@ -20,15 +20,15 @@ namespace Bamboo
         virtual uint32_t GetHeight() const override {return m_Height;};
         virtual uint32_t GetRendererID() const override {return m_RendererID;};
 
-        //virtual const std::string &GetPath() const override {return m_Path;};
         virtual void Bind(uint32_t slot = 0) const override;
-        //virtual bool IsLoaded()const override { return m_IsLoaded; }
+
         virtual bool operator==(const Texture &other) const override
         {
             return m_RendererID == other.GetRendererID();
         }
 
 
+        /// @brief 用整张纹理的数据更新纹理内容（data 必须覆盖整个纹理，见 refactor_plan.md P3-2）
         virtual void SetData(void* data, uint32_t size) override;
    
     private:

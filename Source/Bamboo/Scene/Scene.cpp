@@ -11,11 +11,13 @@ namespace Bamboo
     Scene::Scene()
     {
         BAMBOO_CORE_INFO("init scene");
-        //
-        m_Systems.push_back(CreateScope<TransformSystem>());
-        m_Systems.push_back(CreateScope<CameraSystem>());
-        m_Systems.push_back(CreateScope<Physics::PhysicsSystem>());
-        m_Systems.push_back(CreateScope<RendererSystem>());
+
+        //这些先放在这里 后续编辑器反序列化时 自动加这些系统
+        m_SystemRegistry.Register<TransformSystem>();
+        m_SystemRegistry.Register<CameraSystem>();
+        m_SystemRegistry.Register<Physics::PhysicsSystem>();
+        m_SystemRegistry.Register<RendererSystem>();
+
 
         auto entity = CreateEntity("MainCamera");
         auto &cameraComponent = entity.AddComponent<CameraComponent>();
@@ -27,25 +29,18 @@ namespace Bamboo
 
         cameraComponent.CurrentCamera.SetOrthographic(10, 1, 100.0f);
         cameraComponent.CurrentCamera.SetViewportSize(1280, 720);
+
+
     }
 
     void Scene::Update(float deltaTime)
     {
-        // todo
+        // 顺序 logic Trasnform  Physics   Renderer
+        m_SystemRegistry.UpdateLogic(m_Registry, deltaTime);   
+        m_SystemRegistry.UpdateTransform(m_Registry, deltaTime);
+        m_SystemRegistry.UpdatePhysics(m_Registry, deltaTime);
+        m_SystemRegistry.UpdateRender(m_Registry, deltaTime);
 
-        // logicsSystem
-        for (auto &system : m_LogicSystems)
-        {
-            system->Update(m_Registry, deltaTime);
-        }
-
-        // PhysicsSystem
-
-        // 顺序 Trasnform -> Physics -> SpriteRenderer -> Renderer
-        for (auto &system : m_Systems)
-        {
-            system->Update(m_Registry, deltaTime);
-        }
     }
 
     Entity Scene::CreateEntity(const std::string &name)

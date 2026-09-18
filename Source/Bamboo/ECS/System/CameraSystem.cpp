@@ -10,7 +10,6 @@ namespace Bamboo
 
     void CameraSystem::Update(entt::registry &registry, float deltaTime)
     {
-        Camera *mainCamera = nullptr;
         auto view = registry.view<CameraComponent, TransformComponent>();
         for (auto entity : view)
         {
@@ -18,14 +17,13 @@ namespace Bamboo
             auto &transform = view.get<TransformComponent>(entity);
             if (camera.Primary)
             {
-                // Matrix4 viewMatrix = transform.WorldMatrix.Inverse();
-
+                // 视图矩阵 = 相机变换的逆。这里手写"平移到负位置 + 绕 Z 反向旋转"，
+                // 只在"纯平移 + 单轴 Z 旋转"时等价于真正的求逆。
+                // TODO(相机): 多轴旋转或缩放相机时这里会算错；
+                // 应改用 transform.WorldMatrix.Inverse()，见 refactor_plan.md P1-13。
                 Matrix4 translation = Matrix4::Translate(-transform.Position);
-
                 Matrix4 rotation = Matrix4::RotateZ(-transform.Rotation.z);
-
-                // Matrix4 view = rotation * translation;
-                camera.CurrentCamera.SetView(translation *rotation);
+                camera.CurrentCamera.SetView(translation * rotation);
             }
         }
     }

@@ -16,8 +16,7 @@ namespace Bamboo
 {
     void RendererSystem::Update(entt::registry &registry, float deltaTime)
     {
-        // BAMBOO_CORE_INFO("Ren dererSystem");
-
+        // TODO(渲染): 清屏色硬编码在这里，应该来自场景/相机的渲染设置，见 refactor_plan.md P2-4。
         RendererCommand::SetClearColor({0.2f, 0.3f, 0.3f, 1.0f});
         RendererCommand::Clear();
 
@@ -66,32 +65,33 @@ namespace Bamboo
         {
             auto view = registry.view<SpriteRendererComponent, TransformComponent>();
             size_t size = view.size();
+            // TODO(性能): 每帧构造 vector 并排序，属于堆分配 + O(n log n)。
+            // 应改为复用成员缓冲，见 refactor_plan.md P2-4。
             std::vector<std::tuple<int, SpriteRendererComponent *, TransformComponent *>> sprites;
             for (auto entity : view)
             {
                 auto &[sprite, transform] = view.get<SpriteRendererComponent, TransformComponent>(entity);
-                // Renderer2D::DrawSprite(transform.LocalMatrix, sprite.SpriteColor, sprite.SpriteTexture);
                 sprites.emplace_back(sprite.ZOrder, &sprite, &transform);
             }
 
-            // 根据Zorder 排序
+            // 按 ZOrder 升序排序，保证绘制顺序
             std::sort(sprites.begin(), sprites.end(), [](const auto &a, const auto &b)
                       { return std::get<0>(a) < std::get<0>(b); });
 
             for (auto &[zOrder, sprite, transform] : sprites)
             {
+                // ⚠️ 已知缺陷：这里在**渲染期间回写** ECS 数据，破坏了"渲染只读"的契约，
+                // 而且会永久抹掉"用户没有设置纹理"这一信息。
+                // 正确做法是在 DrawSprite 内部回落到白纹理，见 refactor_plan.md P0-8。
                 if (sprite->SpriteTexture == nullptr)
                 {
                     sprite->SpriteTexture = Renderer2D::GetNormalTexture();
                 }
-                
-                // auto viewMatrix = mainCamera->GetViewProjection() ;
-                // auto model = viewMatrix* transform->WorldMatrix;
-                //todo 这里可以优化 把精灵大小放到 transformSystem 里面 直接计算出世界矩阵 多一次循环，这里可以优化
-                auto model = transform->WorldMatrix *Matrix4::Scale(sprite->Size);
+
+                // TODO(性能): 精灵的缩放每帧在这里现算；应在 TransformSystem 里
+                // 直接产出最终世界矩阵，见 refactor_plan.md P2-4。
+                auto model = transform->WorldMatrix * Matrix4::Scale(sprite->Size);
                 Renderer2D::DrawSprite(model, sprite->SpriteColor, sprite->SpriteTexture);
-                // auto model = Matrix4::Translate(transform->Position) * Matrix4::Scale(sprite->Size);
-                // Renderer2 D::DrawSprite(transform->WorldMatrix, sprite->SpriteColor, sprite->SpriteTexture);
             }
         }
         Renderer2D::EndScene();

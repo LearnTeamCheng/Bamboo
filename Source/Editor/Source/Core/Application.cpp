@@ -42,38 +42,22 @@ namespace BambooEditor
             return;
         }
 
-        //while (m_IsRunning)
-        //{
-        //    // 事件
-        //    Update();
-        //    Renderer();
-
-        // 
-
-        //    glfwPollEvents();
-        //    glfwSwapBuffers(window);
-        //    ImGui::Render();
-        //}
-
+        // ⚠️ 已知缺陷：这里没有初始化 GL3 后端（缺少 ImGui_ImplOpenGL3_Init），
+        // 所以 ImGui 的绘制数据不会被提交到 OpenGL，窗口里什么都看不到。
+        // 另外整个编辑器绕过了引擎（自己 glfwInit/建窗），见 refactor_plan.md §4.5。
         ImGui::CreateContext();
         ImGui_ImplGlfw_InitForOpenGL(window, false);
 
         while (!glfwWindowShouldClose(window))
         {
-            //一些注释...
             glfwPollEvents();
-            // Start the Dear ImGui frame
-          
+
             ImGui_ImplGlfw_NewFrame();
             ImGui::NewFrame();
-            /*
-            * 添加自己的代码,App的实现见下面的代码
-            */
-            //App::RenderUI();
 
-            // Rendering
+            // TODO(编辑器): 面板绘制写在这里（后续会拆成 EditorLayer 的各个 Panel）
+
             ImGui::Render();
-            //一些代码和注释
             glfwSwapBuffers(window);
         }
     }

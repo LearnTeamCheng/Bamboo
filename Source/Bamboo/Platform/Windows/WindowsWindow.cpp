@@ -29,14 +29,15 @@ namespace Bamboo
 
         if (!glfwInit())
         {
-            //BB_CORE_ERROR("Failed to initialize GLFW");
+            // 注意：原先是注释掉的，导致初始化失败后完全没有提示，只在后续用到空窗口时才崩。
+            BAMBOO_CORE_CRITICAL("Failed to initialize GLFW");
             return;
         }
 
         m_Window = glfwCreateWindow(m_Data.Width, m_Data.Height, m_Data.Title.c_str(), nullptr, nullptr);
         if (!m_Window)
         {
-            //BB_CORE_ERROR("Failed to create GLFW window");
+            BAMBOO_CORE_CRITICAL("Failed to create GLFW window");
             glfwTerminate();
             return;
         }

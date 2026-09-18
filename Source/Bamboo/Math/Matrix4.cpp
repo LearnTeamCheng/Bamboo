@@ -150,7 +150,8 @@ namespace Bamboo
         return inverse;
     }
 
-    /*{
+    /* 正交投影矩阵（行主序存储，平移分量在第 3 列）
+    {
     2.0/(right - left),0,0,    -(right + left) / (right - left)
     0,2.0/(top - bottom),0,  -(top + bottom) / (top - bottom)
     0,0,-2.0/(zFar - zNear),-(zFar + zNear) / (zFar - zNear)
@@ -162,32 +163,12 @@ namespace Bamboo
         result.m_data[0] = 2.0f / (right - left);
         result.m_data[5] = 2.0f / (top - bottom);
         result.m_data[10] = -2.0f / (zFar - zNear);
+        // 注意：平移分量写入第 3 列（索引 3/7/11），因为本引擎的 Matrix4 是**行主序**。
+        // 写成索引 12/13/14 是列主序写法，会导致投影矩阵求逆错误。
         result.m_data[3] = -(right + left) / (right - left);
         result.m_data[7] = -(top + bottom) / (top - bottom);
         result.m_data[11] = -(zFar + zNear) / (zFar - zNear);
         result.m_data[15] = 1.0f;
-
-        // result.m_data[0] = 2.0f / (right - left);
-        // result.m_data[5] = 2.0f / (top - bottom);
-        // result.m_data[10] = -2.0f / (zFar - zNear);
-
-        // result.m_data[12] = -(right + left) / (right - left);
-        // result.m_data[13] = -(top + bottom) / (top - bottom);
-        // result.m_data[14] = -(zFar + zNear) / (zFar - zNear);
-        
-        // result.m_data[15] = 1.0f;
-
-        // Matrix4 result;
-
-        // result.m_data[0] = 2.0f / (right - left);
-        // result.m_data[5] = 2.0f / (top - bottom);
-        // result.m_data[10] = -2.0f / (zFar - zNear);
-
-        // result.m_data[12] = -(right + left) / (right - left);
-        // result.m_data[13] = -(top + bottom) / (top - bottom);
-        // result.m_data[14] = -(zFar + zNear) / (zFar - zNear);
-
-        // result.m_data[15] = 1.0f;
 
         return result;
     }

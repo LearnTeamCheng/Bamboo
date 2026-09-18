@@ -20,8 +20,7 @@ BreakoutApp::BreakoutApp(const std::string &appName) : Application(appName)
 
         auto &entity = GetSceneManager()->GetActiveScene()->CreateEntity();
         auto &sprite = entity.AddComponent<Bamboo::SpriteRendererComponent>();
-         sprite.Size = Bamboo::Vector2(100.0f, 50.0f);
-      //  sprite.Size = camera.CurrentCamera.PixelSizeToWorldSize(Bamboo::Vector2(100.0f, 50.0f));
+        sprite.Size = Bamboo::Vector2(100.0f, 50.0f);
 
         float r = Bamboo::Random::GlobalFloat(0, 1.0f);
         float g = Bamboo::Random::GlobalFloat(0, 1.0f);
@@ -32,18 +31,15 @@ BreakoutApp::BreakoutApp(const std::string &appName) : Application(appName)
         auto &transform = entity.GetComponent<Bamboo::TransformComponent>();
         int row = i % 10;
         int low = i / 10;
-        //float y = 600 - sprite.Size.y * low - low * 10;
-        //float x = 100 + sprite.Size.x * row + row * 10;
 
-        float y = sprite.Size.y * low + low*10;
-        float x = -640  + sprite.Size.x *0.5f +5+sprite.Size.x * row + row * 10;
+        // 按 10 列铺开砖块。
+        // 注意：这里的 -640 是因为当前相机把 1280×720 的视口映射成 x∈[-1280,1280]、y∈[-720,720]
+        // （世界单位 = 0.5 像素，见 refactor_plan.md P1-6），属于硬编码的临时摆法。
+        // 相机参数修好后应改成"以视口中心为原点"的写法。
+        float y = sprite.Size.y * low + low * 10;
+        float x = -640 + sprite.Size.x * 0.5f + 5 + sprite.Size.x * row + row * 10;
 
-        // transform.Scale = { sprite.Size.x, sprite.Size.y,0.0f };
-
-
-      //  auto pos = camera.CurrentCamera.ScreenToWorldPosition(Bamboo::Vector3(x, y, 0.0f));
-         transform.Position = Bamboo::Vector3(x,y , 0.0f);
-        // transform.Position = pos;
+        transform.Position = Bamboo::Vector3(x, y, 0.0f);
     }
 
     // 创建球拍

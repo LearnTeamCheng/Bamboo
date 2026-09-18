@@ -26,9 +26,7 @@ namespace Bamboo
 
         /// @brief 获取投影矩阵
         Matrix4 GetProjection() const { return m_ProjectionMatrix; }
-        /// @brief 获取视图矩阵
-        // Matrix4 GetViewMatrix() const;
-        /// @brief 获取视图投影矩阵
+        /// @brief 获取视图投影矩阵（视图矩阵由 CameraSystem 通过 SetView 灌入）
         Matrix4 GetViewProjection() const;
 
 

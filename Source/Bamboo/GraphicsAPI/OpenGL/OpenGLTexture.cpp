@@ -47,7 +47,6 @@ namespace Bamboo
 
             if (data)
             {
-                // m_IsLoaded = true;
                 m_Width = width;
                 m_Height = height;
                 GLenum internalFormat = 0, dataFormat = 0;
@@ -96,8 +95,6 @@ namespace Bamboo
             dataFormat = Utils::ImageFormatToGLDataFormat(textureSpecification.Format);
             internalFormat = Utils::ImageFormatToGLInternalFormat(textureSpecification.Format);
             m_DataFormat = dataFormat;
-
-            //m_Channels = dataFormat;
             m_InternalFormat = internalFormat;
 
             // 设置纹理数据
@@ -157,7 +154,9 @@ namespace Bamboo
 
         void OpenGLTexture2D::SetData(void* data, uint32_t size){
             uint32_t bpp = m_DataFormat == GL_RGBA ? 4 : 3;
-            //BAMBOO_ASSERT(size == m_Width *m_Height *bpp,"Data must be entire texture!")
+            // 这份实现假定 data 覆盖整张纹理；尺寸不符时应立刻暴露而不是画出花屏。
+            // 注意：BAMBOO_ASSERT 目前失败只打日志不中断（refactor_plan.md P0-5）。
+            BAMBOO_ASSERT(size == m_Width * m_Height * bpp, "Data must be entire texture!");
             glTextureSubImage2D(m_RendererID, 0, 0, 0, m_Width, m_Height, m_DataFormat, GL_UNSIGNED_BYTE, data);
         }
 

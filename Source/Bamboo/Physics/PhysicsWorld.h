@@ -12,7 +12,8 @@ namespace Bamboo::Physics
         void SetGravity(const Vector3 &gravity) { m_Gravity = gravity; }
         const Vector3 &GetGravity() const { return m_Gravity; }
 
-        // void Step(float deltaTime);
+        // TODO(物理): 物理步进（Step）尚未实现 —— 本类目前只是重力的容器，
+        // 且 PhysicsSystem::Init 从未被调用；见 refactor_plan.md §4.2。
 
     private:
         /// @brief 默认重力

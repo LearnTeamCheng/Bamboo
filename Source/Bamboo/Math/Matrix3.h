@@ -1,8 +1,9 @@
 /**
  *  @file   Matrix3.h
- *  @brief  3x3矩阵.
- *  @author 
-*/
+ *  @brief  3x3 矩阵
+ *  @note   存储为行主序；但本文件部分函数的赋值索引用的是列主序，
+ *          两者不一致，见 refactor_plan.md P1-1。
+ */
 
 #pragma once
 

@@ -104,10 +104,7 @@ namespace Bamboo
             return;
         }
 
-        // for (auto &kv : shaderSources)
-        // {
-        //     glDeleteShader(kv.first);
-        // }
+        // 着色器对象在链接完成后就可以删除了（程序已经持有编译结果）
         for (auto shader : m_Shaders)
         {
             glDeleteShader(shader);

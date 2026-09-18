@@ -8,16 +8,15 @@
 #include "../Bamboo/Core/UUID.h"
 #include "../Bamboo/ECS/System/ISystem.h"
 
+#include "../Bamboo/ECS/SystemRegistry.h"
 #include "entt.hpp"
 
 namespace Bamboo
 {
-    // 八叉树
+    // 前向声明（避免把完整定义拉进头文件）
     class Octree;
     class Entity;
     class Camera;
-
-    // class PhysicsSystem;
 
     class Scene
     {
@@ -33,24 +32,22 @@ namespace Bamboo
 
         Entity FindEntityByName(const std::string_view &name);
 
-
         Camera *GetMainCamera();
         /// @brief 添加系统 只能是逻辑系统
         template <typename T, typename... Args>
         void AddSystem(Args &&...args)
         {
-            auto system = std::make_unique<T>(std::forward<Args>(args)...);
-            m_LogicSystems.emplace_back(std::move(system)); 
+            m_SystemRegistry.Register<T>(std::forward<Args>(args)...); // 逻辑系统
         }
 
         void DestroyEntity(Entity entity);
 
+        SystemRegistry &GetSystemRegistry() { return m_SystemRegistry; }
+
         entt::registry m_Registry;
 
     private:
-
-        std::vector<Scope<ISystem>> m_Systems;
-        std::vector<Scope<ISystem>> m_LogicSystems;
         std::unordered_map<UUID, Entity> m_EntityMap;
+        SystemRegistry m_SystemRegistry;
     };
 }

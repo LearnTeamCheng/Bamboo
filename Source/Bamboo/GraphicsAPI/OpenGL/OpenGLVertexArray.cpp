@@ -9,7 +9,6 @@ namespace Bamboo
     OpenGLVertexArray::OpenGLVertexArray()
     {
         glGenVertexArrays(1, &m_RendererID);
-        // glCreateVertexArrays(1, &m_RendererID);
     }
 
     OpenGLVertexArray::~OpenGLVertexArray()
@@ -45,7 +44,10 @@ namespace Bamboo
             case ShaderDatatType::Int3:
             case ShaderDatatType::Int4:
                 glEnableVertexAttribArray(m_VertexBufferIndex);
-                glVertexAttribIPointer(m_VertexBufferIndex, element.GetComponentCount(), GL_INT, layout.GetStride(), (void *)element.Offset);
+                // 注意：第五个参数在 GL 里是"指向顶点数据起始位置的字节偏移"，
+                // 必须经 uintptr_t 转换，直接 (void*)uint32_t 在 64 位下会触发 C4312 且语义错误。
+                glVertexAttribIPointer(m_VertexBufferIndex, element.GetComponentCount(), GL_INT, layout.GetStride(),
+                                       reinterpret_cast<const void *>(static_cast<uintptr_t>(element.Offset)));
                 m_VertexBufferIndex++;
                 break;
             case ShaderDatatType::Float:
@@ -53,14 +55,12 @@ namespace Bamboo
             case ShaderDatatType::Float3:
             case ShaderDatatType::Float4:
                 glEnableVertexAttribArray(m_VertexBufferIndex);
-                glVertexAttribPointer(m_VertexBufferIndex, element.GetComponentCount(), GL_FLOAT, GL_FALSE, layout.GetStride(), (void *)element.Offset);
+                glVertexAttribPointer(m_VertexBufferIndex, element.GetComponentCount(), GL_FLOAT, GL_FALSE, layout.GetStride(),
+                                      reinterpret_cast<const void *>(static_cast<uintptr_t>(element.Offset)));
                 m_VertexBufferIndex++;
                 break;
             }
         }
-
-        // glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void *)0);
-        // glEnableVertexAttribArray(0);
 
         m_VertexBuffers.push_back(vertexBuffer);
     }
