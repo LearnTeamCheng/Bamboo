@@ -155,7 +155,7 @@ namespace Bamboo
         void OpenGLTexture2D::SetData(void* data, uint32_t size){
             uint32_t bpp = m_DataFormat == GL_RGBA ? 4 : 3;
             // 这份实现假定 data 覆盖整张纹理；尺寸不符时应立刻暴露而不是画出花屏。
-            // 注意：BAMBOO_ASSERT 目前失败只打日志不中断（refactor_plan.md P0-5）。
+            // 注意：BAMBOO_ASSERT 目前失败只打日志不中断（PP0-5）。
             BAMBOO_ASSERT(size == m_Width * m_Height * bpp, "Data must be entire texture!");
             glTextureSubImage2D(m_RendererID, 0, 0, 0, m_Width, m_Height, m_DataFormat, GL_UNSIGNED_BYTE, data);
         }

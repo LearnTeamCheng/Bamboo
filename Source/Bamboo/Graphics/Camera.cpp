@@ -9,7 +9,7 @@ namespace Bamboo
         m_OrthographicFar = farClip;
         m_ProjectionType = ProjectionType::Orthographic;
 
-        // 注意（已知缺陷，见 refactor_plan.md P1-6）：
+        // 注意（已知缺陷，见 P1-6）：
         // 这里并不会立刻重算投影矩阵，而且重算时 m_OrthographicSize 会被
         // ReCalculateProjectionMatrix 里的 m_ViewportHeight * 0.5f 覆盖，
         // 所以传入的 size 目前是无效的 —— 相机无法缩放。
@@ -19,7 +19,7 @@ namespace Bamboo
     void Camera::SetViewportSize(uint32_t width, uint32_t height)
     {
         // TODO(相机): 这里的守卫无效 —— 判断了却什么都不做，且条件应为 ||。
-        // 目前高度为 0 时，下一行的除法会产生 inf（见 refactor_plan.md P1-6）。
+        // 目前高度为 0 时，下一行的除法会产生 inf（见 P1-6）。
         if (width == 0 && height == 0)
         {
             // 无效的窗口
@@ -53,7 +53,7 @@ namespace Bamboo
         else
         {
             // TODO(相机): ProjectionType::Perspective 没有任何实现，
-            // 走到这里投影矩阵会保持单位阵（见 refactor_plan.md P1-6）。
+            // 走到这里投影矩阵会保持单位阵（见 P1-6）。
         }
     }
 

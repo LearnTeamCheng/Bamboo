@@ -26,10 +26,12 @@ namespace Bamboo
         IntVector2 operator*(const IntVector2 &other) const { return IntVector2(x * other.x, y * other.y); }
         IntVector2 operator/(const IntVector2 &other) const { return IntVector2(x / other.x, y / other.y); }
 
-        friend static IntVector2 operator*(int scalar, const IntVector2 &vector) { return IntVector2(scalar * vector.x, scalar * vector.y); }
-        friend static IntVector2 operator*(const IntVector2 &vector, int scalar) { return IntVector2(scalar * vector.x, scalar * vector.y); }
-        friend static IntVector2 operator/(int scalar, const IntVector2 &vector) { return IntVector2(scalar / vector.x, scalar / vector.y); }
-        friend static IntVector2 operator/(const IntVector2 &vector, int scalar) { return IntVector2(vector.x / scalar, vector.y / scalar); }
+        // 注意：这里必须是 friend，不能用 friend static —— "friend 与 static 同时使用"
+        // 在任何标准下都是非法的，只是旧模式下 MSVC 容忍了，C++20（/std:c++20）会直接报 C2216。
+        friend IntVector2 operator*(int scalar, const IntVector2 &vector) { return IntVector2(scalar * vector.x, scalar * vector.y); }
+        friend IntVector2 operator*(const IntVector2 &vector, int scalar) { return IntVector2(scalar * vector.x, scalar * vector.y); }
+        friend IntVector2 operator/(int scalar, const IntVector2 &vector) { return IntVector2(scalar / vector.x, scalar / vector.y); }
+        friend IntVector2 operator/(const IntVector2 &vector, int scalar) { return IntVector2(vector.x / scalar, vector.y / scalar); }
 
         IntVector2 &operator+=(const IntVector2 &other)
         {

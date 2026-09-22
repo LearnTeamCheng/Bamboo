@@ -44,7 +44,7 @@ namespace BambooEditor
 
         // ⚠️ 已知缺陷：这里没有初始化 GL3 后端（缺少 ImGui_ImplOpenGL3_Init），
         // 所以 ImGui 的绘制数据不会被提交到 OpenGL，窗口里什么都看不到。
-        // 另外整个编辑器绕过了引擎（自己 glfwInit/建窗），见 refactor_plan.md §4.5。
+        // 另外整个编辑器绕过了引擎（自己 glfwInit/建窗），见 docs/README.md §4.5。
         ImGui::CreateContext();
         ImGui_ImplGlfw_InitForOpenGL(window, false);
 

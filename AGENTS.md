@@ -32,22 +32,23 @@ cmake -S . -B build -G "Visual Studio 17 2022" -A x64
 
 - No test framework, no lint/typecheck config in the repo. Verification is just a successful build.
 - The engine is ECS: entities hold components (`TransformComponent`, `SpriteRendererComponent`, `CameraComponent`, physics colliders, etc.); logic lives in `ISystem` subclasses (`RendererSystem`, `PhysicsSystem`, ...) registered on `Scene`. `Scene::Update(dt)` runs the four phase buckets in a fixed order ending with the `Render` bucket (see the next entry).
-- `docs/architecture.md` describes the **current** architecture (layers, startup/frame order, system phases, ownership, known invariants) — verified against code on 2026-09-18. Start there.
-- Other docs in `docs/`: `refactor_plan.md` (defect inventory + S0~S8 fix phases), `upgrade_plan.md` (module build plan + R0~R7), `games_and_editor.md` (game ladder + editor design), `roadmap.md` (learning-oriented; **its file:line references are stale** — use `refactor_plan.md` IDs instead).
+- **`docs/README.md` is the single entry point for project docs** (verified against code on 2026-09-22). It covers: current capability/state, the five architectural root causes, the defect inventory (P0~P5), target architecture + migration path, the game ladder (G1~G5), editor design, C# scripting constraints, test/acceptance criteria, roadmap, and a learning map. Read it before changing architecture.
+- The only other doc is `docs/research_csharp_embedding.md` — C# embedding technical research (91 citations, copy-pasteable code, an 11-row "could not verify" table). Read it before touching the scripting layer.
+- Defect IDs (`P0-1` … `P5-2`) live in `docs/README.md` §5. Reference them from code comments instead of repeating explanations.
 - Systems are no longer run from a `Scene`-owned list: `Scene::Update` delegates to `SystemRegistry`, which executes systems in four phase buckets — `Logic → Transform → Physics → Render`. A new system declares its stage by overriding `ISystem::GetPhase()` (default is `Logic`, so forgetting it silently puts the system in the Logic bucket). `SystemRegistry::Register<T>()` also calls `Init()`.
 - Sandbox/Editor apps subclass `Application` and call `app.Run()` from `main` (`Sandbox/main.cpp`, `Editor/Source/main.cpp`).
 - Third-party libs are vendored under `Source/ThirdParty/` (`GLFW`, `glad`, `entt`, `spdlog`, `stb`, `imgui`). Do not add new deps without adding them to `ThirdParty/CMakeLists.txt`.
 
 ## Comments（注释约定）
 
-Target: comments are **sparse but trustworthy**. A wrong comment is worse than no comment — it makes readers trust a lie. Full rationale and the cleanup that established this baseline: `docs/refactor_plan.md` §P5-2.
+Target: comments are **sparse but trustworthy**. A wrong comment is worse than no comment — it makes readers trust a lie.
 
 **Do write** (these are the high-value ones — a reader cannot infer them from the code):
 
 - Non-obvious conventions: coordinate system (world unit = 1 pixel), matrix storage order (row-major for both `Matrix3`/`Matrix4`), angle-vs-radian.
 - Invariants and preconditions: "entity must come from `Scene::CreateEntity`", "component pointers are only valid for the current call, never cache across frames".
 - Why something is the way it is (a workaround, a deliberate limitation, a performance tradeoff).
-- Known defects, **with the `refactor_plan.md` ID**: `// 已知缺陷：… 见 refactor_plan.md P1-6`. This is what keeps the code honest about its own gaps.
+- Known defects, **with the defect ID from `docs/README.md` §5**: `// 已知缺陷：… 见 P1-6`. This is what keeps the code honest about its own gaps.
 - TODOs that are specific and attributable: `// TODO(相机): 投影矩阵未惰性重算，见 P1-6`. A bare `// todo` with no owner and no concrete next step is noise — either make it specific or delete it.
 
 **Do not write**:

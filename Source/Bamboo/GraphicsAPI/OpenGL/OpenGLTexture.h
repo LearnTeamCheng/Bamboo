@@ -28,7 +28,7 @@ namespace Bamboo
         }
 
 
-        /// @brief 用整张纹理的数据更新纹理内容（data 必须覆盖整个纹理，见 refactor_plan.md P3-2）
+        /// @brief 用整张纹理的数据更新纹理内容（data 必须覆盖整个纹理，见 P3-2）
         virtual void SetData(void* data, uint32_t size) override;
    
     private:

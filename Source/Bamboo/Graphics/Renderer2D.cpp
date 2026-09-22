@@ -335,7 +335,7 @@ namespace Bamboo
 
     void Renderer2D::DrawTriangle(const Vector3 &position, const Color &color)
     {
-        // ⚠️ 已知缺陷（refactor_plan.md P1-7）：
+        // ⚠️ 已知缺陷（PP1-7）：
         //   1) 硬编码 1280/720 做坐标换算，换分辨率即错位；
         //   2) 算出的 inPos 从未被使用 —— 传入的 position 实际被忽略；
         //   3) 缩放硬编码 0.5，三角形永远画在原点附近。

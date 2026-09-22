@@ -34,7 +34,7 @@ BreakoutApp::BreakoutApp(const std::string &appName) : Application(appName)
 
         // 按 10 列铺开砖块。
         // 注意：这里的 -640 是因为当前相机把 1280×720 的视口映射成 x∈[-1280,1280]、y∈[-720,720]
-        // （世界单位 = 0.5 像素，见 refactor_plan.md P1-6），属于硬编码的临时摆法。
+        // （世界单位 = 0.5 像素，见 P1-6），属于硬编码的临时摆法。
         // 相机参数修好后应改成"以视口中心为原点"的写法。
         float y = sprite.Size.y * low + low * 10;
         float x = -640 + sprite.Size.x * 0.5f + 5 + sprite.Size.x * row + row * 10;

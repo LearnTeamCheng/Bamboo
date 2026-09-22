@@ -10,7 +10,7 @@ namespace Bamboo
         {
             auto &transform = view.get<TransformComponent>(entity);
 
-            // 注意：旋转当前被跳过（Matrix4::RotateXYZ 用错了角度制，见 refactor_plan.md P1-2），
+            // 注意：旋转当前被跳过（Matrix4::RotateXYZ 用错了角度制，见 P1-2），
             // 所以这里只合成 平移 × 缩放。
             auto translation = Matrix4::Translate(transform.Position);
             auto scale = Matrix4::Scale(transform.Scale);
@@ -22,7 +22,7 @@ namespace Bamboo
             transform.WorldMatrix = transform.LocalMatrix;
 
             // TODO(ECS): Dirty 标志目前无条件清零，等于每帧全量重算；
-            // 应该只在 Position/Rotation/Scale 被修改时置脏，见 refactor_plan.md P1-12。
+            // 应该只在 Position/Rotation/Scale 被修改时置脏，见 P1-12。
             transform.Dirty = false;
         }
     }

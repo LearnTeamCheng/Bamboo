@@ -120,7 +120,7 @@ namespace Bamboo
      * [0, sinθ,  cosθ]
      *
      * ⚠️ 已知缺陷：本文件的赋值索引用的是列主序约定，与 Matrix3::operator()
-     * 以及 Matrix3::operator* 不一致，等于返回了转置矩阵，见 refactor_plan.md P1-1。
+     * 以及 Matrix3::operator* 不一致，等于返回了转置矩阵，见 P1-1。
      */
     Matrix3 Matrix3::RotateX(float angle)
     {
@@ -172,7 +172,7 @@ namespace Bamboo
         // ⚠️ 已知缺陷：本引擎 Matrix3 按行主序存储，平移量应位于第 3 列
         // （行主序索引 2 / 5 / 8 恰好就是第 3 列，但其余矩阵函数用的是列主序索引），
         // 因此 Translate 与 RotateX/Y/Z 的约定不一致，合起来会算错。
-        // 详见 refactor_plan.md P1-1（Matrix3 整个类需要统一存储约定）。
+        // 详见 P1-1（Matrix3 整个类需要统一存储约定）。
         result.m_data[2] = x;
         result.m_data[5] = y;
         result.m_data[8] = z;
