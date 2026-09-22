@@ -36,11 +36,7 @@ namespace Bamboo
     void Scene::Update(float deltaTime)
     {
         // 顺序 logic Trasnform  Physics   Renderer
-        m_SystemRegistry.UpdateLogic(m_Registry, deltaTime);   
-        m_SystemRegistry.UpdateTransform(m_Registry, deltaTime);
-        m_SystemRegistry.UpdatePhysics(m_Registry, deltaTime);
-        m_SystemRegistry.UpdateRender(m_Registry, deltaTime);
-
+        m_SystemRegistry.Update(m_Registry, deltaTime);
     }
 
     Entity Scene::CreateEntity(const std::string &name)

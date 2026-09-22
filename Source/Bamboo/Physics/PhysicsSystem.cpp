@@ -17,7 +17,7 @@ namespace Bamboo::Physics
         auto view = registry.view<RigidbodyComponent,TransformComponent>();
         for (auto entity : view)
         {
-            auto &[rigidbody,transform] = view.get<RigidbodyComponent,TransformComponent>(entity);
+            auto [rigidbody,transform] = view.get<RigidbodyComponent,TransformComponent>(entity);
             // 动态物体 才受力的影响
             if (rigidbody.Type == RigidbodyType::Dynamic)
             {

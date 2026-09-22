@@ -5,9 +5,8 @@
 #pragma once
 #include "Math.h"
 #include <string>
-// #include <format>
+#include <format>
 #include <charconv>
-#include <sstream>
 
 namespace Bamboo
 {
@@ -17,12 +16,12 @@ namespace Bamboo
         float r, g, b, a;
 
     public:
-        Color(int a, int r, int g, int b) : r(r / 255.0f), g(g / 255.0f), b(b / 255.0f), a(a / 255.0f) {}
+        Color(int r, int g, int b, int a) : r(r / 255.0f), g(g / 255.0f), b(b / 255.0f), a(a / 255.0f) {}
         Color() : r(0.0f), g(0.0f), b(0.0f), a(1.0f) {}
         Color(float r, float g, float b, float a = 1.0f) : r(r), g(g), b(b), a(a) {}
         Color(const Color &other) : r(other.r), g(other.g), b(other.b), a(other.a) {}
         Color(const std::string &str) { SetColorToHex(str); }
-        Color(unsigned int hex) : r(hex >> 24 & 0xff) ,g(hex >> 16 & 0xff) , b(hex >> 8 & 0xff) ,a(hex & 0xff) {}
+        Color(unsigned int hex) : r(hex >> 24 & 0xff), g(hex >> 16 & 0xff), b(hex >> 8 & 0xff), a(hex & 0xff) {}
 
         Color &operator=(const Color &other) = default;
 
@@ -118,9 +117,8 @@ namespace Bamboo
 
         std::string ToString() const
         {
-            std::ostringstream ss;
-            ss << "(" << r << ", " << g << ", " << b << ", " << a << ")";
-            return ss.str();
+            std::string ss = std::format("({:.2f}, {:.2f},{:.2f}, {:.2f})", r, g, b, a);
+            return ss;
         }
 
     public:

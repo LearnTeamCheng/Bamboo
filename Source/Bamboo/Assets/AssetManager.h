@@ -46,42 +46,7 @@ namespace Bamboo
         template <typename T>
         void AsyncLoad(const std::string &path, const std::function<void(Ref<Asset>)> &callback)
         {
-            {
-
-                std::lock_guard<std::mutex> lock(m_Mutex);
-
-                auto it = m_Assets.find(path);
-                if (it != m_Assets.end())
-                {
-                    if (callback)
-                    {
-                        callback(it->second);
-                    }
-                    return;
-                }
-            }
-
-            std::thread th{[this, path, callback]()
-                           {
-                               auto asset = std::dynamic_pointer_cast<T>(
-                                   m_AssetFactory.Create(T::StaticType(), path));
-
-                               {
-                                   std::lock_guard<std::mutex> lock(m_Mutex);
-                                   if (m_Assets.find(asset) != m_Assets.end())
-                                   {
-                                       m_Assets[path] = asset;
-                                   }
-                               }
-
-                               if (callback)
-                               {
-                                   callback(asset);
-                               }
-                           },
-                           path};
-
-            th.detach();
+           
         }
 
     private:

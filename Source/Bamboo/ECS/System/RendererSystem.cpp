@@ -26,7 +26,7 @@ namespace Bamboo
             auto view = registry.view<CameraComponent, TransformComponent>();
             for (auto entity : view)
             {
-                auto &[camera, transform] = view.get<CameraComponent, TransformComponent>(entity);
+                auto [camera, transform] = view.get<CameraComponent, TransformComponent>(entity);
                 mainCamera = &camera.CurrentCamera;
             }
         }
@@ -45,7 +45,7 @@ namespace Bamboo
             auto view = registry.view<TriangleComponent, TransformComponent>();
             for (auto entity : view)
             {
-                auto &[triangle, transform] = view.get<TriangleComponent, TransformComponent>(entity);
+                auto [triangle, transform] = view.get<TriangleComponent, TransformComponent>(entity);
                 Renderer2D::DrawTriangle(transform.Position, triangle.TriangleColor);
             }
         }
@@ -55,7 +55,7 @@ namespace Bamboo
             auto view = registry.view<QuadComponent, TransformComponent>();
             for (auto entity : view)
             {
-                auto &[quad, transform] = view.get<QuadComponent, TransformComponent>(entity);
+                auto [quad, transform] = view.get<QuadComponent, TransformComponent>(entity);
 
                 Renderer2D::DrawQuad(transform.Position, Vector2(100, 100), quad.Color);
             }
@@ -70,7 +70,7 @@ namespace Bamboo
             std::vector<std::tuple<int, SpriteRendererComponent *, TransformComponent *>> sprites;
             for (auto entity : view)
             {
-                auto &[sprite, transform] = view.get<SpriteRendererComponent, TransformComponent>(entity);
+                auto [sprite, transform] = view.get<SpriteRendererComponent, TransformComponent>(entity);
                 sprites.emplace_back(sprite.ZOrder, &sprite, &transform);
             }
 

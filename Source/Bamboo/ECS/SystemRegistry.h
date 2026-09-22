@@ -1,7 +1,10 @@
 #pragma once
+#include <algorithm>
 #include <vector>
 #include <utility>
+#include <unordered_map>
 #include "../Bamboo/Core/Ref.h"
+#include "SystemPhase.h"
 #include "../Bamboo/ECS/System/ISystem.h"
 
 namespace Bamboo
@@ -9,43 +12,48 @@ namespace Bamboo
     class SystemRegistry
     {
     public:
+        SystemRegistry();
         template <typename T, typename... Args>
-        void Register(Args &&...args);
+        T& Register(Args &&...args);
 
-        void UpdateLogic(entt::registry &registry, float deltaTime);
-        void UpdatePhysics(entt::registry &registry, float deltaTime);
-        void UpdateRender(entt::registry &registry, float deltaTime);
-        void UpdateTransform(entt::registry &registry, float deltaTime);
+        void Update(entt::registry &registry, float deltaTime);
 
     private:
-        std::vector<Scope<ISystem>> m_LogicSystems;
-        std::vector<Scope<ISystem>> m_PhysicsSystems;
-        std::vector<Scope<ISystem>> m_RenderSystems;
-        std::vector<Scope<ISystem>> m_TransformSystems; // Add scene systems here if needed
+        void AddPhase(SystemPhase phase, int order);
+        int GetPhaseOrder(SystemPhase phase) { return m_PhaseOrder[phase]; }
+        struct Phase
+        {
+            SystemPhase Type{SystemPhase::None};
+            int Order{0};
+            std::vector<Scope<ISystem>> m_Systems;
+        };
+        std::vector<Phase> m_Phases;
+        std::unordered_map<SystemPhase, int> m_PhaseOrder; // 系统阶段顺序
+
+        bool m_Dirty = false; // 是否需要更新
     };
 
     template <typename T, typename... Args>
-    void SystemRegistry::Register(Args &&...args)
+    T& SystemRegistry::Register(Args &&...args)
     {
         auto system = CreateScope<T>(std::forward<Args>(args)...);
-        system->Init();
 
-        switch (system->GetPhase())
+        SystemPhase phase = system->GetPhase();
+        auto it = std::find_if(m_Phases.begin(), m_Phases.end(), [&](const auto &p)
+                               { return p.Type == phase; });
+        T &resule = *system;
+        if (it == m_Phases.end())
         {
-        case SystemPhase::Logic:
-            m_LogicSystems.push_back(std::move(system));
-            break;
-        case SystemPhase::Physics:
-            m_PhysicsSystems.push_back(std::move(system));
-            break;
-        case SystemPhase::Render:
-            m_RenderSystems.push_back(std::move(system));
-            break;
-        case SystemPhase::Transform:
-            m_TransformSystems.push_back(std::move(system));
-            break; 
-        default:
-            break;
+            m_Phases.push_back({phase, GetPhaseOrder(phase)});
+            m_Phases.back().m_Systems.push_back(std::move(system));
         }
+        else
+        {
+            it->m_Systems.push_back(std::move(system));
+        }
+
+        m_Dirty = true;
+
+        return resule;
     }
 };

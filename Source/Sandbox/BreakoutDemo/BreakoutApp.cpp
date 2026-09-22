@@ -18,7 +18,7 @@ BreakoutApp::BreakoutApp(const std::string &appName) : Application(appName)
     for (int i = 0; i < 50; i++)
     {
 
-        auto &entity = GetSceneManager()->GetActiveScene()->CreateEntity();
+        auto entity = GetSceneManager()->GetActiveScene()->CreateEntity();
         auto &sprite = entity.AddComponent<Bamboo::SpriteRendererComponent>();
         sprite.Size = Bamboo::Vector2(100.0f, 50.0f);
 
@@ -45,7 +45,7 @@ BreakoutApp::BreakoutApp(const std::string &appName) : Application(appName)
     // 创建球拍
     {
         GetSceneManager()->GetActiveScene()->AddSystem<PaddleSystem>();
-        auto &paddleEntity = GetSceneManager()->GetActiveScene()->CreateEntity();
+        auto paddleEntity = GetSceneManager()->GetActiveScene()->CreateEntity();
         auto &sprite = paddleEntity.AddComponent<Bamboo::SpriteRendererComponent>();
         paddleEntity.AddComponent<PaddleComponent>();
         sprite.Size = Bamboo::Vector2(200, 40.0f);

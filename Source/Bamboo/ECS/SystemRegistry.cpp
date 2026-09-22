@@ -1,34 +1,37 @@
 #include "SystemRegistry.h"
 namespace Bamboo
 {
-    void SystemRegistry::UpdateLogic(entt::registry &registry, float deltaTime)
+
+    SystemRegistry::SystemRegistry()
     {
-        for (auto &system : m_LogicSystems)
+        AddPhase(SystemPhase::Logic, 10);
+        AddPhase(SystemPhase::Physics, 20);
+        AddPhase(SystemPhase::Transform, 30);
+        AddPhase(SystemPhase::Render, 40);
+        AddPhase(SystemPhase::UI, 100);
+    }
+
+    void SystemRegistry::Update(entt::registry &registry, float deltaTime)
+    {
+        if (m_Dirty)
         {
-            system.get()->Update(registry, deltaTime);
+            std::sort(m_Phases.begin(), m_Phases.end(), [](const Phase &a, const Phase &b)
+                      { return a.Order < b.Order; });
+            m_Dirty = false; // 更新完成，清空标记
+        }
+
+        for (auto &phase : m_Phases)
+        {
+            for (auto &system : phase.m_Systems)
+            {
+                system->Update(registry, deltaTime);
+            }
         }
     }
 
-    void SystemRegistry::UpdatePhysics(entt::registry &registry, float deltaTime)
+    void SystemRegistry::AddPhase(SystemPhase phase, int order)
     {
-        for (auto &system : m_PhysicsSystems)
-        {
-            system.get()->Update(registry, deltaTime);
-        }
+        m_PhaseOrder[phase] = order;
     }
-
-    void SystemRegistry::UpdateRender(entt::registry &registry, float deltaTime)
-    {
-        for (auto &system : m_RenderSystems)
-        {
-            system.get()->Update(registry, deltaTime);
-        }
-    }
-
-    void SystemRegistry::UpdateTransform(entt::registry &registry, float deltaTime){
-        for (auto &system : m_TransformSystems)
-        {
-            system.get()->Update(registry, deltaTime);
-        }
-    }
+    
 };
