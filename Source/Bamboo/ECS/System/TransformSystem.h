@@ -6,7 +6,7 @@ namespace Bamboo
     class TransformSystem : public ISystem
     {
     public:
-        void Update(entt::registry &registry, float deltaTime);
+        void Update(SystemContext &context, float deltaTime);
         SystemPhase GetPhase() const override { return SystemPhase::Transform; }
     };
 }

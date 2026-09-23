@@ -7,7 +7,7 @@ namespace Bamboo
     class RendererSystem : public ISystem
     {
     public:
-        virtual void Update(entt::registry &registry, float deltaTime) override;
+        virtual void Update(SystemContext &context, float deltaTime) override;
         SystemPhase GetPhase() const override { return SystemPhase::Render; }
     };
 }

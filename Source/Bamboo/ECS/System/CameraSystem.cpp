@@ -5,12 +5,15 @@
 
 #include "../Entity.h"
 
+#include "../SystemContext.h"
+#include "../World.h"
+
 namespace Bamboo
 {
 
-    void CameraSystem::Update(entt::registry &registry, float deltaTime)
+    void CameraSystem::Update(SystemContext &context, float deltaTime)
     {
-        auto view = registry.view<CameraComponent, TransformComponent>();
+        auto view = context.world.GetRegistry().view<CameraComponent, TransformComponent>();
         for (auto entity : view)
         {
             auto &camera = view.get<CameraComponent>(entity);

@@ -16,7 +16,7 @@ namespace Bamboo
         template <typename T, typename... Args>
         T& Register(Args &&...args);
 
-        void Update(entt::registry &registry, float deltaTime);
+        void Update(class SystemContext &context, float deltaTime);
 
     private:
         void AddPhase(SystemPhase phase, int order);

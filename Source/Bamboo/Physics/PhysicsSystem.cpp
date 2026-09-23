@@ -1,8 +1,12 @@
 #include "PhysicsSystem.h"
 
-#include "../Bamboo/ECS/Component/RigidbodyComponent.h"
-#include "../Bamboo/ECS/Component/BoxCollider2DComponent.h"
+#include "../ECS/Component/RigidbodyComponent.h"
+#include "../ECS/Component/BoxCollider2DComponent.h"
 #include "../ECS/Component/TransformComponent.h"
+
+#include "../ECS/SystemContext.h"
+#include "../ECS/World.h"
+
 namespace Bamboo::Physics
 {
     void PhysicsSystem::Init()
@@ -12,21 +16,21 @@ namespace Bamboo::Physics
         m_PhysicsWorld->SetGravity(Vector3(0.0f, -9.8f, 0.0f));
     }
 
-    void PhysicsSystem::Update(entt::registry &registry, float deltaTime)
+    void PhysicsSystem::Update(SystemContext &context, float deltaTime)
     {
-        auto view = registry.view<RigidbodyComponent,TransformComponent>();
+        auto &registry = context.world.GetRegistry();
+
+        auto view = registry.view<RigidbodyComponent, TransformComponent>();
         for (auto entity : view)
         {
-            auto [rigidbody,transform] = view.get<RigidbodyComponent,TransformComponent>(entity);
+            auto [rigidbody, transform] = view.get<RigidbodyComponent, TransformComponent>(entity);
             // 动态物体 才受力的影响
             if (rigidbody.Type == RigidbodyType::Dynamic)
             {
-                
-
             }
             else if (rigidbody.Type == RigidbodyType::Static)
-            {   
-                //todo 静态物体 只参加碰撞检测
+            {
+                // todo 静态物体 只参加碰撞检测
             }
         }
     }

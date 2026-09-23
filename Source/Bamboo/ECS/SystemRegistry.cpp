@@ -1,4 +1,6 @@
 #include "SystemRegistry.h"
+#include "SystemContext.h"
+#include "World.h"
 namespace Bamboo
 {
 
@@ -11,7 +13,7 @@ namespace Bamboo
         AddPhase(SystemPhase::UI, 100);
     }
 
-    void SystemRegistry::Update(entt::registry &registry, float deltaTime)
+    void SystemRegistry::Update(SystemContext &context, float deltaTime)
     {
         if (m_Dirty)
         {
@@ -24,7 +26,7 @@ namespace Bamboo
         {
             for (auto &system : phase.m_Systems)
             {
-                system->Update(registry, deltaTime);
+                system->Update(context, deltaTime);
             }
         }
     }

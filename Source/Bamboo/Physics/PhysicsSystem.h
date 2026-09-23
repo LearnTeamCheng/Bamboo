@@ -11,7 +11,7 @@ namespace Bamboo::Physics
     {
     public:
         void Init();
-        virtual void Update(entt::registry &registry, float deltaTime);
+        virtual void Update(SystemContext &context, float deltaTime);
 
         /// @brief 给实体施加力
         void ApplyForce(Entity entity, const Vector3 &force);

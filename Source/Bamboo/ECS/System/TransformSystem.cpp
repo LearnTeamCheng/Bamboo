@@ -1,11 +1,13 @@
 
 #include "TransformSystem.h"
-#include "../Bamboo/ECS/Component/TransformComponent.h"
+#include "../Component/TransformComponent.h"
+#include "../SystemContext.h"
+#include "../World.h"
 namespace Bamboo
 {
-    void TransformSystem::Update(entt::registry &registry, float deltaTime)
+    void TransformSystem::Update(SystemContext &context, float deltaTime)
     {
-        auto view = registry.view<TransformComponent>();
+        auto view = context.world.GetRegistry().view<TransformComponent>();
         for (auto entity : view)
         {
             auto &transform = view.get<TransformComponent>(entity);

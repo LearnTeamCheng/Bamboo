@@ -5,6 +5,6 @@ namespace Bamboo
 {
     class CameraSystem : public ISystem
     {
-        virtual void Update(entt::registry& registry, float deltaTime) override;
+        virtual void Update(SystemContext &context, float deltaTime) override;
     };
 };

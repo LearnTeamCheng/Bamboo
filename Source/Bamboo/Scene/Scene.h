@@ -7,8 +7,8 @@
 #include "../Bamboo/Core/Ref.h"
 #include "../Bamboo/Core/UUID.h"
 #include "../Bamboo/ECS/System/ISystem.h"
-
 #include "../Bamboo/ECS/SystemRegistry.h"
+#include "../ECS/World.h"
 #include "entt.hpp"
 
 namespace Bamboo
@@ -44,9 +44,9 @@ namespace Bamboo
 
         SystemRegistry &GetSystemRegistry() { return m_SystemRegistry; }
 
-        entt::registry m_Registry;
 
     private:
+        World m_World;
         std::unordered_map<UUID, Entity> m_EntityMap;
         SystemRegistry m_SystemRegistry;
     };

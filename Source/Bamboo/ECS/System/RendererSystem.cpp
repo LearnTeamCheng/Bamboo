@@ -11,14 +11,18 @@
 #include "../Bamboo/Graphics/Camera.h"
 
 #include "../Bamboo/Core/Log.h"
+#include "../SystemContext.h"
+#include "../World.h"
 
 namespace Bamboo
 {
-    void RendererSystem::Update(entt::registry &registry, float deltaTime)
+    void RendererSystem::Update(SystemContext &context, float deltaTime)
     {
         // TODO(渲染): 清屏色硬编码在这里，应该来自场景/相机的渲染设置，见 P2-4。
         RendererCommand::SetClearColor({0.2f, 0.3f, 0.3f, 1.0f});
         RendererCommand::Clear();
+
+        auto &registry = context.world.GetRegistry(); // 获取 ECS 注册表
 
         Camera *mainCamera = nullptr;
         {

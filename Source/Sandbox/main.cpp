@@ -4,6 +4,9 @@
  *
  * 目前只启动 Breakout 示例；早先那些用来手工验证渲染/纹理的临时代码
  * （直接构造 Application 摆几个精灵）已删除，需要时请看 git 历史。
+ *
+ * 想验证 Entity 的效性检查（缺陷 P0-5）时，见同目录的 EntityValiditySelfTest.h，
+ * 按该文件头部说明接两行即可，不要长期留在正式入口里。
  */
 
 #include "BreakoutDemo/BreakoutApp.h"

@@ -5,10 +5,14 @@
 #include "../Bamboo/ECS/Component/TransformComponent.h"
 #include "../Component/PaddleComponent.h"
 
-void PaddleSystem::Update(entt::registry &registry, float deltaTime)
-{
+#include "../Bamboo/ECS/SystemContext.h"
+#include "../Bamboo/ECS/World.h"
 
-    auto view = registry.view<Bamboo::TransformComponent, PaddleComponent>();
+
+
+void PaddleSystem::Update(Bamboo::SystemContext &context, float deltaTime)
+{
+    auto view = context.world.GetRegistry().view<Bamboo::TransformComponent, PaddleComponent>();
     for (auto entity : view)
     {
         auto &transform = view.get<Bamboo::TransformComponent>(entity);
