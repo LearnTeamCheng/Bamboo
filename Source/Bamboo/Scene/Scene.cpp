@@ -21,13 +21,13 @@ namespace Bamboo
 
         auto entity = CreateEntity("MainCamera");
         auto &cameraComponent = entity.AddComponent<CameraComponent>();
-        cameraComponent.Primary = true;
+        cameraComponent.primary = true;
 
         auto &transform = entity.GetComponent<TransformComponent>();
-        transform.Position = Vector3(0.0f, 0.0f, 10.0f);
+        transform.position = Vector3(0.0f, 0.0f, 10.0f);
 
-        cameraComponent.CurrentCamera.SetOrthographic(10, 1, 100.0f);
-        cameraComponent.CurrentCamera.SetViewportSize(1280, 720);
+        cameraComponent.currentCamera.SetOrthographic(10, 1, 100.0f);
+        cameraComponent.currentCamera.SetViewportSize(1280, 720);
     }
 
     void Scene::Update(float deltaTime)
@@ -39,7 +39,7 @@ namespace Bamboo
 
     Entity Scene::CreateEntity(const std::string &name)
     {
-        return CreateEntityWithUUID(UUID(), name);
+        return CreateEntityWithUUID(UUID::Generate(), name);
     }
 
     Entity Scene::CreateEntityWithUUID(UUID uuid, const std::string &name)
@@ -47,7 +47,7 @@ namespace Bamboo
         Entity entity = m_World.CreateEntity();
         entity.AddComponent<IDComponent>(uuid);
         entity.AddComponent<TransformComponent>();
-        entity.AddComponent<TagComponent>().Tag = name;
+        entity.AddComponent<TagComponent>().tag = name;
         m_EntityMap[uuid] = entity;
         return entity;
     }
@@ -58,7 +58,7 @@ namespace Bamboo
         for (auto entity : view)
         {
             auto &tag = view.get<TagComponent>(entity);
-            if (tag.Tag == name)
+            if (tag.tag == name)
             {
                 // return {entity, this};
                 return {entity, &m_World};
@@ -80,7 +80,7 @@ namespace Bamboo
         auto entity = FindEntityByName("MainCamera");
         if (entity.HasComponent<CameraComponent>())
         {
-            return &entity.GetComponent<CameraComponent>().CurrentCamera;
+            return &entity.GetComponent<CameraComponent>().currentCamera;
         }
 
         return nullptr;

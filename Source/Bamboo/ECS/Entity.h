@@ -96,8 +96,8 @@ namespace Bamboo
 		/// 所以能检出"已销毁的实体"，而不只是 entt::null。
 		bool IsValid() const;
 
-		UUID GetUUID() { return GetComponent<IDComponent>().ID; }
-		const std::string &GetName() { return GetComponent<TagComponent>().Tag; }
+		UUID GetUUID() { return GetComponent<IDComponent>().id; }
+		const std::string &GetName() { return GetComponent<TagComponent>().tag; }
 
 		bool operator==(const Entity &other) const
 		{

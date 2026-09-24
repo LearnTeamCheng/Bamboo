@@ -5,9 +5,9 @@ namespace Bamboo::Shape {
 
     struct CircleComponent
     {
-        Color CircleColor = Color::White;
-        float Radius {10.0f};
-        bool Fill {false;}
+        Color color = Color::White;
+        float radius {10.0f};
+        bool fill {false};
 
         CircleComponent() = default;
         CircleComponent(const CircleComponent& other) = default;

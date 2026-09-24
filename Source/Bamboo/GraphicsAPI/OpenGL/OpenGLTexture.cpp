@@ -1,7 +1,7 @@
 #pragma once
 #define STB_IMAGE_IMPLEMENTATION
 
-#include "../Bamboo//Core/Assert.h"
+#include "../Bamboo/Core/Assert.h"
 #include "OpenGLTexture.h"
 #include <stb_image.h>
 //#include <glad/glad.h>

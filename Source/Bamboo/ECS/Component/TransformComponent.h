@@ -6,13 +6,13 @@ namespace Bamboo
 {
     struct TransformComponent
     {
-        Vector3 Position{0.0f, 0.0f, 0.0f};
-        Vector3 Rotation{0.0f, 0.0f, 0.0f};
-        Vector3 Scale{1.0f, 1.0f, 1.0f};
+        Vector3 position{0.0f, 0.0f, 0.0f};
+        Vector3 rotation{0.0f, 0.0f, 0.0f};
+        Vector3 scale{1.0f, 1.0f, 1.0f};
 
-        bool Dirty = true;
-        Matrix4 LocalMatrix;
-        Matrix4 WorldMatrix;
+        bool dirty = true;
+        Matrix4 localMatrix;
+        Matrix4 worldMatrix;
 
         TransformComponent() = default;
         TransformComponent(const TransformComponent &other) = default;
@@ -26,13 +26,13 @@ namespace Bamboo
              *  0,0,0,1
              */
 
-            LocalMatrix(0, 3) = position.x;
-            LocalMatrix(1, 3) = position.y;
-            LocalMatrix(2, 3) = position.z;
+            localMatrix(0, 3) = position.x;
+            localMatrix(1, 3) = position.y;
+            localMatrix(2, 3) = position.z;
 
-            LocalMatrix(0, 0) = scale.x;
-            LocalMatrix(1, 1) = scale.y;
-            LocalMatrix(2, 2) = scale.z;
+            localMatrix(0, 0) = scale.x;
+            localMatrix(1, 1) = scale.y;
+            localMatrix(2, 2) = scale.z;
         }
 
   

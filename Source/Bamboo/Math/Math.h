@@ -10,7 +10,7 @@ namespace Bamboo::Math
 
 		inline bool IsZero(float x)
 		{
-			return x < B_EPSILON && x > -B_EPSILON;
+			return x < kEpsilon && x > -kEpsilon;
 		}
 
 		inline bool IsEqual(float a, float b, float epsilon)

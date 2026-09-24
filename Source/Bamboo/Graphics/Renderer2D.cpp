@@ -377,7 +377,7 @@ namespace Bamboo
         s_Data.QuadIndexCount += 6;
     }
 
-    void Renderer2D::DrawSprite(const Matrix4 &localMatrix, const Color &color, Ref<Texture2D> &texture)
+    void Renderer2D::DrawSprite(const Matrix4 &localMatrix, const Color &color, AssetHandle handle)
     {
         // 纹理坐标
         Vector2 TexCoord[] = {
@@ -390,6 +390,12 @@ namespace Bamboo
         constexpr size_t spriteVertexCount = 4;
 
         float textureIndex = 0.0f;
+        Ref<Texture2D> texture = s_Data.WhiteTexture;
+        // 纹理无效时，使用白纹理
+        if (handle.IsValid())
+        {
+            // texture =
+        }
 
         // 查这个纹理已经分配到的槽位（0 = 白纹理）
         if (s_Data.TextureSlotMap.find(texture) != s_Data.TextureSlotMap.end())

@@ -5,6 +5,7 @@
 #include "./Math/Matrix4.h"
 #include "./Math/Color.h"
 #include "../Bamboo/Graphics/Texture.h"
+#include "../Bamboo/Assets/AssetHandle.h"
 #include <string>
 
 namespace Bamboo
@@ -24,7 +25,8 @@ namespace Bamboo
         static void DrawQuad(const Vector3 &position, const Vector2 &size, const Color &color);
 
         static void DrawCircle(const Vector2 &center, float radius, const Color &color);
-        static void DrawSprite(const Matrix4 &localMatrix, const Color &color, Ref<Texture2D> &texture);
+        // static void DrawSprite(const Matrix4 &localMatrix, const Color &color, Ref<Texture2D> &texture);
+        static void DrawSprite(const Matrix4 &localMatrix, const Color &color, AssetHandle handle);
 
         static void DrawTriangle(const Vector3 &position, const Color &color);
 

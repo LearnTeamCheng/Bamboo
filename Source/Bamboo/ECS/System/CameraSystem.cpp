@@ -18,15 +18,15 @@ namespace Bamboo
         {
             auto &camera = view.get<CameraComponent>(entity);
             auto &transform = view.get<TransformComponent>(entity);
-            if (camera.Primary)
+            if (camera.primary)
             {
                 // 视图矩阵 = 相机变换的逆。这里手写"平移到负位置 + 绕 Z 反向旋转"，
                 // 只在"纯平移 + 单轴 Z 旋转"时等价于真正的求逆。
                 // TODO(相机): 多轴旋转或缩放相机时这里会算错；
                 // 应改用 transform.WorldMatrix.Inverse()，见 P1-13。
-                Matrix4 translation = Matrix4::Translate(-transform.Position);
-                Matrix4 rotation = Matrix4::RotateZ(-transform.Rotation.z);
-                camera.CurrentCamera.SetView(translation * rotation);
+                Matrix4 translation = Matrix4::Translate(-transform.position);
+                Matrix4 rotation = Matrix4::RotateZ(-transform.rotation.z);
+                camera.currentCamera.SetView(translation * rotation);
             }
         }
     }

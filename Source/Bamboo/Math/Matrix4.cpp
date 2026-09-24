@@ -121,7 +121,7 @@ namespace Bamboo
         float b5 = m_data[10] * m_data[15] - m_data[11] * m_data[14];
         float det = (a0 * b5 - a1 * b4 + a2 * b3 + a3 * b2 - a4 * b1 + a5 * b0);
 
-        if (std::abs(det) < B_EPSILON)
+        if (std::abs(det) < kEpsilon)
         {
             return *this;
         }

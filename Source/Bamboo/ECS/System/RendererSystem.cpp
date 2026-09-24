@@ -31,7 +31,7 @@ namespace Bamboo
             for (auto entity : view)
             {
                 auto [camera, transform] = view.get<CameraComponent, TransformComponent>(entity);
-                mainCamera = &camera.CurrentCamera;
+                mainCamera = &camera.currentCamera;
             }
         }
 
@@ -50,7 +50,7 @@ namespace Bamboo
             for (auto entity : view)
             {
                 auto [triangle, transform] = view.get<TriangleComponent, TransformComponent>(entity);
-                Renderer2D::DrawTriangle(transform.Position, triangle.TriangleColor);
+                Renderer2D::DrawTriangle(transform.position, triangle.color);
             }
         }
 
@@ -61,7 +61,7 @@ namespace Bamboo
             {
                 auto [quad, transform] = view.get<QuadComponent, TransformComponent>(entity);
 
-                Renderer2D::DrawQuad(transform.Position, Vector2(100, 100), quad.Color);
+                Renderer2D::DrawQuad(transform.position, Vector2(100, 100), quad.color);
             }
         }
 
@@ -75,7 +75,7 @@ namespace Bamboo
             for (auto entity : view)
             {
                 auto [sprite, transform] = view.get<SpriteRendererComponent, TransformComponent>(entity);
-                sprites.emplace_back(sprite.ZOrder, &sprite, &transform);
+                sprites.emplace_back(sprite.zorder, &sprite, &transform);
             }
 
             // 按 ZOrder 升序排序，保证绘制顺序
@@ -87,15 +87,15 @@ namespace Bamboo
                 // ⚠️ 已知缺陷：这里在**渲染期间回写** ECS 数据，破坏了"渲染只读"的契约，
                 // 而且会永久抹掉"用户没有设置纹理"这一信息。
                 // 正确做法是在 DrawSprite 内部回落到白纹理，见 P0-8。
-                if (sprite->SpriteTexture == nullptr)
-                {
-                    sprite->SpriteTexture = Renderer2D::GetNormalTexture();
-                }
+                // if (sprite->texture == nullptr)
+                // {
+                //     sprite->texture = Renderer2D::GetNormalTexture();
+                // }
 
                 // TODO(性能): 精灵的缩放每帧在这里现算；应在 TransformSystem 里
                 // 直接产出最终世界矩阵，见 P2-4。
-                auto model = transform->WorldMatrix * Matrix4::Scale(sprite->Size);
-                Renderer2D::DrawSprite(model, sprite->SpriteColor, sprite->SpriteTexture);
+                auto model = transform->worldMatrix * Matrix4::Scale(sprite->size);
+                Renderer2D::DrawSprite(model, sprite->color, sprite->handle);
             }
         }
         Renderer2D::EndScene();

@@ -5,8 +5,8 @@ namespace Bamboo
 {
     struct TriangleComponent {
         
-        Color TriangleColor = Color::White;
-        Vector2 Size;
+        Color color = Color::White;
+        Vector2 size;
 
         TriangleComponent() = default;
         TriangleComponent(const TriangleComponent& other) = default;

@@ -5,10 +5,10 @@ namespace Bamboo
 {
     struct TagComponent
     {
-        std::string Tag;
+        std::string tag;
         TagComponent() = default;
         TagComponent(const TagComponent &) = default;
-        TagComponent(const std::string &tag) : Tag(tag) {}
+        TagComponent(const std::string &tag) : tag(tag) {}
     };
 
 }

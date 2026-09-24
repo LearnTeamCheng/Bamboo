@@ -1,18 +1,10 @@
 #pragma once
 
 #include <string>
-
+#include "AssetType.h"
 namespace Bamboo
 {
-    enum class AssetType
-    {
-        None,
-        Image,
-        Font,
-        Audio,
-        Model,
-        Shader,
-    };
+
 
     class Asset
     {
