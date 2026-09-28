@@ -20,13 +20,13 @@ BreakoutApp::BreakoutApp(const std::string &appName) : Application(appName)
 
         auto entity = GetSceneManager()->GetActiveScene()->CreateEntity();
         auto &sprite = entity.AddComponent<Bamboo::SpriteRendererComponent>();
-        sprite.Size = Bamboo::Vector2(100.0f, 50.0f);
+        sprite.size = Bamboo::Vector2(100.0f, 50.0f);
 
         float r = Bamboo::Random::GlobalFloat(0, 1.0f);
         float g = Bamboo::Random::GlobalFloat(0, 1.0f);
         float b = Bamboo::Random::GlobalFloat(0, 1.0f);
 
-        sprite.SpriteColor = Bamboo::Color(r, g, b);
+        sprite.color = Bamboo::Color(r, g, b);
 
         auto &transform = entity.GetComponent<Bamboo::TransformComponent>();
         int row = i % 10;
@@ -36,10 +36,10 @@ BreakoutApp::BreakoutApp(const std::string &appName) : Application(appName)
         // 注意：这里的 -640 是因为当前相机把 1280×720 的视口映射成 x∈[-1280,1280]、y∈[-720,720]
         // （世界单位 = 0.5 像素，见 P1-6），属于硬编码的临时摆法。
         // 相机参数修好后应改成"以视口中心为原点"的写法。
-        float y = sprite.Size.y * low + low * 10;
-        float x = -640 + sprite.Size.x * 0.5f + 5 + sprite.Size.x * row + row * 10;
+        float y = sprite.size.y * low + low * 10;
+        float x = -640 + sprite.size.x * 0.5f + 5 + sprite.size.x * row + row * 10;
 
-        transform.Position = Bamboo::Vector3(x, y, 0.0f);
+        transform.position = Bamboo::Vector3(x, y, 0.0f);
     }
 
     // 创建球拍
@@ -48,11 +48,11 @@ BreakoutApp::BreakoutApp(const std::string &appName) : Application(appName)
         auto paddleEntity = GetSceneManager()->GetActiveScene()->CreateEntity();
         auto &sprite = paddleEntity.AddComponent<Bamboo::SpriteRendererComponent>();
         paddleEntity.AddComponent<PaddleComponent>();
-        sprite.Size = Bamboo::Vector2(200, 40.0f);
-        sprite.SpriteColor = Bamboo::Color::Red;
+        sprite.size = Bamboo::Vector2(200, 40.0f);
+        sprite.color = Bamboo::Color::Red;
 
         auto &transform = paddleEntity.GetComponent<Bamboo::TransformComponent>();
-        transform.Position = Bamboo::Vector3(GetWindow().get()->GetWidth() / 2, -50.0f, 0.0f);
+        transform.position = Bamboo::Vector3(GetWindow().get()->GetWidth() / 2, -50.0f, 0.0f);
     }
     GetSceneManager()->GetActiveScene()->AddSystem<BallSystem>();
 }

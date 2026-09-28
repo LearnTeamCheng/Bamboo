@@ -10,12 +10,10 @@ namespace Bamboo
         stbi_set_flip_vertically_on_load(1);
     }
 
-    void ImageAsset::LoadFromFile(const std::string& path)
+    void ImageAsset::LoadFromFile(const std::filesystem::path& path)
     {
-        
-        std::string fullPath = std::string(BAMBOO_ASSET_ROOT) + "/Texture2d/" + path;
         int width, height, channels;
-        unsigned char *data = stbi_load(fullPath.c_str(), &width, &height, &channels, 0);
+        unsigned char *data = stbi_load(path.string().c_str(), &width, &height, &channels, 0);
         m_Path = path;
         if (data)
         {
@@ -31,7 +29,7 @@ namespace Bamboo
         }
         else
         {
-            BAMBOO_CORE_ERROR("Failed to load image: {}", fullPath);
+            BAMBOO_CORE_ERROR("Failed to load image: {}", path.string());
         }
     }
 

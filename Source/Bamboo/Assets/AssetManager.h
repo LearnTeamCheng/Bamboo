@@ -1,11 +1,15 @@
 #pragma once
+#include <filesystem>
 #include <string>
 #include <mutex>
+
 #include <unordered_map>
 #include "../Bamboo/Core/Ref.h"
-#include "../Bamboo/Assets/Asset.h"
-
-#include "../Assets/AssetFactory.h"
+#include "../Bamboo/Core/Log.h"
+#include "Assets/Asset.h"
+#include "AssetFactory.h"
+#include "AssetHandle.h"
+#include "AssetDatabase.h"
 namespace Bamboo
 {
     class AssetManager
@@ -16,43 +20,70 @@ namespace Bamboo
         ~AssetManager();
 
         template <typename T>
-        Ref<T> Load(const std::string &path)
+        Ref<T> Load(std::filesystem::path &path)
         {
-            auto it = m_Assets.find(path);
+            AssetHandle handle = m_Database.GetHandle(path);
+            if (!handle.IsValid())
+            {
+                handle = AssetHandle(UUID::Generate());
+
+                AssetMetadata metadata {
+                    .handle = handle,
+                    .type = T::StaticType(),
+                    .path = path,
+                };
+                m_Database.Register(metadata);
+            }
+
+            return Load<T>(handle);
+        }
+
+        template <typename T>
+        Ref<T> Load(AssetHandle &handle)
+        {
+            auto metadata =  m_Database.GetMetadata(handle);
+
+            if(!metadata){
+                BAMBOO_CORE_ERROR("Asset not found: {}",handle.GetUUID().Value());
+                return nullptr;
+            }
+
+            auto it = m_Assets.find(handle);    
             if (it != m_Assets.end())
             {
                 return std::dynamic_pointer_cast<T>(it->second);
             }
 
             auto asset = std::dynamic_pointer_cast<T>(
-                m_AssetFactory.Create(T::StaticType(), path));
+                m_AssetFactory.Create(metadata->type, *metadata));
 
-            m_Assets[path] = asset;
+            if(asset == nullptr){
+                return nullptr;  
+            }
+
+            m_Assets.emplace(handle, asset);  
+
             return asset;
         }
 
         template <typename T>
-        void Unload(const std::string &path)
+        void Unload(AssetHandle &handle)
         {
-            auto it = m_Assets.find(path);
-            if (it != m_Assets.end())
-            {
-                m_Assets.erase(it);
-            }
+            m_Assets.erase(handle);  
         }
 
-        void UnloadAll();
+        void UnloadAll() ;
 
         template <typename T>
         void AsyncLoad(const std::string &path, const std::function<void(Ref<Asset>)> &callback)
         {
-           
         }
 
     private:
         AssetFactory m_AssetFactory;
-        std::unordered_map<std::string, Ref<Asset>> m_Assets;
-        std::mutex m_Mutex;
+        std::unordered_map<AssetHandle, Ref<Asset>> m_Assets;
+
+        AssetDatabase m_Database;
     };
 
 }

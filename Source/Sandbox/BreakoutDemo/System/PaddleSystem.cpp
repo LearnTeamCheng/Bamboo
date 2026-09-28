@@ -19,11 +19,11 @@ void PaddleSystem::Update(Bamboo::SystemContext &context, float deltaTime)
 
         if (Bamboo::Input::IsKeyPressed(Bamboo::Key::A))
         {
-            transform.Position.x -= 100 * deltaTime;
+            transform.position.x -= 100 * deltaTime;
         }
         else if (Bamboo::Input::IsKeyPressed(Bamboo::Key::D))
         {
-            transform.Position.x += 100 * deltaTime;
+            transform.position.x += 100 * deltaTime;
         }
     }
 }

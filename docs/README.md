@@ -106,7 +106,7 @@ Sandbox.exe
 - `Ctrl+Shift+P` → `CMake: Configure` → `CMake: Build`
 - F5 → `Sandbox (Debug)`
 
-> **IntelliSense 报「找不到头文件」** → 见 §3.3。
+> **IntelliSense 报「找不到头文件」** → 见 §3.4。
 
 ---
 
@@ -122,7 +122,26 @@ Sandbox.exe
 
 `Source/Bamboo/CMakeLists.txt` 与 `Sandbox/CMakeLists.txt` 用 `file(GLOB_RECURSE ...)` 收集源文件，**不会**自动感知新文件。加了 `.cpp`/`.h` 后要重跑 `CMake: Configure`。
 
-### 3.3 VS Code IntelliSense 排查（5 步）
+### 3.3 上一步运行的程序没退出 → 链接会失败
+
+如果 `Sandbox.exe` / `Editor.exe` 还在运行（正常关窗失败、或调试器里没停干净），下一次构建会报：
+
+```
+LINK : fatal error LNK1168: 无法打开 ...\Sandbox.exe 进行写入
+```
+
+**症状很容易误判**：编译阶段全部成功，只有链接失败；而且如果你忽略这条错误直接去跑，**执行的是上一次的旧二进制**——于是"改了代码没生效"，浪费时间找错方向。
+
+**处理**：先确认没有残留进程再构建。
+
+```powershell
+Get-Process Sandbox, Editor -ErrorAction SilentlyContinue   # 看有没有残留
+Stop-Process -Name Sandbox -Force                            # 结束它
+```
+
+**每次改完代码后，先看构建输出里有没有 `LNK1168`，再看有没有 `.exe ->` 那一行成功信息**，能立刻分辨"我真跑了新代码"还是"我在跑旧的"。
+
+### 3.4 VS Code IntelliSense 排查（5 步）
 
 `.vscode/c_cpp_properties.json` 已配好 MSVC + 全部第三方 include 根。仍报错时依次检查：
 
@@ -244,6 +263,79 @@ registry.view<SpriteRendererComponent, TransformComponent>();
 | §4.4 数据模式 | 序列化器空实现；加组件要改 4 处；字段"声明了没人读" |
 | §4.5 渲染契约 | 渲染期回写 ECS；`DrawQuad` 忽略参数；24 个散落成员 |
 
+### 4.7 当前实体容器结构（2026-09-23 更新）
+
+`Scene` 与 `Entity` 已解耦，引入了一个新的 `World` 类型。**这是 §4.2 修复的第一步**，先把现状记录准确：
+
+```cpp
+// ECS/World.h —— 实体容器，从 Scene 中独立出来
+class World {
+public:
+    Entity CreateEntity();
+    void   DestroyEntity(Entity entity);
+    entt::registry& GetRegistry() { return m_Registry; }
+private:
+    entt::registry m_Registry;
+};
+
+// Scene.h —— 不再暴露 registry
+class Scene {
+    // ...
+private:
+    World                       m_World;          // ← registry 现在是 private
+    std::unordered_map<UUID, Entity> m_EntityMap;
+    SystemRegistry              m_SystemRegistry;
+};
+
+// Entity.h —— 不再认识 Scene（只认识 World）
+class Entity {
+    entt::entity m_EntityHandle{entt::null};
+    World*       m_World{nullptr};
+};
+```
+
+| 变化 | 状态 |
+|---|---|
+| `Entity.h` ↔ `Scene.h` 循环包含 | ✅ **已断**（`Entity.h` 只包含 `World.h`；`Scene.h` 只前向声明 `Entity`） |
+| `Scene::m_Registry` 被迫 public | ✅ **已私有化** |
+| `Scene::DestroyEntity` 先 destroy 再取 UUID | ✅ **已修**（先取 UUID） |
+| `Scene::Update` 的系统调用 | 改为单一入口：`SystemContext context{m_World}; m_SystemRegistry.Update(context, dt);` |
+| `SystemPhase` 枚举 | 扩展为 `None / Logic / Physics / Transform / PreRender / Render / UI` |
+
+**⚠️ 但 §4.2 还没修完**（这是 A1 剩余的 30 行）：
+
+```cpp
+// Entity.h 现状 —— m_World 无判空，五个组件方法直接解引用
+Entity() = default;                                  // m_World = nullptr
+T& AddComponent(...) { ... m_World->GetRegistry()... }   // ← 崩
+operator bool() const { return m_EntityHandle != entt::null; }  // ← 漏了 m_World
+```
+
+```cpp
+// 应该改成
+bool IsValid() const { return m_World != nullptr && m_World->GetRegistry().valid(m_EntityHandle); }
+operator bool() const { return IsValid(); }
+```
+
+**关于 `entt::handle`（更正一处早期错误建议）**：**不要**用 `entt::handle`。它是 `entt::handle<Resource>` —— 配合 `cache<Resource>` 使用的**共享资源句柄**，与实体/注册表无关。本引擎的 entt 是**单头文件版**（`ThirdParty/entt/include/entt.hpp`，551KB），相关的正确 API 是：
+
+| API | 用途 |
+|---|---|
+| `registry.valid(entity)` | **效性检查**。实现比较的是**含版本号的完整 entity 值**，所以能检出"已销毁的实体"，而不只是 `entt::null` |
+| `registry.try_get<T>(e)` | 找不到返回 `nullptr`（安全访问，不需要前置检查） |
+| `registry.get<T>(e)` | 找不到会触发 `ENTT_ASSERT`（**只在 Debug 生效**，Release 下是未定义行为） |
+
+**关于 `World` 的定位**（留给下一步决策）：目前 `GetRegistry()` 有 **13 个调用点**（`Entity.h` 5 处、三个内置系统、`Scene.cpp`、`PhysicsSystem`、Sandbox 两个系统），所以 `World` 现在**只是注册表的另一个名字**，没有守住任何不变量。判断它的价值的标准是：**`World` 有没有比 `entt::registry` 多守住任何东西？** 若没有，要么让它承担真正的职责（延迟销毁、层级、实体查询索引），要么承认它只是命名层。
+
+**关于 `SystemContext`**：现在只有一个非 const 的 `World&`：
+
+```cpp
+struct SystemContext { World& world; };                            // 非 const
+virtual void Update(SystemContext& context, float dt) = 0;         // 非 const
+```
+
+因为 `GetRegistry()` 也是非 const，**渲染系统依然能回写 ECS（P0-7）**。要落实只读权威（§4.5），需要拆成两个类型：`SystemContext`（可写，给逻辑/物理）+ `RenderContext`（`const World&`，给渲染）——这是 **A3** 的内容。
+
 ---
 
 ## 5. 缺陷清单
@@ -341,7 +433,7 @@ registry.view<SpriteRendererComponent, TransformComponent>();
 |---|---|---|
 | 系统按什么顺序跑 | 无（`Scene::Update` 的书写顺序） | `SystemRegistry` + `RunsAfter()` **拓扑排序**，检测环并启动时报错 |
 | 系统能不能写数据 | 无（都能写） | `ISystem`（可写）/ `IRenderSystem`（`const Scene&`，**编译期只读**） |
-| 实体是否有效 | 无（约定"必须来自 Scene"） | `Entity::IsValid()`（改用 **`entt::handle`**） |
+| 实体是否有效 | 无（`operator bool` 只看句柄是否为 null，不看是否已销毁） | `Entity::IsValid()`，内部用 **`registry.valid(entity)`**（比较含版本号的完整值，能检出已销毁实体） |
 | 谁拥有组件里的资源 | `shared_ptr` 的所有持有者 | `AssetManager` 引用计数 + **帧末回收** |
 | 资源的身份 | 路径字符串 | **GUID**（`.meta`） |
 | 组件的字段有哪些 | 每个消费方各自手写 | **`ComponentRegistry`** 元数据 |
@@ -398,18 +490,30 @@ public:
 };
 
 // ---------- 对象身份权威 ----------
+// 注意：不要用 entt::handle<Resource> —— 那是"共享资源句柄"（配合 cache<Resource> 使用），
+// 与实体/注册表无关。这里用 entt::entity + 注册表指针，效性检查靠 registry.valid()。
 class Entity {
 public:
-    explicit Entity(entt::handle handle) : m_Handle(handle) {}
-    bool IsValid() const { return m_Handle && m_Handle.registry()->valid(m_Handle.entity()); }
+    explicit Entity(entt::entity handle, World* world) : m_EntityHandle(handle), m_World(world) {}
+
+    // registry.valid() 比较的是**含版本号的完整 entity 值**，
+    // 所以能检出"已销毁的实体"（不只是 entt::null）—— 这是唯一正确的效性检查。
+    bool IsValid() const { return m_World != nullptr && m_World->GetRegistry().valid(m_EntityHandle); }
     operator bool() const { return IsValid(); }
+
     template <typename T, typename... Args>
     T& AddComponent(Args&&... args) {
         BAMBOO_ASSERT(IsValid(), "AddComponent on invalid entity");
-        return m_Handle.emplace_or_replace<T>(std::forward<Args>(args)...);
+        return m_World->GetRegistry().emplace_or_replace<T>(m_EntityHandle, std::forward<Args>(args)...);
     }
+
+    // 想避免"失效实体触发断言"时，用 try_get（找不到返回 nullptr）
+    template <typename T>
+    T* TryGetComponent() { return IsValid() ? m_World->GetRegistry().try_get<T>(m_EntityHandle) : nullptr; }
+
 private:
-    entt::handle m_Handle;   // 不再需要 Scene*，不再需要 public registry，不再循环包含
+    entt::entity m_EntityHandle{entt::null};
+    World*       m_World{nullptr};
 };
 
 // ---------- 资源身份权威 ----------
@@ -460,7 +564,7 @@ struct Batch { Ref<VertexBuffer> Buffer; Ref<VertexArray> Array; Ref<Shader> Sha
 
 | 步骤 | 内容 | 范围 | 验证方式 |
 |---|---|---|---|
-| **A1** | `Entity` → `entt::handle`；`m_Registry` 私有化 | `Entity.h`、`Scene.h`（~120 行） | 现有代码编译通过；`FindEntityByName` 失败不再崩 |
+| **A1** | `Entity` 加 `IsValid()`（内部用 `registry.valid()`）+ 所有组件方法前置断言；`m_Registry` 私有化 ｜ **已完成部分**：`Scene`/`Entity` 已解耦（引入 `World`、registry 已私有、循环包含已断），剩 `IsValid()` | `Entity.h`（~30 行，若沿用 `World*` 方案） | 空实体不再崩；`IsValid()` 能检出**已销毁**的实体 |
 | **A2** | 开放阶段列表 + 单一 `Update` + 拓扑排序 | `ISystem.h`、`SystemRegistry.{h,cpp}`、`Scene.cpp`（~200 行） | 故意写循环依赖 → **启动时报错** |
 | **A3** | 拆出 `IRenderSystem`（`const Scene&`），渲染改只读 | `ISystem.h` + `RendererSystem`（~80 行） | 渲染系统**编译期无法**回写 ECS |
 | **B1** | `AssetHandle` + `AssetDatabase` + `.meta`；组件字段改句柄 | 新建 ~4 文件 + 改 2 | 改贴图名后场景不断链 |
@@ -939,7 +1043,7 @@ typedef uint64_t EntityHandle;   // 低 32 位 slot 索引，高 32 位 generati
   ｜ 修 IntVector2 的 C++20 错误 ✅ ｜ 装 .NET 10 SDK ⬜
 
 A 组：架构骨架（~400 行）—— 决定后面所有代码的形状
-  A1 Entity → entt::handle ｜ A2 开放阶段 + 拓扑排序 ｜ A3 IRenderSystem 只读
+  A1 Entity::IsValid() + 组件方法断言（Scene/Entity 解耦用户已完成）｜ A2 开放阶段 + 拓扑排序 ｜ A3 IRenderSystem 只读
         ↓
 B 组：数据与资源（~600 行）
   B1 AssetHandle + AssetDatabase + .meta ｜ B2 ComponentRegistry ｜ B3 SceneSerializer

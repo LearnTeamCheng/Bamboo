@@ -13,6 +13,9 @@ namespace Bamboo
         UUID(const UUID &other) = default;
         operator uint64_t() const { return m_UUID; }
         static UUID Generate();
+
+        uint64_t Value() const { return m_UUID; }
+
         bool IsValid() const
         {
             return m_UUID != 0;

@@ -23,6 +23,11 @@ add_subdirectory(Sandbox)
 add_subdirectory(Editor)
 
 
+enable_testing()
+
+add_subdirectory(Tests)
+
+
 # 规范化路径
 file(TO_CMAKE_PATH "${CMAKE_SOURCE_DIR}/BambooAssets" BAMBOO_ASSET_ROOT_ABS)
 # 生成头文件

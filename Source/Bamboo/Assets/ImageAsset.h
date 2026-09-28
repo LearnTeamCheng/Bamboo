@@ -8,7 +8,7 @@ namespace Bamboo
     public:
         ImageAsset();
         ~ImageAsset() override;
-        void LoadFromFile(const std::string& filePath) override;
+        void LoadFromFile( const std::filesystem::path& path) override;
         void Unload() override;
 
         int GetWidth() const { return m_Width; }
