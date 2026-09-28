@@ -17,7 +17,7 @@ namespace Bamboo
         template <typename Class, typename T>
         Property *AddProperty(const std::string &name, T Class::*property)
         {
-            auto prop = CreateScope<MemberProperty<Class, T>>(name, property);
+            auto prop = std::make_unique<MemberProperty<Class, T>>(name, property);
             Property *raw = prop.get();
             Properties.push_back(std::move(prop));
             return raw;
