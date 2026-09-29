@@ -1,6 +1,7 @@
 #Bamboo
 
-file(GLOB_RECURSE BAMBOO_SRC
+file(GLOB_RECURSE BAMBOO_SRC 
+    CONFIGURE_DEPENDS
     ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/*.h
 )
@@ -22,5 +23,6 @@ target_link_libraries(Bamboo
 source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${BAMBOO_SRC})
 
 if (MSVC)
-    add_compile_options("/utf-8")
+    # add_compile_options("/utf-8")
+    target_compile_options(Bamboo PRIVATE "/utf-8")
 endif()

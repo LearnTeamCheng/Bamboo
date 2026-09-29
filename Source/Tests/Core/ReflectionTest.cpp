@@ -20,7 +20,9 @@ namespace Bamboo
         DECLARE_TYPE(TestProjectChild, TestProject)
 
         public:
-        float x, y, z;
+            float x{ 0.0f };
+            float y{ 0.0f };
+            float z{ 0.0f };
     };
     
     IMPLEMENT_TYPE(TestProjectChild, TestProject)
@@ -29,6 +31,36 @@ namespace Bamboo
     PROPERTIES("Y", y)
     PROPERTIES("Z", z)
     END_PROPERTIES()
+
+
+    class TestObject1 {
+        DECLARE_TYPE(TestProject,nullptr)
+        public:
+        int id {0};
+    };
+
+    IMPLEMENT_ROOT_TYPE(TestObject1)
+    BEGIN_PROPERTIES(TestObject1)
+    PROPERTIES("ID", id)
+    END_PROPERTIES()
+
+    class TestObject2 :public TestProjectChild
+    {
+        DECLARE_TYPE(TestProject2, TestProjectChild)
+
+        public:
+            float x{ 0.0f };
+            float y{ 0.0f };
+            float z{ 0.0f };
+    };
+    
+    IMPLEMENT_TYPE(TestObject2, TestObject1)
+    BEGIN_PROPERTIES(TestObject2)
+    PROPERTIES("X", x)
+    PROPERTIES("Y", y)
+    PROPERTIES("Z", z)
+    END_PROPERTIES()
+    
 
 };
 
@@ -118,4 +150,14 @@ TEST(ReflectionTest, PropertyValueRoundTrip)
     // 4) 通过 GetPtr 写、通过 GetValue 读，两条通道必须一致
     *static_cast<float *>(properties[2]->GetPtr(&other)) = 7.0f;
     EXPECT_FLOAT_EQ(std::get<float>(properties[2]->GetValue(&other)), 7.0f);
+}
+
+// 验证继承关系：子类的属性应该包含父类的属性
+TEST(ReflectionTest, InheritedProperties)
+{
+    Bamboo::TestObject2 child;
+    auto properties = child.s_TypeInfo.GetAllProperties();
+    
+    EXPECT_EQ(properties.size(), 4u);
+    EXPECT_EQ(properties[0]->GetName(), "ID");
 }

@@ -1,6 +1,10 @@
 #include <gtest/gtest.h>
 #include <vector>
-#include "../Bamboo/Core/Memory/BRef.h"
+//#include "../Bamboo/Core/Memory/BRef.h"
+#include "../Bamboo/Core/Memory/BRefCounted.h"
+#include "../Bamboo/Core/Memory/BRefPtr.h"
+#include "../Bamboo/Core/Memory/BWeakPtr.h"
+#include "../Bamboo/Core/Memory/BMemory.h"
 
 namespace Bamboo
 {
@@ -17,7 +21,10 @@ namespace Bamboo
 
    int TestObject::DestructionCount = 0;
 
-   class TestObject2 : public TestObject{};
+   class TestObject2 : public TestObject{
+    
+    
+   };
 
    class TestObject3 : public TestObject2{};
 
@@ -60,6 +67,8 @@ TEST(BRefTest, Move)
    EXPECT_TRUE(b);
 
    EXPECT_EQ(b->GetRefCount(), 1);
+
+   //EXPECT_EQ(a, nullptr);
 }
 
 
@@ -81,7 +90,7 @@ TEST(BRefTest,Inheritance)
 
     auto ref = Bamboo::CreateBRef<Bamboo::TestObject2>();
     EXPECT_EQ(ref->GetRefCount(), 1);
-    Bamboo::BRef<Bamboo::TestObject> ref2 = ref;
+    Bamboo::BRefPtr<Bamboo::TestObject> ref2 = ref;
 
     EXPECT_EQ(ref->GetRefCount(), 2);
     EXPECT_EQ(ref2->GetRefCount(), 2);
@@ -93,8 +102,8 @@ TEST(BRefTest, MultiLevelInheritance)
 
     EXPECT_EQ(ref3->GetRefCount(), 1);
 
-    Bamboo::BRef<Bamboo::TestObject2> ref2 = ref3;
-    Bamboo::BRef<Bamboo::TestObject> ref1 = ref3;
+    Bamboo::BRefPtr<Bamboo::TestObject2> ref2 = ref3;
+    Bamboo::BRefPtr<Bamboo::TestObject> ref1 = ref3;
 
     EXPECT_EQ(ref3->GetRefCount(), 3);
     EXPECT_EQ(ref2->GetRefCount(), 3);
@@ -108,7 +117,7 @@ TEST(BRefTest, DerivedDestroyedThroughBase)
 
     {
         auto derive = Bamboo::CreateBRef<Bamboo::TestObject2>();
-        Bamboo::BRef<Bamboo::TestObject> base = derive;
+        Bamboo::BRefPtr<Bamboo::TestObject> base = derive;
 
         EXPECT_EQ(derive->GetRefCount(), 2);
         EXPECT_EQ(base->GetRefCount(), 2);
@@ -118,4 +127,15 @@ TEST(BRefTest, DerivedDestroyedThroughBase)
     EXPECT_EQ(Bamboo::TestObject::DestructionCount, 1);
 }
 
+
+TEST(BWeakPtrTest, Create) {
+    auto ref = Bamboo::CreateBRef<Bamboo::TestObject2>();
+    Bamboo::BWeakPtr<Bamboo::TestObject2> tempWeakRef(ref);
+
+    // EXPECT_EQ(tempWeakRef.Expired(), false);
+    {
+        EXPECT_EQ(tempWeakRef.Lock()->GetControlBlock()->weakCount,2);
+    }
+
+}
 
