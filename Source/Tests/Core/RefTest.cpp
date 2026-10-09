@@ -1,6 +1,5 @@
 #include <gtest/gtest.h>
 #include <vector>
-//#include "../Bamboo/Core/Memory/BRef.h"
 #include "../Bamboo/Core/Memory/BRefCounted.h"
 #include "../Bamboo/Core/Memory/BRefPtr.h"
 #include "../Bamboo/Core/Memory/BWeakPtr.h"
@@ -67,8 +66,6 @@ TEST(BRefTest, Move)
    EXPECT_TRUE(b);
 
    EXPECT_EQ(b->GetRefCount(), 1);
-
-   //EXPECT_EQ(a, nullptr);
 }
 
 
@@ -131,11 +128,43 @@ TEST(BRefTest, DerivedDestroyedThroughBase)
 TEST(BWeakPtrTest, Create) {
     auto ref = Bamboo::CreateBRef<Bamboo::TestObject2>();
     Bamboo::BWeakPtr<Bamboo::TestObject2> tempWeakRef(ref);
+    EXPECT_EQ(tempWeakRef.Lock()->GetControlBlock()->weakCount,2);
+}
 
-    // EXPECT_EQ(tempWeakRef.Expired(), false);
+TEST(BWeakPtrTest,WearkCount)
+{
+    Bamboo::BWeakPtr<Bamboo::TestObject2> tempWeakRef;
     {
+        auto ref = Bamboo::CreateBRef<Bamboo::TestObject2>();
+        tempWeakRef = ref;
         EXPECT_EQ(tempWeakRef.Lock()->GetControlBlock()->weakCount,2);
     }
 
+    // EXPECT_EQ(tempWeakRef.Lock(), nullptr);
+    EXPECT_EQ(tempWeakRef.Expired(), true);
 }
 
+
+
+TEST(BWeakPtrTest,MulitipleWeakRef)
+{
+    Bamboo::BWeakPtr<Bamboo::TestObject2> weakRef1;
+    auto ref = Bamboo::CreateBRef<Bamboo::TestObject2>();
+    weakRef1 = ref;
+
+    Bamboo::BWeakPtr<Bamboo::TestObject2> weakRef2;
+    weakRef2 = ref;
+
+    EXPECT_EQ(weakRef1.Lock()->GetControlBlock()->weakCount,3);
+}
+
+TEST(BWeakPtrTest,Expired)
+{
+    Bamboo::BWeakPtr<Bamboo::TestObject2> weakRef1;
+    auto ref = Bamboo::CreateBRef<Bamboo::TestObject2>();
+    weakRef1 = ref;
+
+    Bamboo::BWeakPtr<Bamboo::TestObject2> weakRef2;
+    weakRef2 = weakRef1;
+    EXPECT_EQ(weakRef1.Expired(), true);
+}

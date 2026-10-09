@@ -11,29 +11,29 @@ namespace Bamboo
 {
     struct PrimitiveData
     {
-        uint32_t vertsPerPrimitive   = 0;
-        uint32_t indicesPerPrimitive = 0;
-        uint32_t maxCount            = 0;
+        uint32_t vertsPerPrimitive{0};
+        uint32_t indicesPerPrimitive{0};
+        uint32_t maxCount{0};
     };
 
     struct BatchStatistics
     {
-        uint32_t DrawCalls      = 0;
-        uint32_t PrimitiveCount = 0;
+        uint32_t DrawCalls{0};
+        uint32_t PrimitiveCount{0};
     };
 
     template <typename TDerived, typename TVertex>
     class PrimitiveBatch
     {
     public:
-        explicit PrimitiveBatch(const PrimitiveData& data) : m_BatchData(data) {}
+        explicit PrimitiveBatch(const PrimitiveData &data) : m_BatchData(data) {}
 
         void Init(uint32_t maxCount)
         {
             m_BatchData.maxCount = maxCount;
             m_Vertices.resize(maxCount * m_BatchData.vertsPerPrimitive);
 
-            auto* self = static_cast<TDerived*>(this);
+            auto *self = static_cast<TDerived *>(this);
 
             m_VAO = VertexArray::Create();
             m_VBO = VertexBuffer::Create(
@@ -46,14 +46,15 @@ namespace Bamboo
 
         void BeginBatch()
         {
-            m_WrittenVertices   = 0;
-            m_IndexCount        = 0;
+            m_WrittenVertices = 0;
+            m_IndexCount = 0;
             m_CurrentBatchCount = 0;
         }
 
-        void Flush(BatchStatistics& stats)
+        void Flush(BatchStatistics &stats)
         {
-            if (m_IndexCount == 0) return;
+            if (m_IndexCount == 0)
+                return;
 
             m_VBO->SetData(m_Vertices.data(),
                            m_WrittenVertices * sizeof(TVertex));
@@ -72,13 +73,13 @@ namespace Bamboo
             m_Shader = nullptr;
             m_Vertices.clear();
             m_Vertices.shrink_to_fit();
-            m_WrittenVertices   = 0;
-            m_IndexCount        = 0;
+            m_WrittenVertices = 0;
+            m_IndexCount = 0;
             m_CurrentBatchCount = 0;
         }
 
-        bool     IsEmpty()      const { return m_IndexCount == 0; }
-        bool     IsFull()       const { return m_CurrentBatchCount >= m_BatchData.maxCount; }
+        bool IsEmpty() const { return m_IndexCount == 0; }
+        bool IsFull() const { return m_CurrentBatchCount >= m_BatchData.maxCount; }
         uint32_t PrimitiveCount() const
         {
             return m_IndexCount / m_BatchData.indicesPerPrimitive;
@@ -87,23 +88,23 @@ namespace Bamboo
     protected:
         PrimitiveData m_BatchData;
 
-        TVertex* AllocVertex() { return m_Vertices.data() + m_WrittenVertices; }
+        TVertex *AllocVertex() { return m_Vertices.data() + m_WrittenVertices; }
 
         void Commit()
         {
-            m_WrittenVertices   += m_BatchData.vertsPerPrimitive;
-            m_IndexCount        += m_BatchData.indicesPerPrimitive;
+            m_WrittenVertices += m_BatchData.vertsPerPrimitive;
+            m_IndexCount += m_BatchData.indicesPerPrimitive;
             m_CurrentBatchCount += 1;
         }
 
     private:
         std::vector<TVertex> m_Vertices;
-        Ref<VertexArray>     m_VAO;
-        Ref<VertexBuffer>    m_VBO;
-        Ref<Shader>          m_Shader;
+        Ref<VertexArray> m_VAO;
+        Ref<VertexBuffer> m_VBO;
+        Ref<Shader> m_Shader;
 
-        uint32_t m_WrittenVertices   = 0;
-        uint32_t m_IndexCount        = 0;
-        uint32_t m_CurrentBatchCount = 0;
+        uint32_t m_WrittenVertices{0};
+        uint32_t m_IndexCount{0};
+        uint32_t m_CurrentBatchCount{0};
     };
 }

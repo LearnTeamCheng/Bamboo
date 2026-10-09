@@ -50,6 +50,7 @@ namespace Bamboo
             for (auto entity : view)
             {
                 auto [triangle, transform] = view.get<TriangleComponent, TransformComponent>(entity);
+                // auto model = transform.worldMatrix * Matrix4::Scale(Vector3::One);
                 Renderer2D::DrawTriangle(transform.position, triangle.color);
             }
         }

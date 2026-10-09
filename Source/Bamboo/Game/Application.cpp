@@ -7,27 +7,29 @@
 
 namespace Bamboo
 {
-    Application* Application::s_Instance = nullptr;
+    Application *Application::s_Instance = nullptr;
 
-    Application::Application(const std::string &name) : m_Running(true), m_Minimize(false)
+    Application::Application(const std::string &name) : Application(name,60) 
+    {
+    }
+
+    Application::Application(const std::string &name, int fps) :m_Running(true), m_Minimize(false)
     {
         s_Instance = this;
+
+        SetFPS(fps);
         Log::Init();
 
         m_Window = Window::Create({name});
 
         m_Window->SetEventCallback(BIND_CALLBACK_FN(Application::OnEvent));
 
-
         m_SceneManager = CreateScope<SceneManager>();
         m_AssetManager = CreateScope<AssetManager>();
 
         Renderer2D::Init();
         Renderer::Init();
-        
     }
-
-
 
     Application::~Application()
     {
@@ -44,9 +46,7 @@ namespace Bamboo
             float deltaTime = Time::GetDeltaTime();
 
             m_SceneManager->GetActiveScene()->Update(deltaTime);
-
             m_Window.get()->Update();
-            
         }
     }
 
@@ -66,7 +66,6 @@ namespace Bamboo
 
         dispatcher.Dispatch<ApplicationClosedEvent>(BIND_CALLBACK_FN(Application::OnWindowClose));
         dispatcher.Dispatch<ApplicationResizeEvent>(BIND_CALLBACK_FN(Application::OnWindowResize));
-        
     }
 
     bool Application::OnWindowClose(ApplicationClosedEvent &event)
@@ -87,6 +86,12 @@ namespace Bamboo
         Renderer::OnWindowResize(event.GetWidth(), event.GetHeight());
 
         return false;
+    }
+
+    void Application::SetFPS(int fps)
+    {
+        m_FPS = fps;
+        m_FrameTime = 1.0f / m_FPS;
     }
 
 }

@@ -1,6 +1,6 @@
 #pragma once
 #include "Math.h"
-
+#include <utility>
 namespace Bamboo
 {
     class Vector2;
@@ -19,7 +19,7 @@ namespace Bamboo
 
     public:
         Vector3() : x(0.0f), y(0.0f), z(0.0f) {}
-        Vector3(float x, float y, float z) : x(x), y(y), z(z) {}
+       constexpr Vector3(float x, float y, float z) : x(x), y(y), z(z) {}
         Vector3(const Vector3 &other) = default;
         Vector3(const Vector4 &other);
 

@@ -28,6 +28,7 @@ namespace Bamboo
         // static void DrawSprite(const Matrix4 &localMatrix, const Color &color, Ref<Texture2D> &texture);
         static void DrawSprite(const Matrix4 &localMatrix, const Color &color, AssetHandle handle);
 
+        // static void DrawTriangle(const Matrix4 &localMatrix, const Color &color);
         static void DrawTriangle(const Vector3 &position, const Color &color);
 
         static Ref<Texture2D> GetNormalTexture();

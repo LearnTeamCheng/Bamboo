@@ -11,10 +11,9 @@
 
 #include "Component/PaddleComponent.h"
 
-
-
 BreakoutApp::BreakoutApp(const std::string &appName) : Application(appName)
 {
+#if TEST_SPRITE
     for (int i = 0; i < 50; i++)
     {
 
@@ -41,6 +40,7 @@ BreakoutApp::BreakoutApp(const std::string &appName) : Application(appName)
 
         transform.position = Bamboo::Vector3(x, y, 0.0f);
     }
+#endif
 
     // 创建球拍
     {
@@ -53,6 +53,17 @@ BreakoutApp::BreakoutApp(const std::string &appName) : Application(appName)
 
         auto &transform = paddleEntity.GetComponent<Bamboo::TransformComponent>();
         transform.position = Bamboo::Vector3(GetWindow().get()->GetWidth() / 2, -50.0f, 0.0f);
+    }
+
+    // 创建一个三角形
+    {
+        auto entity = GetSceneManager()->GetActiveScene()->CreateEntity();
+        auto triangle =  entity.AddComponent<Bamboo::QuadComponent>();
+        triangle.color = Bamboo::Color::Red;  // 设置三角形的颜色
+        triangle.size = Bamboo::Vector2(100.0f, 100.0f);  // 设置三角形的大小
+
+        auto &transform = entity.GetComponent<Bamboo::TransformComponent>();
+        transform.position = Bamboo::Vector3(GetWindow().get()->GetWidth() / 2, -100.0f, 0.0f);
     }
     GetSceneManager()->GetActiveScene()->AddSystem<BallSystem>();
 }

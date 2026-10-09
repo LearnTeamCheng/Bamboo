@@ -1,25 +1,18 @@
 #pragma once
-// #include <con
 #include "PrimitiveBatch.h"
-#include <utility>
-#include <vector>
 
 namespace Bamboo
 {
-    struct TriangleVertexLayout
+    struct QuadVertexLayout
     {
         Vector3 position;
         Color color;
     };
-
-    class TriangleBatch : public PrimitiveBatch<TriangleBatch, TriangleVertexLayout>
+    class QuadBatch : public PrimitiveBatch<QuadBatch, QuadVertexLayout>
     {
     public:
-        TriangleBatch()
-            : PrimitiveBatch({
-                  .vertsPerPrimitive = 3,
-                  .indicesPerPrimitive = 3,
-              })
+        QuadBatch() : PrimitiveBatch({.vertsPerPrimitive = 4,
+                                      .indicesPerPrimitive = 6})
         {
         }
 
@@ -36,12 +29,19 @@ namespace Bamboo
             const uint32_t vpp = m_BatchData.vertsPerPrimitive;
             const uint32_t n = m_BatchData.maxCount;
 
-            std::vector<uint32_t> indices(n * 3);
+            std::vector<uint32_t> indices(n * m_BatchData.indicesPerPrimitive);
+            int offset = 0;
             for (uint32_t i = 0; i < n; ++i)
             {
-                indices[i * 3 + 0] = i * vpp + 0;
-                indices[i * 3 + 1] = i * vpp + 1;
-                indices[i * 3 + 2] = i * vpp + 2;
+                indices[i + 0] = offset + 0;
+                indices[i + 1] = offset + 1;
+                indices[i + 2] = offset + 2;
+
+                indices[i + 3] = offset + 2;
+                indices[i + 4] = offset + 3;
+                indices[i + 5] = offset + 0;
+
+                offset += 4;
             }
             return IndexBuffer::Create(indices.data(), (uint32_t)indices.size());
         }
@@ -55,22 +55,22 @@ namespace Bamboo
 
         void Submit(const Matrix4 &transform, const Color &color)
         {
-            TriangleVertexLayout *v = AllocVertex();
-            for (int i = 0; i < 3; ++i)
+            QuadVertexLayout *v = AllocVertex();
+            for (int i = 0; i < 4; ++i)
             {
-                v[i].position = transform * kBasePositions[i];
-                //v[i].position.x /= 1280.0f;
-                //v[i].position.y /= 720.0f; // Adjusted for 16:9 aspect ratio
+                v[i].position = kBasePositions[i];
                 v[i].color = color;
             }
             Commit();
         }
 
     private:
-        static constexpr Vector3 kBasePositions[3] = {
-            {-0.5f, -0.5f, 0.f},
-            {0.5f, -0.5f, 0.f},
-            {0.0f, 0.5f, 0.f},
+        static constexpr Vector3 kBasePositions[] = {
+            {-0.5f, -0.5f, 0.0f},
+            {0.5f, -0.5f, 0.0f},
+            {0.5f, 0.5f, 0.0f},
+            {-0.5f, 0.5f, 0.0f}
+
         };
     };
-}
+};

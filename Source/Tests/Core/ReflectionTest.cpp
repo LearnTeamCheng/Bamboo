@@ -161,3 +161,4 @@ TEST(ReflectionTest, InheritedProperties)
     EXPECT_EQ(properties.size(), 4u);
     EXPECT_EQ(properties[0]->GetName(), "ID");
 }
+

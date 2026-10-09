@@ -9,7 +9,7 @@ file(GLOB_RECURSE BAMBOO_SRC
 add_library(Bamboo STATIC ${BAMBOO_SRC})
 
 target_include_directories(Bamboo PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
-
+# target_include_directories(Bamboo PUBLIC ${CMAKE_SOURCE_DIR}/Bamboo)
 target_link_libraries(Bamboo
     PUBLIC
         glfw

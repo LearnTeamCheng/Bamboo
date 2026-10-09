@@ -128,7 +128,4 @@ namespace Bamboo
     private:
         T *m_Ptr = nullptr;
     };
-
-
-
 };
