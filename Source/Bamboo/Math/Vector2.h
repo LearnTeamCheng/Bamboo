@@ -20,7 +20,7 @@ namespace Bamboo
         };
 
     public:
-        Vector2(float px, float py)
+        constexpr Vector2(float px, float py)
         {
             x = px;
             y = py;
@@ -171,7 +171,6 @@ namespace Bamboo
         {
             return Vector2(Math::Clamp(x, min.x, max.x), Math::Clamp(y, min.y, max.y));
         }
-
 
         static Vector2 Max(const Vector2 &a, const Vector2 &b);
         static Vector2 Min(const Vector2 &a, const Vector2 &b);

@@ -5,6 +5,7 @@ namespace Bamboo
 {
 
     Vector2::Vector2(const Vector3 &v) : x(v.x), y(v.y) {}
+    
 
     Vector2 Vector2::Max(const Vector2 &a, const Vector2 &b)
     {

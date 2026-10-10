@@ -11,7 +11,9 @@ namespace Bamboo
 {
     struct PrimitiveData
     {
+        /// @brief 顶点 
         uint32_t vertsPerPrimitive{0};
+        /// @brief 索引
         uint32_t indicesPerPrimitive{0};
         uint32_t maxCount{0};
     };

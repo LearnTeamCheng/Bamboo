@@ -385,27 +385,22 @@ namespace Bamboo
 
     void Renderer2D::DrawQuad(const Vector2 &position, const Vector2 &size, const Color &color)
     {
-        // for (int i = 0; i < 4; i++)
-        // {
-        //     s_Data.QuadVerticesPtr->position = s_Data.QuadVertexPosition[i];
-        //     s_Data.QuadVerticesPtr->color = color;
-        //     s_Data.QuadVerticesPtr++;
-        // }
-        // s_Data.QuadIndexCount += 6;
-        Matrix4 localMatrix;
+        // 顺序必须是"先缩放、后平移"：
+        // Translate(p) * Scale(s) 作用在 (0,0,0,1) 上得到 (p, 1)；
+        // 反过来 Scale(s) * Translate(p) 会把平移量也乘上缩放，位置就错了。
+        Matrix4 localMatrix = Matrix4::Translate(Vector3(position.x, position.y, 0.0f)) *
+                              Matrix4::Scale(Vector3(size.x, size.y, 1.0f));
         s_Data.quadBatch.Submit(localMatrix, color);
     }
 
     void Renderer2D::DrawQuad(const Vector3 &position, const Vector2 &size, const Color &color)
     {
-        // for (int i = 0; i < 4; i++)
-        // {
-        //     s_Data.QuadVerticesPtr->position = s_Data.QuadVertexPosition[i];
-        //     s_Data.QuadVerticesPtr->color = color;
-        //     s_Data.QuadVerticesPtr++;
-        // }
-        // s_Data.QuadIndexCount += 6;
-        Matrix4 localMatrix;
+        Matrix4 localMatrix = Matrix4::Translate(position) *
+                              Matrix4::Scale(Vector3(size.x, size.y, 1.0f));
+        s_Data.quadBatch.Submit(localMatrix, color);
+    }
+
+    void Renderer2D::DrawQuad(const Matrix4 &localMatrix, const Color &color){
         s_Data.quadBatch.Submit(localMatrix, color);
     }
 

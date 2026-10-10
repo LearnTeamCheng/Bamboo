@@ -61,8 +61,9 @@ namespace Bamboo
             for (auto entity : view)
             {
                 auto [quad, transform] = view.get<QuadComponent, TransformComponent>(entity);
-
-                Renderer2D::DrawQuad(transform.position, Vector2(100, 100), quad.color);
+                auto model = transform.worldMatrix *Matrix4::Scale(quad.size);
+                // Renderer2D::DrawQuad(transform.position, Vector2(100, 100), quad.color);
+                Renderer2D::DrawQuad(model,quad.color); // 100, 100 是 quad 的大小，而不是 sprite 的大小
             }
         }
 

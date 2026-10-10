@@ -58,12 +58,11 @@ BreakoutApp::BreakoutApp(const std::string &appName) : Application(appName)
     // 创建一个三角形
     {
         auto entity = GetSceneManager()->GetActiveScene()->CreateEntity();
-        auto triangle =  entity.AddComponent<Bamboo::QuadComponent>();
-        triangle.color = Bamboo::Color::Red;  // 设置三角形的颜色
+        auto& triangle =  entity.AddComponent<Bamboo::QuadComponent>();
+        triangle.color = Bamboo::Color::Blue;  // 设置三角形的颜色
         triangle.size = Bamboo::Vector2(100.0f, 100.0f);  // 设置三角形的大小
 
         auto &transform = entity.GetComponent<Bamboo::TransformComponent>();
-        transform.position = Bamboo::Vector3(GetWindow().get()->GetWidth() / 2, -100.0f, 0.0f);
     }
     GetSceneManager()->GetActiveScene()->AddSystem<BallSystem>();
 }
