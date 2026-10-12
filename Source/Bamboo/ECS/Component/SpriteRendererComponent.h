@@ -19,6 +19,7 @@ namespace Bamboo
         float opacity{1.0f};
         /// @brief 是否可见
         bool visible{true};
+        Vector2 uv[4];
 
         SpriteRendererComponent() = default;
         SpriteRendererComponent(const SpriteRendererComponent &) = default;

@@ -74,11 +74,6 @@ namespace Bamboo
 
         void UnloadAll() ;
 
-        template <typename T>
-        void AsyncLoad(const std::string &path, const std::function<void(Ref<Asset>)> &callback)
-        {
-        }
-
     private:
         AssetFactory m_AssetFactory;
         std::unordered_map<AssetHandle, Ref<Asset>> m_Assets;

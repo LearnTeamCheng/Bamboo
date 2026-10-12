@@ -1,10 +1,13 @@
 #pragma once
 #include "PrimitiveBatch.h"
-
 #include <unordered_map>
+#include <array>
+
+#include "../Bamboo/Graphics/SpriteMaterial.h"
+
 namespace Bamboo
 {
-    struct SpriteVetexLayout
+    struct SpriteVertexLayout
     {
 
         Vector3 position;
@@ -14,7 +17,7 @@ namespace Bamboo
         float texIndex;
     };
 
-    class SpriteBatch : public PrimitiveBatch<SpriteBatch, SpriteVetexLayout>
+    class SpriteBatch : public PrimitiveBatch<SpriteBatch, SpriteVertexLayout>
     {
     public:
         SpriteBatch() : PrimitiveBatch({.vertsPerPrimitive = 4, .indicesPerPrimitive = 6}) {}
@@ -37,8 +40,6 @@ namespace Bamboo
             std::vector<uint32_t> indices(n * ipp);
             uint32_t offset = 0;
 
-            // 注意：i 遍历的是**索引数组的下标**，边界必须是"索引总数 n * ipp"，
-            // 不能写成 i < n（n 是图元数），否则循环只跑 1/6 次，其余索引保持为 0。
             for (uint32_t i = 0; i < n * ipp; i += ipp)
             {
                 indices[i + 0] = offset + 0;
@@ -61,39 +62,25 @@ namespace Bamboo
                                   "BambooAssets/Shaders/sprite.frag");
         }
 
-        void Submit(const Matrix4 &transform, const Color &color)
+        void Submit(const Matrix4 &transform, const Color &color, const std::array<Vector2, 4> &uv, float textureId = 0.0f)
         {
-            SpriteVetexLayout *v = AllocVertex();
+            SpriteVertexLayout *v = AllocVertex();
             for (int i = 0; i < 4; ++i)
             {
                 v[i].position = transform * kBasePositions[i];
                 v[i].color = color;
-                v[i].texCoord = kTextCoord[i];
-                // 必须显式赋值：槽位 0 是白纹理，不写就是未初始化数据
-                v[i].texIndex = kDefaultTextureIndex;
+                v[i].texCoord = uv[i];
+                v[i].texIndex = textureId;
             }
             Commit();
         }
 
-    private:
-        // std::unordered_map<int,>
     private:
         static constexpr Vector3 kBasePositions[] = {
             {-0.5f, -0.5f, 0.0f},
             {0.5f, -0.5f, 0.0f},
             {0.5f, 0.5f, 0.0f},
             {-0.5f, 0.5f, 0.0f}
-
         };
-
-        static constexpr Vector2 kTextCoord[] = {
-            {0.0f, 0.0f},
-            {1.0f, 0.0f},
-            {1.0f, 1.0f},
-            {0.0f, 1.0f},
-        };
-
-        /// 纹理槽 0 固定是白纹理（见 Renderer2D 的 StartBatch）
-        static constexpr float kDefaultTextureIndex = 0.0f;
     };
 };

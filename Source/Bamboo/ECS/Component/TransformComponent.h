@@ -35,7 +35,22 @@ namespace Bamboo
             localMatrix(2, 2) = scale.z;
         }
 
-  
+        void SetPosition(Vector3 &position);
+        const Vector3 &GetPosition() const;
+
+        void SetRotation(Vector3 &rotation);
+        const Vector3 &GetRotation() const;
+
+        const Vector3 &GetScale() const;
+
+        void Translate(Vector3 &translation);
+        void Rotate(Vector3 &rotation);
+        void Scale(Vector3 &scale);
+
+
+    private:
+        uint64_t m_LocalVersion{0};
+        uint64_t m_WorldVersion{0}; // 世界版本
     };
 
 }

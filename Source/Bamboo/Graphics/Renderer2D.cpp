@@ -14,6 +14,7 @@
 
 #include "Batch/TriangleBatch.h"
 #include "Batch/QuadBatch.h"
+#include "../Bamboo/Game/Application.h"
 
 #include <array>
 
@@ -87,8 +88,6 @@ namespace Bamboo
         // uint32_t QuadIndexCount = 0;
         QuadBatch quadBatch;
 
-
-
         // circle
         Ref<VertexArray> CircleVertexArray;
         Ref<VertexBuffer> CircleBuffer;
@@ -153,7 +152,7 @@ namespace Bamboo
                 trianglesIndices[i * 3 + 2] = i * 3 + 2;
             }
 
-            Ref<IndexBuffer> indexBuffer = IndexBuffer::Create(trianglesIndices, s_Data.MaxTriangles*3);
+            Ref<IndexBuffer> indexBuffer = IndexBuffer::Create(trianglesIndices, s_Data.MaxTriangles * 3);
             s_Data.TriangleVertexArray->SetIndexBuffer(indexBuffer);
 
             s_Data.TriangleShader = Shader::Create("triangle", "BambooAssets/Shaders/triangle.vert", "BambooAssets/Shaders/triangle.frag");
@@ -165,7 +164,7 @@ namespace Bamboo
             s_Data.TriangleVertexPositions[1] = {0.5, -0.5, 0.0};
             s_Data.TriangleVertexPositions[2] = {0.0, 0.5, 0.0};
 
-            delete [] trianglesIndices; // 释放索引数组
+            delete[] trianglesIndices; // 释放索引数组
             // s_Data.triangleBatch.Init(s_Data.MaxTriangles);
         }
 
@@ -286,12 +285,9 @@ namespace Bamboo
         s_Data.TriangleVerticesPtr = s_Data.TriangleVertices;
         // s_Data.triangleBatch.BeginBatch();
 
-
         // s_Data.QuadIndexCount = 0;
         // s_Data.QuadVerticesPtr = s_Data.QuadVertices;
         s_Data.quadBatch.BeginBatch();
-
-
 
         s_Data.SpriteCount = 0;
         s_Data.SpriteIndexCount = 0;
@@ -400,7 +396,8 @@ namespace Bamboo
         s_Data.quadBatch.Submit(localMatrix, color);
     }
 
-    void Renderer2D::DrawQuad(const Matrix4 &localMatrix, const Color &color){
+    void Renderer2D::DrawQuad(const Matrix4 &localMatrix, const Color &color)
+    {
         s_Data.quadBatch.Submit(localMatrix, color);
     }
 
@@ -454,6 +451,11 @@ namespace Bamboo
 
         s_Data.SpriteIndexCount += 6;
         s_Data.SpriteCount++;
+    }
+
+    void Renderer2D::DrawSprite(const Matrix4 &localMatrix, const Color &color, const std::array<Vector2, 4> &uv, AssetHandle handle)
+    {
+        
     }
 
     void Renderer2D::Shutdown()

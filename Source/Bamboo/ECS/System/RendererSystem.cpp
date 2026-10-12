@@ -14,6 +14,7 @@
 #include "../SystemContext.h"
 #include "../World.h"
 
+
 namespace Bamboo
 {
     void RendererSystem::Update(SystemContext &context, float deltaTime)
@@ -78,6 +79,7 @@ namespace Bamboo
             {
                 auto [sprite, transform] = view.get<SpriteRendererComponent, TransformComponent>(entity);
                 sprites.emplace_back(sprite.zorder, &sprite, &transform);
+
             }
 
             // 按 ZOrder 升序排序，保证绘制顺序
@@ -86,19 +88,15 @@ namespace Bamboo
 
             for (auto &[zOrder, sprite, transform] : sprites)
             {
-                // ⚠️ 已知缺陷：这里在**渲染期间回写** ECS 数据，破坏了"渲染只读"的契约，
-                // 而且会永久抹掉"用户没有设置纹理"这一信息。
-                // 正确做法是在 DrawSprite 内部回落到白纹理，见 P0-8。
-                // if (sprite->texture == nullptr)
-                // {
-                //     sprite->texture = Renderer2D::GetNormalTexture();
-                // }
-
                 // TODO(性能): 精灵的缩放每帧在这里现算；应在 TransformSystem 里
                 // 直接产出最终世界矩阵，见 P2-4。
                 auto model = transform->worldMatrix * Matrix4::Scale(sprite->size);
                 Renderer2D::DrawSprite(model, sprite->color, sprite->handle);
+                // Renderer2D::DrawSprite(model, sprite->color, sprite->handle,);
             }
+
+
+
         }
         Renderer2D::EndScene();
     }
